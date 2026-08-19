@@ -394,19 +394,25 @@
             </div>
 
             <div class="info-card flex flex-col gap-3">
-                <label class="text-xs font-bold text-[#8c7894]">กรอกรหัสลูกค้าของท่าน:</label>
-                <input type="text" id="customer-id-input" class="admin-input uppercase !mt-0 text-center text-lg font-bold" placeholder="เช่น SF001">
-                <button onclick="searchCustomer()" class="btn-main !py-2 !text-sm">
+                <div>
+                    <label class="text-xs font-bold text-[#8c7894]">รหัสลูกค้า:</label>
+                    <input type="text" id="customer-id-input" class="admin-input uppercase !mt-1 text-center text-base font-bold" placeholder="เช่น SF001">
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-[#8c7894]">เบอร์โทรศัพท์ (4 ตัวท้าย):</label>
+                    <input type="text" id="customer-phone-input" maxlength="4" class="admin-input !mt-1 text-center text-base font-bold" placeholder="เช่น 5678">
+                </div>
+                <button onclick="searchCustomer()" class="btn-main !py-2 !text-sm mt-1">
                     <i class="fa-solid fa-magnifying-glass"></i> ค้นหาข้อมูล
                 </button>
             </div>
 
             <div id="installment-error" class="hidden-page text-center text-[13px] text-[#d87093] font-bold mt-2 bg-[#fff0f3] p-3 rounded-xl border border-[#ffb6c1]">
-                ไม่พบรหัสลูกค้านี้น้า ลองตรวจสอบรหัสอีกครั้งค่ะ 🥺
+                ไม่พบรหัสลูกค้าหรือเบอร์โทรไม่ถูกต้องค่ะ 🥺
             </div>
 
             <div id="installment-result" class="hidden-page info-card !bg-[#fffcf5] !border-[#fce4ec]">
-                <!-- ผลลัพธ์ข้อมูลลูกค้า -->
+                <!-- ผลลัพธ์ข้อมูลลูกค้าและฟอร์มแนบสลิป -->
             </div>
 
             <button onclick="goBackFromPage3()" class="btn-back">
@@ -439,10 +445,11 @@
         let defaultPromo1 = `# ตอนนี้มี งานเซลล์ปิดสดนะค้าบ 🎀\n• Iphone xr 2,600฿ (ตัวเดียว) 🧸\n• Iphone 7 plus 800฿ (ตัวเดียว) 🧸\n• Iphone 7 900฿ (มีหลายตัว) 🧸`;
         let defaultPromo2 = `# 🧸 โปรเปิดบิล 17-31 สิงหาคม 🧸\n👉 เปิดบิล 10฿ ลด 200฿\n👉 เปิดบิล 50฿ ลด 500฿\n👉 เปิดบิล 100฿ ลด 1,000฿\n# 🎀 ใช้ได้ทั้งผ่อนไปใช้ไป/ผ่อนครบรับของเลยนะคะ 🎀 💖`;
 
-        // ข้อมูลจำลองลูกค้า (สามารถเพิ่มรายชื่อคนอื่นลงไปในฐานข้อมูล Firebase ได้ในอนาคตครับ)
+        // ข้อมูลจำลองลูกค้า (เพิ่ม phone สำหรับทดสอบระบบความปลอดภัย)
         let mockCustomers = {
             "SF001": {
                 name: "คุณ ธนพร คนสวยสุด",
+                phone: "5678",
                 age: 25,
                 type: "ผ่อนไปใช้ไป (ส่งรายสัปดาห์)",
                 model: "iPhone 14 Pro (128GB)",
@@ -456,6 +463,7 @@
             },
             "SF002": {
                 name: "คุณ สุดหล่อ รักซันสตอรี่",
+                phone: "1234",
                 age: 20,
                 type: "ผ่อนครบรับของ (ส่งรายเดือน)",
                 model: "iPad Air 5 (256GB)",
@@ -474,19 +482,16 @@
             db.ref('storeConfig').once('value').then((snapshot) => {
                 const data = snapshot.val();
                 if (data) {
-                    // โหลดสถานะร้าน
                     document.getElementById('display-status-time').innerText = data.statusTime || "🟢 สถานะ : เปิดให้บริการปกติ";
                     document.getElementById('display-status-time').style.color = data.colorTime || "#059669";
                     document.getElementById('edit-status-time').value = data.statusTime || "🟢 สถานะ : เปิดให้บริการปกติ";
                     document.getElementById('edit-color-time').value = data.colorTime || "#059669";
 
-                    // โหลดสถานะจัดส่ง
                     document.getElementById('display-status-shipping').innerText = data.statusShip || "🚚 สถานะ : ส่งตามปกติ";
                     document.getElementById('display-status-shipping').style.color = data.colorShip || "#3b82f6";
                     document.getElementById('edit-status-shipping').value = data.statusShip || "🚚 สถานะ : ส่งตามปกติ";
                     document.getElementById('edit-color-shipping').value = data.colorShip || "#3b82f6";
 
-                    // โหลดโปรโมชั่น
                     let p1 = data.promo1 !== undefined ? data.promo1 : defaultPromo1;
                     let p2 = data.promo2 !== undefined ? data.promo2 : defaultPromo2;
                     document.getElementById('edit-promo-1').value = p1;
@@ -494,7 +499,6 @@
                     renderPromo(p1, 'promo-1-content', 'promo-1-box');
                     renderPromo(p2, 'promo-2-content', 'promo-2-box');
                 } else {
-                    // ถ้ายังไม่มีข้อมูล ให้ใช้ค่าเริ่มต้น
                     document.getElementById('edit-promo-1').value = defaultPromo1;
                     document.getElementById('edit-promo-2').value = defaultPromo2;
                     renderPromo(defaultPromo1, 'promo-1-content', 'promo-1-box');
@@ -502,7 +506,6 @@
                 }
             });
 
-            // โหลดข้อมูลลูกค้าจาก Firebase (ถ้ามี)
             db.ref('customers').once('value').then((snapshot) => {
                 const custData = snapshot.val();
                 if (custData) {
@@ -550,6 +553,7 @@
             document.getElementById('page-3').classList.add('hidden-page');
             document.getElementById('page-1').classList.remove('hidden-page');
             document.getElementById('customer-id-input').value = '';
+            document.getElementById('customer-phone-input').value = '';
             document.getElementById('installment-result').classList.add('hidden-page');
             document.getElementById('installment-error').classList.add('hidden-page');
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -557,10 +561,11 @@
 
         function searchCustomer() {
             const inputId = document.getElementById('customer-id-input').value.trim().toUpperCase();
+            const inputPhone = document.getElementById('customer-phone-input').value.trim();
             const resultBox = document.getElementById('installment-result');
             const errorBox = document.getElementById('installment-error');
 
-            if (mockCustomers[inputId]) {
+            if (mockCustomers[inputId] && mockCustomers[inputId].phone === inputPhone) {
                 const data = mockCustomers[inputId];
                 resultBox.innerHTML = `
                     <div class="text-[13px] font-bold text-[#c75b80] mb-3 border-b border-dashed border-[#f8d7e3] pb-2 flex justify-between items-center">
@@ -578,6 +583,16 @@
                             <p>💸 <b>ยอดที่ส่งแล้ว:</b> ${data.paid} ฿</p>
                             <p class="text-[14px] mt-2 font-bold ${data.statusColor}">🎯 ยอดคงเหลือ: ${data.balance} ฿</p>
                         </div>
+                    </div>
+                    
+                    <!-- ส่วนฟอร์มแนบสลิป (UI Draft) -->
+                    <div class="mt-4 pt-3 border-t border-dashed border-[#ffb6c1] flex flex-col gap-2">
+                        <p class="text-[12px] font-bold text-[#d87093]">📤 แจ้งชำระเงิน / แนบสลิป:</p>
+                        <input type="number" class="admin-input !mt-0 text-sm" placeholder="จำนวนเงินที่โอน (เช่น 1500)">
+                        <input type="file" class="admin-input !mt-0 text-xs py-2 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-[#f8d7e3] file:text-[#d87093] hover:file:bg-[#ffb6c1]">
+                        <button onclick="alert('จำลองการส่งสลิปเรียบร้อย! รอแอดมินตรวจสอบ 🌸')" class="btn-main !py-2 !text-xs mt-1">
+                            <i class="fa-solid fa-paper-plane"></i> ส่งสลิปให้แอดมิน
+                        </button>
                     </div>
                 `;
                 resultBox.classList.remove('hidden-page');
@@ -617,7 +632,6 @@
             const promo1 = document.getElementById('edit-promo-1').value;
             const promo2 = document.getElementById('edit-promo-2').value;
 
-            // บันทึกข้อมูลขึ้น Firebase ทันที
             db.ref('storeConfig').set({
                 statusTime: statusTime,
                 colorTime: colorTime,
@@ -629,7 +643,6 @@
                 if (error) {
                     alert('บันทึกไม่สำเร็จ ลองใหม่อีกครั้งนะคะ 🥺');
                 } else {
-                    // อัปเดตหน้าจอทันที
                     document.getElementById('display-status-time').innerText = statusTime;
                     document.getElementById('display-status-time').style.color = colorTime;
                     document.getElementById('display-status-shipping').innerText = statusShip;

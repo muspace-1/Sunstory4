@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sunstory4 - ผ่อน วางดาวน์ ปิดสด</title>
-    <!-- เรียกใช้งาน Tailwind CSS และ Font ใช้งานภาษาไทย Kanit -->
+    <!-- เรียกใช้งาน Tailwind CSS และ Font Kanit -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -16,24 +16,23 @@
         }
         body { 
             font-family: 'Kanit', sans-serif; 
-            /* พื้นหลังลายจุดสีชมพูพาสเทลละมุน */
-            background-color: #fef6f9;
-            background-image: radial-gradient(#ffc2d1 15%, transparent 16%), radial-gradient(#ffc2d1 15%, transparent 16%);
-            background-size: 24px 24px;
-            background-position: 0 0, 12px 12px;
+            /* พื้นหลังลายหัวใจสีชมพูพาสเทลจางๆ (Soft Hearts Pattern) */
+            background-color: #fff9fa;
+            background-image: url("data:image/svg+xml,%3Csvg width='50' height='50' viewBox='0 0 50 50' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M25 39.7l-.6-.5C11.5 28.7 8 22 8 16.4c0-4.9 3.9-8.8 8.8-8.8 2.8 0 5.5 1.3 7.2 3.3 1.7-2 4.4-3.3 7.2-3.3 4.9 0 8.8 3.9 8.8 8.8 0 5.6-3.5 12.3-16.4 22.8l-.6.5z' fill='%23ffd1dc' fill-opacity='0.35'/%3E%3C/svg%3E");
+            background-size: 50px 50px;
             color: #5a4a5e; 
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
-            padding: 16px;
+            align-items: flex-start;
+            padding: 20px 16px;
         }
 
-        /* กล่องหลักควบคุมความกว้างและความสะอาดตา */
+        /* กล่องหลักควบคุมความกว้าง */
         .main-container {
             width: 100%;
             max-width: 480px;
-            background: #ffffff;
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 2rem;
             border: 3px solid #f8d7e3;
             box-shadow: 0 10px 30px rgba(216, 112, 147, 0.12);
@@ -55,23 +54,53 @@
             gap: 12px;
         }
 
-        /* ชื่อร้านไล่สีชมพูอ่อนไปเข้ม แบบพาสเทล */
+        /* ชื่อร้านไล่สีชมพูพาสเทล */
         .sunstory-title {
-            font-size: 1.8rem;
+            font-size: 1.7rem;
             font-weight: 700;
             line-height: 1.1;
             background: linear-gradient(135deg, #ff9bb3 0%, #c75b80 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+        }
+
+        /* เอฟเฟกต์ตัวหนังสือกระโดดทีละตัว */
+        .jump-text span {
+            display: inline-block;
+            animation: wave-bounce 2.5s infinite;
+        }
+        .jump-text span:nth-child(1) { animation-delay: 0.0s; }
+        .jump-text span:nth-child(2) { animation-delay: 0.1s; }
+        .jump-text span:nth-child(3) { animation-delay: 0.2s; }
+        .jump-text span:nth-child(4) { animation-delay: 0.3s; }
+        .jump-text span:nth-child(5) { animation-delay: 0.4s; }
+        .jump-text span:nth-child(6) { animation-delay: 0.5s; }
+        .jump-text span:nth-child(7) { animation-delay: 0.6s; }
+        .jump-text span:nth-child(8) { animation-delay: 0.7s; }
+        .jump-text span:nth-child(9) { animation-delay: 0.8s; }
+        
+        .heart-icon {
+            font-size: 1.2rem;
+            -webkit-text-fill-color: initial; /* ป้องกันสีหัวใจโดนดูดกลืน */
+            color: #d87093;
+            margin-left: 6px;
+            animation-delay: 0.9s !important;
+        }
+
+        @keyframes wave-bounce {
+            0%, 15%, 100% { transform: translateY(0); }
+            7.5% { transform: translateY(-6px); } /* ความสูงตอนกระโดด */
         }
 
         /* สโลแกนใต้ชื่อร้าน */
         .sunstory-slogan {
             font-size: 0.75rem;
             color: #8c7894;
-            margin-top: 4px;
+            margin-top: 6px;
             font-weight: 400;
-            line-height: 1.2;
+            line-height: 1.3;
         }
 
         /* กรอบสี่เหลี่ยมสำหรับรูปภาพ Sun.JPG มุมขวา */
@@ -91,13 +120,14 @@
             object-fit: cover;
         }
 
-        /* การ์ดข้อมูลแต่ละส่วน */
+        /* การ์ดข้อมูลทั่วไป */
         .info-card {
             background: #ffffff;
             border-radius: 1.25rem;
             padding: 16px;
-            border: 1.5px solid #f3d9ce;
+            border: 1.5px solid #fce4ec;
             box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            line-height: 1.6;
         }
 
         /* กล่องเตือนภัยบัญชี */
@@ -109,7 +139,7 @@
             text-align: center;
         }
 
-        /* ปุ่มหลักชมพูตุ่นพาสเทล */
+        /* ปุ่มทางเข้า */
         .btn-main {
             background: linear-gradient(135deg, #d87093, #c75b80);
             color: white;
@@ -131,11 +161,7 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 16px rgba(216, 112, 147, 0.4);
         }
-        .btn-main:active {
-            transform: translateY(0);
-        }
 
-        /* ปุ่มรอง (ย้อนกลับ) */
         .btn-back {
             background: #f3d9ce;
             color: #5a4a5e;
@@ -146,19 +172,37 @@
             font-size: 0.9rem;
             border: none;
             cursor: pointer;
-            transition: all 0.2s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
-        }
-        .btn-back:hover {
-            background: #e8c7bc;
+            margin-top: 10px;
         }
 
-        /* คลาสสำหรับสลับหน้าจอ */
-        .page-hidden {
-            display: none;
+        /* การซ่อนและแสดงหน้า */
+        .hidden-page {
+            display: none !important;
+        }
+        
+        /* สไตล์หลอดวิ่งโหลด */
+        .loading-container {
+            padding: 30px 10px;
+            text-align: center;
+        }
+        .progress-bar-bg {
+            width: 100%;
+            height: 12px;
+            background-color: #f3eaee;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff9bb3, #c75b80);
+            width: 0%;
+            border-radius: 10px;
+            transition: width 1.5s ease-out;
         }
     </style>
 </head>
@@ -166,143 +210,173 @@
 
     <div class="main-container">
         
-        <!-- ================= PAGE 1: หน้าแรก (หน้าร้านต้อนรับ) ================= -->
+        <!-- โซน 1 และ 2 จะโชว์ตลอดทั้งหน้า 1 และหน้า 2 -->
+        
+        <!-- ================= โซน 1: กรอบหัวเว็บ ================= -->
+        <div class="brand-header-box">
+            <div>
+                <!-- เพิ่มคลาส jump-text และแยกอักษรเพื่อให้กระโดดทีละตัว -->
+                <h1 class="sunstory-title jump-text">
+                    <span>S</span><span>u</span><span>n</span><span>s</span><span>t</span><span>o</span><span>r</span><span>y</span><span>4</span>
+                    <span class="heart-icon">❤️</span>
+                </h1>
+                <p class="sunstory-slogan">"ผ่อน วางดาวน์ ปิดสด ต้องซันสตอรี่โฟร์ เท่านั้น"</p>
+            </div>
+            <div class="brand-image-frame">
+                <img src="Sun.JPG" alt="Sunstory4" onerror="this.src='https://via.placeholder.com/150/ffb6c1/ffffff?text=Sun.JPG'">
+            </div>
+        </div>
+
+        <!-- ================= โซน 2: แจ้งเตือนบัญชี ================= -->
+        <div class="account-alert-box">
+            <div class="text-xs font-bold text-[#d87093] mb-1 flex items-center justify-center gap-1">
+                <i class="fa-solid fa-triangle-exclamation"></i> แจ้งเพื่อทราบ / ป้องกันมิจฉาชีพ
+            </div>
+            <p class="text-sm font-medium text-[#5a4a5e]">
+                ชื่อบัญชีโอนเงิน : <span class="font-bold text-[#d87093] text-base">กนกอร</span> เท่านั้น!
+            </p>
+            <p class="text-[11px] text-[#8c7894] mt-1">นอกเหนือจากชื่อนี้ ห้ามโอนเด็ดขาดนะคะ ⚠️</p>
+        </div>
+
+        <!-- ========================================================================= -->
+        <!--                               PAGE 1 (หน้าแรก)                            -->
+        <!-- ========================================================================= -->
         <div id="page-1" class="flex flex-col gap-4">
-            
-            <!-- กรอบหัวเว็บ: ชื่อร้าน (ซ้าย) + รูป Sun.JPG (ขวา) -->
-            <div class="brand-header-box">
-                <div>
-                    <h1 class="sunstory-title">Sunstory4</h1>
-                    <p class="sunstory-slogan">"ผ่อน วางดาวน์ ปิดสด ต้องซันสตอรี่โฟร์ เท่านั้น"</p>
-                </div>
-                <div class="brand-image-frame">
-                    <!-- ตรวจสอบว่าไฟล์รูปชื่อ Sun.JPG อยู่ในโฟลเดอร์เดียวกัน -->
-                    <img src="Sun.JPG" alt="Sunstory4 Logo" onerror="this.src='https://via.placeholder.com/150/ffb6c1/ffffff?text=Sunstory4'">
-                </div>
-            </div>
 
-            <!-- กล่องแจ้งเตือนบัญชีทางการ -->
-            <div class="account-alert-box">
-                <div class="text-xs font-bold text-[#d87093] mb-1 flex items-center justify-center gap-1">
-                    <i class="fa-solid fa-triangle-exclamation"></i> แจ้งเพื่อทราบ / ป้องกันมิจฉาชีพ
-                </div>
-                <p class="text-sm font-medium text-[#5a4a5e]">
-                    ชื่อบัญชีโอนเงิน : <span class="font-bold text-[#d87093] text-base">กนกอร</span> เท่านั้น!
-                </p>
-                <p class="text-[11px] text-gray-500 mt-1">นอกเหนือจากชื่อนี้ ห้ามโอนเด็ดขาดนะคะ ⚠️</p>
-            </div>
-
-            <!-- กล่องเวลาทำการของร้าน -->
-            <div class="info-card bg-[#faf5ff] border-[#e8d7f1] text-center">
-                <h3 class="text-xs font-bold text-[#8c7894] mb-1 flex items-center justify-center gap-1.5">
-                    <i class="fa-solid fa-clock"></i> เวลาทำการของร้าน
+            <!-- โซน 3: เวลาทำการ -->
+            <div class="info-card bg-[#faf5ff] border-[#e8d7f1]">
+                <h3 class="text-sm font-bold text-[#8c7894] mb-3 flex items-center gap-2 border-b border-dashed border-[#e8d7f1] pb-2">
+                    <i class="fa-solid fa-clock"></i> เวลาทำการ
                 </h3>
-                <p class="text-xs text-[#5a4a5e] font-medium">
-                    เปิดทุกวัน 09.30 - 21.30 น. (วันศุกร์ปิด 18.30 น.)
-                </p>
+                <div class="text-[12px] text-[#5a4a5e] space-y-3 font-medium">
+                    <p>ร้านเปิดแล้วนะคะ 09.30 - 21.30 ลูกค้ารอทางพี่แอดมินไล่ตอบแชทจากด้านล่างขึ้นบนงดดันแชทนะคะ หากไม่ตอบแชทนานเกินสามารถดันแชทมาได้เลยนะคะ 🌷 ตัดรอบ 16.00 น.</p>
+                    <p>ร้านเราเปิดทุกวันเวลา 09.30 - 21.30 | วันศุกร์เปิด 09.30 - 18.30 บริการเฉพาะในเวลาดังกล่าวเท่านั้น !</p>
+                </div>
             </div>
 
-            <!-- ปุ่มทางเข้าสู่ร้าน (ไปหน้าสอง) -->
-            <button onclick="goToPage(2)" class="btn-main">
+            <!-- โซน 7: เงื่อนไขการจัดส่ง -->
+            <div class="info-card bg-[#fff9fa] border-[#f8d7e3]">
+                <h3 class="text-sm font-bold text-[#d87093] mb-3 flex items-center gap-2 border-b border-dashed border-[#f8d7e3] pb-2">
+                    <i class="fa-solid fa-box-open"></i> รอบจัดส่งและเงื่อนไข
+                </h3>
+                <div class="text-[12px] text-[#5a4a5e] space-y-3 font-medium">
+                    <p>สั่งของวันนี้ ตัดส่งพรุ่งนี้ ตัดรอบ 16.00 หากเกินเวลาตัดรอบแจ้งส่งวันถัดๆไปทันที (แจ้งเลขไม่เกินเที่ยงคืนของวันที่ส่งวันถัดไป สอบถามแอดมินในการคำนวณการจัดส่งได้เลยนะคะ)</p>
+                    <p>สินค้าสามารถผ่านแอดมิน นัดรับ ปลายทางได้เฉพาะบางตัวสอบถามได้ที่ทางร้านได้เลยค่ะ ขอบคุณค่ะ 🙏❤️</p>
+                </div>
+            </div>
+
+            <!-- ปุ่มทางเข้าสู่ร้าน -->
+            <button onclick="enterStore()" class="btn-main mt-2">
                 <span>เข้าสู่ร้าน Sunstory4</span>
-                <i class="fa-solid fa-arrow-right"></i>
+                <i class="fa-solid fa-door-open"></i>
             </button>
 
         </div>
 
+        <!-- ========================================================================= -->
+        <!--                         LOADING SCREEN (หน้าโหลด)                         -->
+        <!-- ========================================================================= -->
+        <div id="loading-screen" class="hidden-page loading-container">
+            <h2 class="text-lg font-bold text-[#c75b80] mb-2 animate-pulse">กำลังพาเข้าสู่ร้าน... 🌸</h2>
+            <p class="text-xs text-[#8c7894]">รอสักครู่นะคะ กำลังโหลดโปรโมชั่นและงานเซลล์</p>
+            <div class="progress-bar-bg">
+                <div id="progress-bar" class="progress-bar-fill"></div>
+            </div>
+        </div>
 
-        <!-- ================= PAGE 2: หน้าสอง (ด้านในร้าน) ================= -->
-        <div id="page-2" class="page-hidden flex flex-col gap-4">
-            
-            <!-- หัวข้อหน้าสอง -->
-            <div class="text-center pb-1 border-b border-dashed border-[#f3d9ce]">
-                <h2 class="text-base font-bold text-[#d87093]">🌸 โซนบริการและข้อมูลร้าน 🌸</h2>
-                <p class="text-[11px] text-[#8c7894]">อัปเดตข้อมูลโปรโมชั่นและเงื่อนไขประจำร้าน</p>
+        <!-- ========================================================================= -->
+        <!--                             PAGE 2 (ด้านในร้าน)                             -->
+        <!-- ========================================================================= -->
+        <div id="page-2" class="hidden-page flex flex-col gap-4">
+
+            <!-- หัวข้อคั่นหน้า -->
+            <div class="text-center pb-1 pt-2">
+                <h2 class="text-sm font-bold text-[#d87093]">🌸 ข้อมูลและโปรโมชั่นประจำร้าน 🌸</h2>
             </div>
 
-            <!-- 1. โซนงานเซลล์ปิดสด -->
-            <div class="info-card bg-[#fff5f8] border-[#ffb6c1]">
-                <h3 class="text-xs font-bold text-[#d87093] mb-2 flex items-center gap-1.5">
-                    <span>🔥</span> งานเซลล์ปิดสดนะค้าบ <span>🎀</span>
+            <!-- โซน 4: งานเซลล์ปิดสด -->
+            <div class="info-card bg-[#fff0f3] border-[#ffb6c1]">
+                <h3 class="text-[13px] font-bold text-[#d87093] mb-3">
+                    ตอนนี้มี งานเซลล์ปิดสดนะค้าบ 🎀
                 </h3>
-                <ul class="text-xs text-[#5a4a5e] space-y-1.5 pl-1">
+                <ul class="text-[12px] text-[#5a4a5e] space-y-2 font-medium">
                     <li>• Iphone xr 2,600฿ (ตัวเดียว) 🧸</li>
                     <li>• Iphone 7 plus 800฿ (ตัวเดียว) 🧸</li>
                     <li>• Iphone 7 900฿ (มีหลายตัว) 🧸</li>
                 </ul>
             </div>
 
-            <!-- 2. โซนโปรโมชั่นเปิดบิล -->
+            <!-- โซน 5: โปรโมชั่นเปิดบิล -->
             <div class="info-card bg-[#fffcf5] border-[#fce4ec]">
-                <h3 class="text-xs font-bold text-[#d87093] mb-2 flex items-center gap-1.5">
-                    <span>🧸</span> โปรเปิดบิล 17-31 สิงหาคม <span>🧸</span>
+                <h3 class="text-[13px] font-bold text-[#d87093] mb-3">
+                    🧸 โปรเปิดบิล 17-31 สิงหาคม 🧸
                 </h3>
-                <ul class="text-xs text-[#5a4a5e] space-y-1.5 pl-1">
+                <ul class="text-[12px] text-[#5a4a5e] space-y-2 font-medium pl-1">
                     <li>👉 เปิดบิล 10฿ ลด 200฿</li>
                     <li>👉 เปิดบิล 50฿ ลด 500฿</li>
                     <li>👉 เปิดบิล 100฿ ลด 1,000฿</li>
                 </ul>
-                <div class="mt-3 pt-2 border-t border-dashed border-[#f3d9ce] text-[11px] font-medium text-[#c75b80] text-center">
+                <div class="mt-4 pt-3 border-t border-dashed border-[#f3d9ce] text-[12px] font-bold text-[#c75b80] text-center">
                     🎀 ใช้ได้ทั้งผ่อนไปใช้ไป/ผ่อนครบรับของเลยนะคะ 🎀 💖
                 </div>
             </div>
 
-            <!-- 3. โซนเงื่อนไข เอกสาร และรอบจัดส่ง -->
+            <!-- โซน 6: เอกสารและไฟแนนซ์ -->
             <div class="info-card bg-[#f4f9ff] border-[#b5e2fa]">
-                <h3 class="text-xs font-bold text-[#4682b4] mb-2 flex items-center gap-1.5">
-                    <span>🚨</span> วางดาวน์ไฟแนนซ์ประจำร้าน <span>🧸</span> เอกสารที่ใช้ <span>🧸</span>
+                <h3 class="text-[13px] font-bold text-[#4682b4] mb-3">
+                    🚨 วางดาวน์ไฟแนนซ์ประจำร้าน 🧸 เอกสารที่ใช้ 🧸
                 </h3>
-                <ul class="text-xs text-[#5a4a5e] space-y-1.5 pl-4 list-disc">
+                <ul class="text-[12px] text-[#5a4a5e] space-y-2 font-medium pl-3 list-disc">
                     <li>บัตรประชาชนหน้า - หลัง</li>
                     <li>อายุ 18 ปีขึ้นไป</li>
                     <li>ใช้สเตทเม้นย้อนหลัง 3 เดือน หรือ เลือกเรทไม่ใช้ก็ได้</li>
                     <li>บัตรพนักงาน หรือ รูปถ่ายขณะทำงาน</li>
                     <li>รับเฉพาะคนทำงาน นักเรียน นักศึกษาให้ผู้ปกครองส่งเอกสารแทน</li>
                 </ul>
-                <div class="mt-3 pt-2 border-t border-dashed border-[#b5e2fa] text-[11px] text-[#4682b4] space-y-1">
-                    <p>📌 รับเคสเฉพาะออนไลน์ หลังจากทำเคสเสร็จส่งแมสได้ ✅</p>
-                    <p>📌 อนุมัติภายใน 1-2 วัน วางดาวน์รับเครื่องทันที ✅</p>
+                <div class="mt-4 pt-3 border-t border-dashed border-[#b5e2fa] text-[12px] font-bold text-[#4682b4] space-y-2">
+                    <p>รับเคสเฉพาะออนไลน์ หลังจากทำเคสเสร็จส่งแมสได้ ✅</p>
+                    <p>อนุมัติภายใน 1-2 วัน วางดาวน์รับเครื่องทันที ✅</p>
                 </div>
             </div>
 
-            <!-- 4. โซนสำหรับลูกค้า (Login / เช็กยอด) -->
-            <div class="info-card bg-[#faf5ff] border-[#e8d7f1] text-center space-y-2">
-                <h3 class="text-xs font-bold text-[#8c7894]">🔐 สำหรับลูกค้าประจำ (เช็กยอด / แนบสลิป)</h3>
-                <input type="text" placeholder="ใส่รหัสลูกค้าของคุณ" class="w-full p-2.5 text-xs bg-[#ffffff] border border-[#d8c5e0] rounded-xl text-center focus:outline-none focus:border-[#d87093]">
-                <button onclick="alert('ระบบล็อกอินกำลังจะมาเร็วๆ นี้ค่ะ! ✨')" class="w-full bg-[#8c7894] text-white py-2 rounded-xl text-xs font-bold hover:bg-[#786380] transition">
-                    เข้าสู่ระบบเช็กยอด
-                </button>
-            </div>
-
-            <!-- ปุ่มย้อนกลับหน้าแรก -->
-            <button onclick="goToPage(1)" class="btn-back">
-                <i class="fa-solid fa-arrow-left"></i>
-                <span>กลับหน้าแรก</span>
+            <!-- ปุ่มย้อนกลับ -->
+            <button onclick="goBack()" class="btn-back">
+                <i class="fa-solid fa-arrow-left"></i> กลับไปหน้าร้าน
             </button>
 
         </div>
 
-        <!-- Footer ด้านล่างสุด -->
-        <div class="text-center text-[10px] text-[#a3889b] pt-1">
-            © Sunstory4 Official. All rights reserved. 🌸
+        <!-- Footer -->
+        <div class="text-center text-[10px] text-[#a3889b] pt-2">
+            © Sunstory4 Official. All rights reserved. 💖
         </div>
 
     </div>
 
-    <!-- JavaScript สำหรับสลับหน้าจออย่างลื่นไหล ไม่มีกระพริบ -->
+    <!-- JavaScript ควบคุมการเปลี่ยนหน้าและหลอดวิ่ง -->
     <script>
-        function goToPage(pageNumber) {
-            const page1 = document.getElementById('page-1');
-            const page2 = document.getElementById('page-2');
+        function enterStore() {
+            // ซ่อนหน้าแรก โชว์หน้า Loading
+            document.getElementById('page-1').classList.add('hidden-page');
+            document.getElementById('loading-screen').classList.remove('hidden-page');
+            
+            // สั่งให้หลอดวิ่งทำงาน
+            setTimeout(() => {
+                document.getElementById('progress-bar').style.width = '100%';
+            }, 50);
 
-            if (pageNumber === 1) {
-                page1.classList.remove('page-hidden');
-                page2.classList.add('page-hidden');
-            } else if (pageNumber === 2) {
-                page1.classList.add('page-hidden');
-                page2.classList.remove('page-hidden');
-            }
-            // เลื่อนหน้าจอขึ้นไปด้านบนสุดอัตโนมัติเมื่อเปลี่ยนหน้า
+            // รอ 1.5 วินาที แล้วเปิดหน้า 2
+            setTimeout(() => {
+                document.getElementById('loading-screen').classList.add('hidden-page');
+                document.getElementById('page-2').classList.remove('hidden-page');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 1500); 
+        }
+
+        function goBack() {
+            document.getElementById('page-2').classList.add('hidden-page');
+            document.getElementById('page-1').classList.remove('hidden-page');
+            document.getElementById('progress-bar').style.width = '0%';
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>

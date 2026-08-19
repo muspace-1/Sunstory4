@@ -4,18 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sunstory4 - ผ่อน วางดาวน์ ปิดสด</title>
+    <!-- เรียกใช้งาน Tailwind CSS และ Font Awesome สำหรับไอคอน -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- เรียกใช้ฟอนต์ Kanit -->
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        /* รีเซ็ตค่าพื้นฐาน */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
         body { 
             font-family: 'Kanit', sans-serif; 
-            /* พื้นหลังลายหัวใจสีชมพูพาสเทลจางๆ */
+            /* พื้นหลังลายหัวใจสีชมพูพาสเทลจางๆ ละมุนตา */
             background-color: #fff9fa;
             background-image: url("data:image/svg+xml,%3Csvg width='50' height='50' viewBox='0 0 50 50' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M25 39.7l-.6-.5C11.5 28.7 8 22 8 16.4c0-4.9 3.9-8.8 8.8-8.8 2.8 0 5.5 1.3 7.2 3.3 1.7-2 4.4-3.3 7.2-3.3 4.9 0 8.8 3.9 8.8 8.8 0 5.6-3.5 12.3-16.4 22.8l-.6.5z' fill='%23ffd1dc' fill-opacity='0.4'/%3E%3C/svg%3E");
             background-size: 50px 50px;
@@ -27,7 +28,7 @@
             padding: 20px 16px;
         }
 
-        /* กล่องหลัก ปรับให้สีขาวชัดขึ้น เงาละมุนขึ้น เพื่อไม่ให้กลืนกับพื้นหลัง */
+        /* กล่องเนื้อหาหลัก: สว่างขึ้น ลอยขึ้น ไม่กลืนไปกับพื้นหลัง */
         .main-container {
             width: 100%;
             max-width: 480px;
@@ -39,9 +40,11 @@
             display: flex;
             flex-direction: column;
             gap: 16px;
+            position: relative;
+            overflow: hidden;
         }
 
-        /* กรอบสีทึบรองรับชื่อร้าน */
+        /* โซน 1: กรอบหัวเว็บ */
         .brand-header-box {
             background: #fff5f8;
             border: 2px solid #ffb6c1;
@@ -52,52 +55,43 @@
             justify-content: space-between;
             gap: 12px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+            transition: opacity 0.3s ease;
         }
 
-        /* คลาสสำหรับไล่สีข้อความ (ใช้ร่วมกันได้ทั้งชื่อและไอคอนหัวใจ) */
-        .text-gradient {
-            background: linear-gradient(135deg, #ff9bb3 0%, #c75b80 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* การจัดกลุ่มชื่อร้านและเอฟเฟกต์กระโดด */
+        /* เอฟเฟกต์ตัวหนังสือกระโดดและไล่สี (ใช้วิธี relative + top แก้บั๊กหายบน iPhone) */
         .sunstory-title {
             font-size: 1.7rem;
             font-weight: 700;
             line-height: 1.1;
             display: flex;
             align-items: center;
-            gap: 2px;
+        }
+        .jump-letter {
+            display: inline-block;
+            position: relative;
+            background: linear-gradient(135deg, #ff9bb3 0%, #c75b80 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: bounce-up-down 2.2s infinite ease-in-out;
         }
         
-        /* บังคับให้แต่ละตัวอักษรกระโดด */
-        .jump-text span, .jump-text i {
-            display: inline-block;
-            animation: wave-bounce 2s infinite ease-in-out;
-        }
-        .jump-text span:nth-child(1) { animation-delay: 0.0s; }
-        .jump-text span:nth-child(2) { animation-delay: 0.1s; }
-        .jump-text span:nth-child(3) { animation-delay: 0.2s; }
-        .jump-text span:nth-child(4) { animation-delay: 0.3s; }
-        .jump-text span:nth-child(5) { animation-delay: 0.4s; }
-        .jump-text span:nth-child(6) { animation-delay: 0.5s; }
-        .jump-text span:nth-child(7) { animation-delay: 0.6s; }
-        .jump-text span:nth-child(8) { animation-delay: 0.7s; }
-        .jump-text span:nth-child(9) { animation-delay: 0.8s; }
-        /* หัวใจเด้งตัวสุดท้าย */
-        .jump-text i.heart-icon { 
-            animation-delay: 0.9s; 
-            font-size: 1.3rem; 
-            margin-left: 4px;
+        /* ระยะเวลาหน่วงให้กระโดดเป็นคลื่น */
+        .d-0 { animation-delay: 0.0s; }
+        .d-1 { animation-delay: 0.1s; }
+        .d-2 { animation-delay: 0.2s; }
+        .d-3 { animation-delay: 0.3s; }
+        .d-4 { animation-delay: 0.4s; }
+        .d-5 { animation-delay: 0.5s; }
+        .d-6 { animation-delay: 0.6s; }
+        .d-7 { animation-delay: 0.7s; }
+        .d-8 { animation-delay: 0.8s; }
+        .d-9 { animation-delay: 0.9s; margin-left: 5px; font-size: 1.3rem; } /* หัวใจทึบ */
+
+        @keyframes bounce-up-down {
+            0%, 100% { top: 0px; }
+            40% { top: -6px; }
         }
 
-        @keyframes wave-bounce {
-            0%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-5px); }
-        }
-
-        /* สโลแกน */
         .sunstory-slogan {
             font-size: 0.75rem;
             color: #8c7894;
@@ -106,7 +100,7 @@
             line-height: 1.3;
         }
 
-        /* กรอบสี่เหลี่ยมรูปภาพ Sun.JPG */
+        /* กรอบรูป Sun.JPG */
         .brand-image-frame {
             width: 75px;
             height: 75px;
@@ -123,7 +117,17 @@
             object-fit: cover;
         }
 
-        /* การ์ดข้อมูลทั่วไป - ปรับให้สีพื้นขาวเด้งขึ้นมา ขอบเข้มขึ้นนิดนึงให้อ่านง่าย */
+        /* โซน 2: แจ้งเตือนบัญชี */
+        .account-alert-box {
+            background: #fff0f3;
+            border: 2px dashed #d87093;
+            border-radius: 1.25rem;
+            padding: 16px;
+            text-align: center;
+            transition: opacity 0.3s ease;
+        }
+
+        /* การ์ดข้อมูลทั่วไป (อ่านง่าย ชัดเจน) */
         .info-card {
             background: #ffffff;
             border-radius: 1.25rem;
@@ -133,16 +137,7 @@
             line-height: 1.6;
         }
 
-        /* กล่องเตือนภัยบัญชี */
-        .account-alert-box {
-            background: #fff0f3;
-            border: 2px dashed #d87093;
-            border-radius: 1.25rem;
-            padding: 16px;
-            text-align: center;
-        }
-
-        /* ปุ่มทางเข้า */
+        /* ปุ่มเข้าสู่ร้าน (มีมือถือสีขาว) */
         .btn-main {
             background: linear-gradient(135deg, #d87093, #c75b80);
             color: white;
@@ -161,8 +156,8 @@
             gap: 10px;
         }
         .btn-main:hover {
-            transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(216, 112, 147, 0.45);
+            transform: translateY(-1px);
         }
 
         .btn-back {
@@ -182,28 +177,36 @@
             margin-top: 10px;
         }
 
-        /* การซ่อนและแสดงหน้า */
-        .hidden-page {
-            display: none !important;
-        }
+        /* คลาสซ่อนหน้าแบบเด็ดขาด */
+        .hidden-page { display: none !important; }
         
-        /* สไตล์หลอดวิ่งโหลด (ปรับให้มาอยู่ตรงกลางจอ) */
+        /* สไตล์หน้าจอโหลดน้องหมี */
         .loading-container {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 60px 10px; /* เพิ่มพื้นที่ให้ดูโล่งและอยู่กลาง */
+            padding: 60px 10px; 
             text-align: center;
-            min-height: 40vh;
+            min-height: 50vh;
         }
+        .bear-icon {
+            font-size: 4rem;
+            animation: bear-bounce 1s infinite alternate ease-in-out;
+            margin-bottom: 10px;
+        }
+        @keyframes bear-bounce {
+            from { transform: translateY(0) scale(1); }
+            to { transform: translateY(-10px) scale(1.05); }
+        }
+        
         .progress-bar-bg {
-            width: 100%;
+            width: 90%;
             height: 14px;
             background-color: #f3eaee;
             border-radius: 20px;
             overflow: hidden;
-            margin-top: 20px;
+            margin-top: 25px;
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
         }
         .progress-bar-fill {
@@ -211,7 +214,7 @@
             background: linear-gradient(90deg, #ff9bb3, #c75b80);
             width: 0%;
             border-radius: 20px;
-            transition: width 1.8s ease-in-out;
+            transition: width 1.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
     </style>
 </head>
@@ -219,22 +222,30 @@
 
     <div class="main-container">
         
-        <!-- ================= โซน Header ที่จะถูกซ่อนตอน Loading ================= -->
+        <!-- ================= โซน Header (ซ่อนตอนโหลด) ================= -->
         <div id="header-zones" class="flex flex-col gap-4">
             
             <!-- โซน 1: กรอบหัวเว็บ -->
             <div class="brand-header-box">
                 <div>
-                    <!-- ชื่อร้านแบบไล่สีและกระโดดได้ + ไอคอนหัวใจไล่สี -->
-                    <h1 class="sunstory-title jump-text text-gradient">
-                        <span>S</span><span>u</span><span>n</span><span>s</span><span>t</span><span>o</span><span>r</span><span>y</span><span>4</span>
-                        <!-- เปลี่ยนเป็นไอคอน FontAwesome ไล่สีเดียวกับข้อความ -->
-                        <i class="fa-solid fa-heart heart-icon text-gradient"></i>
+                    <!-- ชื่อร้านกระโดด + ไล่สี + ไอคอนหัวใจ (iPhone โชว์ชัวร์ 100%) -->
+                    <h1 class="sunstory-title">
+                        <span class="jump-letter d-0">S</span>
+                        <span class="jump-letter d-1">u</span>
+                        <span class="jump-letter d-2">n</span>
+                        <span class="jump-letter d-3">s</span>
+                        <span class="jump-letter d-4">t</span>
+                        <span class="jump-letter d-5">o</span>
+                        <span class="jump-letter d-6">r</span>
+                        <span class="jump-letter d-7">y</span>
+                        <span class="jump-letter d-8">4</span>
+                        <i class="fa-solid fa-heart jump-letter d-9"></i>
                     </h1>
                     <p class="sunstory-slogan">"ผ่อน วางดาวน์ ปิดสด ต้องซันสตอรี่โฟร์ เท่านั้น"</p>
                 </div>
                 <div class="brand-image-frame">
-                    <img src="Sun.JPG" alt="Sunstory4" onerror="this.src='https://via.placeholder.com/150/ffb6c1/ffffff?text=Sun.JPG'">
+                    <!-- โหลดรูป Sun.JPG ถ้าไม่เจอจะขึ้นรูปรองรับกันเว็บแหว่ง -->
+                    <img src="Sun.JPG" alt="Sunstory4 Logo" onerror="this.src='https://via.placeholder.com/150/ffb6c1/ffffff?text=Sun.JPG'">
                 </div>
             </div>
 
@@ -252,11 +263,11 @@
         </div>
 
         <!-- ========================================================================= -->
-        <!--                               PAGE 1 (หน้าแรก)                            -->
+        <!--                               PAGE 1 (หน้าร้าน)                             -->
         <!-- ========================================================================= -->
         <div id="page-1" class="flex flex-col gap-4">
 
-            <!-- โซน 3: เวลาทำการ -->
+            <!-- โซน 3: เวลาทำการ (ข้อมูลครบ ไม่ตัดทอน) -->
             <div class="info-card">
                 <h3 class="text-sm font-bold text-[#8c7894] mb-3 flex items-center gap-2 border-b border-dashed border-[#e8d7f1] pb-2">
                     <i class="fa-solid fa-clock"></i> เวลาทำการ
@@ -267,7 +278,7 @@
                 </div>
             </div>
 
-            <!-- โซน 7: เงื่อนไขการจัดส่ง -->
+            <!-- โซน 7: เงื่อนไขการจัดส่ง (ข้อมูลครบ ไม่ตัดทอน) -->
             <div class="info-card">
                 <h3 class="text-sm font-bold text-[#d87093] mb-3 flex items-center gap-2 border-b border-dashed border-[#f8d7e3] pb-2">
                     <i class="fa-solid fa-box-open"></i> รอบจัดส่งและเงื่อนไข
@@ -278,7 +289,7 @@
                 </div>
             </div>
 
-            <!-- ปุ่มทางเข้าสู่ร้าน เปลี่ยนไอคอนเป็นมือถือสีขาว -->
+            <!-- ปุ่มทางเข้าสู่ร้าน (ไอคอนมือถือ) -->
             <button onclick="enterStore()" class="btn-main mt-2">
                 <span>เข้าสู่ร้าน Sunstory4</span>
                 <i class="fa-solid fa-mobile-screen"></i>
@@ -287,12 +298,12 @@
         </div>
 
         <!-- ========================================================================= -->
-        <!--                         LOADING SCREEN (หน้าโหลดแบบเดี่ยวๆ)                 -->
+        <!--                         LOADING SCREEN (น้องหมีดุ๊กดิ๊ก)                      -->
         <!-- ========================================================================= -->
         <div id="loading-screen" class="hidden-page loading-container">
-            <!-- ปรับข้อความให้ใหญ่ขึ้นและน่ารักขึ้น -->
-            <h2 class="text-2xl font-bold text-gradient mb-2 animate-bounce">🌸 ยินดีต้อนรับค้าบ 🌸</h2>
-            <p class="text-sm text-[#8c7894] font-medium">กำลังเตรียมโปรโมชั่นน่ารักๆ ให้หน้าถัดไปน้า 🧸</p>
+            <div class="bear-icon">🧸</div>
+            <h2 class="text-[16px] font-bold text-[#d87093] mb-1">น้องหมีกำลังเตรียมร้านให้นะคะ...</h2>
+            <p class="text-[11px] text-[#8c7894] font-medium">รอสักครู่น้า 🌸</p>
             <div class="progress-bar-bg">
                 <div id="progress-bar" class="progress-bar-fill"></div>
             </div>
@@ -303,12 +314,11 @@
         <!-- ========================================================================= -->
         <div id="page-2" class="hidden-page flex flex-col gap-4 pt-2">
 
-            <!-- หัวข้อคั่นหน้า -->
             <div class="text-center pb-1">
                 <h2 class="text-sm font-bold text-[#d87093]">🌸 ข้อมูลและโปรโมชั่นประจำร้าน 🌸</h2>
             </div>
 
-            <!-- โซน 4: งานเซลล์ปิดสด -->
+            <!-- โซน 4: งานเซลล์ปิดสด (ครบถ้วน) -->
             <div class="info-card !bg-[#fff0f3] !border-[#ffb6c1]">
                 <h3 class="text-[13px] font-bold text-[#d87093] mb-3">
                     ตอนนี้มี งานเซลล์ปิดสดนะค้าบ 🎀
@@ -320,7 +330,7 @@
                 </ul>
             </div>
 
-            <!-- โซน 5: โปรโมชั่นเปิดบิล -->
+            <!-- โซน 5: โปรโมชั่นเปิดบิล (ครบถ้วน) -->
             <div class="info-card !bg-[#fffcf5] !border-[#fce4ec]">
                 <h3 class="text-[13px] font-bold text-[#d87093] mb-3">
                     🧸 โปรเปิดบิล 17-31 สิงหาคม 🧸
@@ -335,12 +345,12 @@
                 </div>
             </div>
 
-            <!-- โซน 6: เอกสารและไฟแนนซ์ -->
+            <!-- โซน 6: เอกสารและไฟแนนซ์ (ครบถ้วน) -->
             <div class="info-card !bg-[#f4f9ff] !border-[#b5e2fa]">
                 <h3 class="text-[13px] font-bold text-[#4682b4] mb-3">
                     🚨 วางดาวน์ไฟแนนซ์ประจำร้าน 🧸 เอกสารที่ใช้ 🧸
                 </h3>
-                <ul class="text-[12px] text-[#5a4a5e] space-y-2 font-medium pl-3 list-disc">
+                <ul class="text-[12px] text-[#5a4a5e] space-y-2 font-medium pl-4 list-disc">
                     <li>บัตรประชาชนหน้า - หลัง</li>
                     <li>อายุ 18 ปีขึ้นไป</li>
                     <li>ใช้สเตทเม้นย้อนหลัง 3 เดือน หรือ เลือกเรทไม่ใช้ก็ได้</li>
@@ -361,41 +371,61 @@
         </div>
 
         <!-- Footer -->
-        <div class="text-center text-[10px] text-[#a3889b] pt-2">
+        <div class="text-center text-[10px] text-[#a3889b] pt-2 pb-1">
             © Sunstory4 Official. All rights reserved. 💖
         </div>
 
     </div>
 
-    <!-- JavaScript ควบคุมการเปลี่ยนหน้า -->
+    <!-- JavaScript พร้อมระบบดักจับกันโค้ดค้าง (Error Handling) -->
     <script>
         function enterStore() {
-            // ซ่อนหน้า 1 และ ซ่อนกรอบ Header ทั้งหมด
-            document.getElementById('page-1').classList.add('hidden-page');
-            document.getElementById('header-zones').classList.add('hidden-page');
-            
-            // โชว์เฉพาะหน้า Loading
-            document.getElementById('loading-screen').classList.remove('hidden-page');
-            
-            // สั่งให้หลอดวิ่งทำงาน
-            setTimeout(() => {
-                document.getElementById('progress-bar').style.width = '100%';
-            }, 50);
+            try {
+                // 1. ซ่อนหน้า 1 และ Header 
+                document.getElementById('page-1').classList.add('hidden-page');
+                document.getElementById('header-zones').classList.add('hidden-page');
+                
+                // 2. โชว์หน้าน้องหมีโหลด
+                document.getElementById('loading-screen').classList.remove('hidden-page');
+                
+                // 3. เริ่มวิ่งหลอดโหลด
+                setTimeout(() => {
+                    document.getElementById('progress-bar').style.width = '100%';
+                }, 50);
 
-            // รอ 1.8 วินาที แล้วเปิดหน้า 2 + ดึง Header กลับมา
-            setTimeout(() => {
+                // 4. รอ 1.8 วิ แล้วสลับเป็นหน้า 2
+                setTimeout(() => {
+                    document.getElementById('loading-screen').classList.add('hidden-page');
+                    document.getElementById('header-zones').classList.remove('hidden-page');
+                    document.getElementById('page-2').classList.remove('hidden-page');
+                    // เลื่อนจอขึ้นบนสุดอย่างนุ่มนวล
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }, 1800); 
+
+            } catch (error) {
+                // ระบบกันพัง: ถ้าสคริปต์ด้านบนเกิดเอ๋อ หรือมือถือประมวลผลไม่ทัน
+                // จะข้ามไปเปิดหน้า 2 ทันที ไม่มีปล่อยให้ค้างหน้าขาวแน่นอน!
+                console.error("Safeguard Triggered:", error);
                 document.getElementById('loading-screen').classList.add('hidden-page');
                 document.getElementById('header-zones').classList.remove('hidden-page');
+                document.getElementById('page-1').classList.add('hidden-page');
                 document.getElementById('page-2').classList.remove('hidden-page');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }, 1800); 
+            }
         }
 
         function goBack() {
-            document.getElementById('page-2').classList.add('hidden-page');
-            document.getElementById('page-1').classList.remove('hidden-page');
-            document.getElementById('progress-bar').style.width = '0%';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            try {
+                // สลับกลับมาหน้า 1
+                document.getElementById('page-2').classList.add('hidden-page');
+                document.getElementById('page-1').classList.remove('hidden-page');
+                
+                // รีเซ็ตหลอดโหลดเผื่อกดเข้าไปใหม่
+                document.getElementById('progress-bar').style.width = '0%';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } catch (error) {
+                console.error("Back Safeguard Triggered:", error);
+                location.reload(); // ถ้าย้อนกลับไม่ได้ ให้รีเฟรชหน้าเว็บอัตโนมัติ
+            }
         }
     </script>
 

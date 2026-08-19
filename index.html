@@ -8,91 +8,188 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* ตั้งค่าพื้นฐานและป้องกันหน้าจอพัง */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
         body { 
             font-family: 'Kanit', sans-serif; 
-            background-color: #fcf9f5; /* สีครีมละมุน */
+            /* พื้นหลังลายจุดสีชมพูพาสเทลละมุน */
+            background-color: #fef6f9;
+            background-image: radial-gradient(#ffc2d1 15%, transparent 16%), radial-gradient(#ffc2d1 15%, transparent 16%);
+            background-size: 24px 24px;
+            background-position: 0 0, 12px 12px;
             color: #5a4a5e; 
-            min-height: 100vh; 
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
         }
-        .card-sunstory { 
-            background: #ffffff; 
-            border-radius: 2.5rem; 
-            border: 3px solid #f3d9ce; 
-            box-shadow: 0 15px 35px rgba(216, 112, 147, 0.1); 
+
+        /* กล่องหลักควบคุมความกว้างและความสะอาดตา */
+        .main-container {
+            width: 100%;
+            max-width: 480px;
+            background: #ffffff;
+            border-radius: 2rem;
+            border: 3px solid #f8d7e3;
+            box-shadow: 0 10px 30px rgba(216, 112, 147, 0.12);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
         }
-        /* ข้อความไล่สีชื่อร้าน */
-        .gradient-text {
-            background: linear-gradient(135deg, #d87093, #6495ed);
+
+        /* กรอบสีทึบรองรับชื่อร้านมุมซ้าย */
+        .brand-header-box {
+            background: #fff5f8;
+            border: 2px solid #ffb6c1;
+            border-radius: 1.25rem;
+            padding: 16px 20px;
+            text-align: left; /* ชิดซ้ายตามบรีฟ */
+        }
+
+        /* ชื่อร้านไล่สีชมพูอ่อนไปเข้ม แบบพาสเทล */
+        .sunstory-title {
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1.2;
+            background: linear-gradient(135deg, #ff9bb3 0%, #c75b80 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-        }
-        /* ปุ่มสีชมพูตุ่น */
-        .btn-dusty-pink { 
-            background: linear-gradient(135deg, #d87093, #c75b80); 
-            color: white; 
-            transition: all 0.2s; 
-        }
-        .btn-dusty-pink:hover { 
-            transform: translateY(-2px); 
-            box-shadow: 0 6px 15px rgba(216, 112, 147, 0.3); 
-        }
-        /* ไอคอนโทรศัพท์เด้งดึ๋ง */
-        @keyframes bounce-slow {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
-        .animate-phone {
             display: inline-block;
-            animation: bounce-slow 1.5s ease-in-out infinite;
+        }
+
+        /* สโลแกนใต้ชื่อร้าน */
+        .sunstory-slogan {
+            font-size: 0.85rem;
+            color: #8c7894;
+            margin-top: 4px;
+            font-weight: 400;
+        }
+
+        /* การ์ดข้อมูลแต่ละส่วน */
+        .info-card {
+            background: #ffffff;
+            border-radius: 1.25rem;
+            padding: 16px;
+            border: 1.5px solid #f3d9ce;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+
+        /* กล่องเตือนภัยบัญชี */
+        .account-alert-box {
+            background: #fff0f3;
+            border: 2px dashed #d87093;
+            border-radius: 1.25rem;
+            padding: 16px;
+            text-align: center;
+        }
+
+        /* ปุ่มเข้าสู่ระบบชมพูตุ่นพาสเทล */
+        .btn-main {
+            background: linear-gradient(135deg, #d87093, #c75b80);
+            color: white;
+            width: 100%;
+            padding: 16px;
+            border-radius: 1.25rem;
+            font-weight: 600;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(216, 112, 147, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-main:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(216, 112, 147, 0.4);
+        }
+        .btn-main:active {
+            transform: translateY(0);
         }
     </style>
 </head>
-<body class="py-10 px-4 flex items-center justify-center min-h-screen">
+<body>
 
-    <div class="max-w-md w-full card-sunstory p-8 text-center space-y-6">
+    <div class="main-container">
         
-        <!-- โลโก้ & ชื่อร้าน -->
-        <div>
-            <div class="text-4xl mb-2">
-                <span class="animate-phone">📱</span>
-            </div>
-            <h1 class="text-3xl font-bold tracking-wide gradient-text">Sunstory4</h1>
-            <p class="text-xs text-[#a3889b] font-medium mt-1 italic">
-                "ผ่อน วางดาวน์ ปิดสด ต้องซันสตอรี่โฟร์ เท่านั้น"
-            </p>
+        <!-- 1. ส่วนชื่อร้าน (อยู่มุมซ้าย มีกรอบสีทึบสะดุดตา ไม่มีอิโมจิโทรศัพท์) -->
+        <div class="brand-header-box">
+            <h1 class="sunstory-title">Sunstory4</h1>
+            <p class="sunstory-slogan">"ผ่อน วางดาวน์ ปิดสด ต้องซันสตอรี่โฟร์ เท่านั้น"</p>
         </div>
 
-        <!-- กล่องเตือนภัย / ชื่อบัญชีทางการ -->
-        <div class="bg-[#fff0f3] p-4 rounded-2xl border-2 border-dashed border-[#d87093] text-center space-y-1">
-            <div class="text-xs font-bold text-[#d87093] flex items-center justify-center gap-1">
+        <!-- 2. กล่องแจ้งเตือนบัญชีทางการ -->
+        <div class="account-alert-box">
+            <div class="text-xs font-bold text-[#d87093] mb-1 flex items-center justify-center gap-1">
                 <i class="fa-solid fa-triangle-exclamation"></i> แจ้งเพื่อทราบ / ป้องกันมิจฉาชีพ
             </div>
-            <p class="text-sm font-bold text-[#5a4a5e]">
-                ชื่อบัญชีโอนเงิน : <span class="text-[#d87093] underline underline-offset-4">กนกอร เท่านั้น!</span>
+            <p class="text-sm font-medium text-[#5a4a5e]">
+                ชื่อบัญชีโอนเงิน : <span class="font-bold text-[#d87093] text-base">กนกอร</span> เท่านั้น!
             </p>
-            <p class="text-[10px] text-gray-500">นอกเหนือจากชื่อนี้ ห้ามโอนเด็ดขาดนะคะ ⚠️</p>
+            <p class="text-[11px] text-gray-500 mt-1">นอกเหนือจากชื่อนี้ ห้ามโอนเด็ดขาดนะคะ ⚠️</p>
         </div>
 
-        <!-- กระดานข่าวสาร / ประกาศร้าน -->
-        <div class="bg-[#f4f9ff] p-5 rounded-2xl text-left border border-[#b5e2fa]">
-            <h3 class="text-xs font-bold text-[#4682b4] mb-2 flex items-center gap-2">
-                <i class="fa-solid fa-bullhorn"></i> ประกาศจาก Sunstory4
+        <!-- 3. กล่องโปรโมชั่นเปิดบิล (จากภาพที่ 2) -->
+        <div class="info-card bg-[#fffcf5] border-[#fce4ec]">
+            <h3 class="text-xs font-bold text-[#d87093] mb-2 flex items-center gap-1.5">
+                <span>🧸</span> โปรเปิดบิล 17-31 สิงหาคม <span>🧸</span>
             </h3>
-            <ul class="text-xs text-[#5a4a5e] space-y-2 list-disc list-inside">
-                <li>เปิดรับคิวผ่อนรอบใหม่แล้วจ้า ✨</li>
-                <li>สอบถามสต็อกสินค้าทักแชทได้เลย</li>
-                <li>ส่งของจริง มีรีวิวแน่นๆ 📦💖</li>
+            <ul class="text-xs text-[#5a4a5e] space-y-1.5 pl-1">
+                <li>👉 เปิดบิล 10฿ ลด 200฿</li>
+                <li>👉 เปิดบิล 50฿ ลด 500฿</li>
+                <li>👉 เปิดบิล 100฿ ลด 1,000฿</li>
             </ul>
+            <div class="mt-3 pt-2 border-t border-dashed border-[#f3d9ce] text-[11px] font-medium text-[#c75b80] text-center">
+                🎀 ใช้ได้ทั้งผ่อนไปใช้ไป/ผ่อนครบรับของเลยนะคะ 🎀 💖
+            </div>
         </div>
 
-        <!-- ปุ่มเข้าสู่ระบบ (เตรียมไว้สำหรับสเต็ปถัดไป) -->
-        <button onclick="alert('ยินดีต้อนรับสู่ระบบ Sunstory4 ค่ะ! (ไว้เราค่อยมาทำหน้าข้างในกันต่อเนอะ)')" class="w-full btn-dusty-pink py-4 rounded-2xl font-bold text-sm shadow-md flex items-center justify-center gap-2">
+        <!-- 4. กล่องเอกสารและเงื่อนไขการดาวน์ (จากภาพที่ 3) -->
+        <div class="info-card bg-[#f4f9ff] border-[#b5e2fa]">
+            <h3 class="text-xs font-bold text-[#4682b4] mb-2 flex items-center gap-1.5">
+                <span>🚨</span> วางดาวน์ไฟแนนซ์ประจำร้าน <span>🧸</span> เอกสารที่ใช้ <span>🧸</span>
+            </h3>
+            <ul class="text-xs text-[#5a4a5e] space-y-1.5 pl-4 list-disc">
+                <li>บัตรประชาชนหน้า - หลัง</li>
+                <li>อายุ 18 ปีขึ้นไป</li>
+                <li>ใช้สเตทเม้นย้อนหลัง 3 เดือน หรือ เลือกเรทไม่ใช้ก็ได้</li>
+                <li>บัตรพนักงาน หรือ รูปถ่ายขณะทำงาน</li>
+                <li>รับเฉพาะคนทำงาน นักเรียน นักศึกษาให้ผู้ปกครองส่งเอกสารแทน</li>
+            </ul>
+            <div class="mt-3 pt-2 border-t border-dashed border-[#b5e2fa] text-[11px] text-[#4682b4] space-y-1">
+                <p>📌 รับเคสเฉพาะออนไลน์ หลังจากทำเคสเสร็จส่งแมสได้ ✅</p>
+                <p>📌 อนุมัติภายใน 1-2 วัน วางดาวน์รับเครื่องทันที ✅</p>
+            </div>
+        </div>
+
+        <!-- 5. กล่องเวลาเปิดทำการและรอบส่งของ (จากภาพที่ 4) -->
+        <div class="info-card bg-[#faf5ff] border-[#e8d7f1]">
+            <h3 class="text-xs font-bold text-[#8c7894] mb-2 flex items-center gap-1.5">
+                <i class="fa-solid fa-clock"></i> เวลาทำการ & รอบจัดส่ง
+            </h3>
+            <div class="text-[11px] text-[#5a4a5e] space-y-2 leading-relaxed">
+                <p>• ร้านเปิดทุกวันเวลา <strong>09.30 - 21.30</strong> | วันศุกร์เปิด <strong>09.30 - 18.30</strong> บริการเฉพาะในเวลาดังกล่าวเท่านั้น!</p>
+                <p>• สั่งของวันนี้ ตัดส่งพรุ่งนี้ ตัดรอบ <strong>16.00</strong> หากเกินเวลาตัดรอบแจ้งส่งวันถัดๆไปทันที (แจ้งเลขไม่เกินเที่ยงคืนของวันที่ส่งวันถัดไป สอบถามแอดมินในการคำนวณการจัดส่งได้เลยนะคะ)</p>
+                <p>• สินค้าสามารถผ่านแอดมิน นัดรับ ปลายทางได้เฉพาะบางตัวสอบถามได้ที่ทางร้านได้เลยค่ะ ขอบคุณค่ะ 🙏❤️</p>
+            </div>
+        </div>
+
+        <!-- ปุ่มทางเข้าสู่ระบบ -->
+        <button onclick="alert('ยินดีต้อนรับเข้าสู่ระบบ Sunstory4 ค่ะ! ✨')" class="btn-main">
             <span>เข้าสู่ระบบผ่อนของ / เช็กยอด</span>
             <i class="fa-solid fa-arrow-right"></i>
         </button>
 
-        <!-- Footer เล็กๆ -->
-        <div class="text-[10px] text-[#b09db8]">
+        <!-- Footer -->
+        <div class="text-center text-[10px] text-[#a3889b] pt-1">
             © Sunstory4 Official. All rights reserved. 🌸
         </div>
 

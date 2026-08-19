@@ -22,7 +22,7 @@
             justify-content: center;
             align-items: flex-start;
             padding: 20px 16px;
-            position: relative; /* สำหรับให้ปุ่มแอดมินลอย */
+            position: relative; 
         }
 
         .main-container {
@@ -140,6 +140,25 @@
         }
         .btn-main:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(216, 112, 147, 0.45); }
 
+        .btn-secondary {
+            background: linear-gradient(135deg, #f3d9ce, #f8d7e3);
+            color: #d87093;
+            width: 100%;
+            padding: 16px;
+            border-radius: 1.25rem;
+            font-weight: 600;
+            font-size: 1rem;
+            border: 2px solid #ffb6c1;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(216, 112, 147, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .btn-secondary:hover { transform: translateY(-1px); box-shadow: 0 6px 15px rgba(216, 112, 147, 0.25); }
+
         .btn-back {
             background: #f3d9ce;
             color: #5a4a5e;
@@ -161,7 +180,6 @@
             padding: 60px 10px; text-align: center; min-height: 50vh;
         }
         
-        /* เปลี่ยนไอคอนแอนิเมชันเป็นน้องกระต่าย */
         .bunny-icon {
             font-size: 4rem;
             animation: bunny-bounce 1s infinite alternate ease-in-out;
@@ -181,24 +199,7 @@
             width: 0%; border-radius: 20px; transition: width 1.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* --- สไตล์สำหรับระบบ Admin --- */
-        .admin-floating-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            font-size: 2rem;
-            background: #fff;
-            border: 2px solid #ffb6c1;
-            border-radius: 50%;
-            width: 50px; height: 50px;
-            display: flex; justify-content: center; align-items: center;
-            box-shadow: 0 4px 10px rgba(216, 112, 147, 0.3);
-            cursor: pointer;
-            z-index: 50;
-            transition: transform 0.2s;
-        }
-        .admin-floating-btn:active { transform: scale(0.9); }
-
+        /* --- สไตล์สำหรับระบบ Admin Modal --- */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center;
@@ -214,12 +215,15 @@
             outline: none; color: #5a4a5e;
         }
         .admin-input:focus { border-color: #d87093; }
+        
+        .color-picker {
+            width: 42px; height: 42px; padding: 0; border: 2px solid #e8d7f1; 
+            border-radius: 0.5rem; cursor: pointer; overflow: hidden;
+            flex-shrink: 0; margin-top: 6px;
+        }
     </style>
 </head>
 <body>
-
-    <!-- ปุ่มแอดมินลอย (น้องกระต่าย) -->
-    <div class="admin-floating-btn" onclick="openLoginModal()">🐰</div>
 
     <!-- Modal ล็อกอินแอดมิน -->
     <div id="login-modal" class="modal-overlay hidden-page">
@@ -228,7 +232,7 @@
                 <h2 class="text-lg font-bold text-[#d87093]">🐰 แอดมินเข้าสู่ระบบ</h2>
                 <button onclick="closeModals()" class="text-[#a3889b]"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <input type="password" id="admin-pass" class="admin-input mb-4" placeholder="ใส่รหัสผ่าน...">
+            <input type="password" id="admin-pass" class="admin-input mb-4" placeholder="ใส่รหัสผ่าน (1234)...">
             <button onclick="checkPassword()" class="btn-main py-2">ยืนยัน</button>
         </div>
     </div>
@@ -242,17 +246,23 @@
             </div>
             
             <div class="mb-4">
-                <label class="text-xs font-bold text-[#8c7894]">สถานะร้าน (เวลาทำการ):</label>
-                <input type="text" id="edit-status-time" class="admin-input" value="🟢 สถานะ : เปิดให้บริการปกติ">
+                <label class="text-xs font-bold text-[#8c7894]">สถานะร้าน (เลือกสี & แก้ข้อความ):</label>
+                <div class="flex items-center gap-2">
+                    <input type="color" id="edit-color-time" value="#059669" class="color-picker">
+                    <input type="text" id="edit-status-time" class="admin-input !mt-[6px]" value="🟢 สถานะ : เปิดให้บริการปกติ">
+                </div>
             </div>
 
             <div class="mb-4">
-                <label class="text-xs font-bold text-[#8c7894]">สถานะการจัดส่ง:</label>
-                <input type="text" id="edit-status-shipping" class="admin-input" value="🚚 สถานะ : ส่งตามปกติ">
+                <label class="text-xs font-bold text-[#8c7894]">สถานะการจัดส่ง (เลือกสี & แก้ข้อความ):</label>
+                <div class="flex items-center gap-2">
+                    <input type="color" id="edit-color-shipping" value="#3b82f6" class="color-picker">
+                    <input type="text" id="edit-status-shipping" class="admin-input !mt-[6px]" value="🚚 สถานะ : ส่งตามปกติ">
+                </div>
             </div>
 
             <div class="mb-4">
-                <label class="text-xs font-bold text-[#8c7894]">งานเซลล์ปิดสด (ใส่ # หน้าข้อความเพื่อทำตัวหนา, ลบหมดเพื่อซ่อนกล่อง):</label>
+                <label class="text-xs font-bold text-[#8c7894]">งานเซลล์ปิดสด (ใส่ # ทำตัวหนา, ลบหมดซ่อนกล่อง):</label>
                 <textarea id="edit-promo-1" class="admin-input" rows="4"></textarea>
             </div>
 
@@ -265,9 +275,8 @@
         </div>
     </div>
 
-
     <div class="main-container">
-        <!-- ================= โซน Header (ซ่อนตอนโหลด) ================= -->
+        <!-- ================= โซน Header (แสดงตลอด หน้า 1, 2, 3) ================= -->
         <div id="header-zones" class="flex flex-col gap-4">
             <div class="brand-header-box">
                 <div>
@@ -277,7 +286,8 @@
                     </h1>
                     <p class="sunstory-slogan">"ผ่อน วางดาวน์ ปิดสด ต้องซันสตอรี่โฟร์ เท่านั้น"</p>
                 </div>
-                <div class="brand-image-frame">
+                <!-- ซ่อนทางเข้าแอดมินไว้ที่รูปภาพอย่างเนียนๆ -->
+                <div class="brand-image-frame" onclick="openLoginModal()" style="cursor: default;">
                     <img src="Sun.JPG" alt="Sunstory4 Logo" onerror="this.src='https://via.placeholder.com/150/ffb6c1/ffffff?text=Sun.JPG'">
                 </div>
             </div>
@@ -295,9 +305,8 @@
 
         <!-- ================= PAGE 1 ================= -->
         <div id="page-1" class="flex flex-col gap-4">
-            <!-- โซน 3: เวลาทำการ (อัปเดตข้อความ + ป้ายสถานะ) -->
             <div class="info-card">
-                <div id="display-status-time" class="text-[13px] font-bold text-[#10b981] mb-2 border-b border-dashed border-[#e8d7f1] pb-2">
+                <div id="display-status-time" class="text-[13px] font-bold mb-2 border-b border-dashed border-[#e8d7f1] pb-2" style="color: #059669;">
                     🟢 สถานะ : เปิดให้บริการปกติ
                 </div>
                 <div class="text-[12px] text-[#5a4a5e] space-y-3 font-medium">
@@ -306,9 +315,8 @@
                 </div>
             </div>
 
-            <!-- โซน 7: เงื่อนไขการจัดส่ง (อัปเดตข้อความ + ป้ายสถานะ) -->
             <div class="info-card">
-                <div id="display-status-shipping" class="text-[13px] font-bold text-[#3b82f6] mb-2 border-b border-dashed border-[#f8d7e3] pb-2">
+                <div id="display-status-shipping" class="text-[13px] font-bold mb-2 border-b border-dashed border-[#f8d7e3] pb-2" style="color: #3b82f6;">
                     🚚 สถานะ : ส่งตามปกติ
                 </div>
                 <div class="text-[12px] text-[#5a4a5e] space-y-3 font-medium">
@@ -318,9 +326,15 @@
                 </div>
             </div>
 
+            <!-- ปุ่มเข้าสู่ร้านเดิม -->
             <button onclick="enterStore()" class="btn-main mt-2">
                 <span>เข้าสู่ร้าน Sunstory4</span>
                 <i class="fa-solid fa-mobile-screen"></i>
+            </button>
+            
+            <!-- เพิ่มปุ่มเช็กยอดผ่อนชำระ (สีพาสเทลน่ารักๆ) -->
+            <button onclick="openPage3()" class="btn-secondary">
+                <span>🔍 เช็กยอดผ่อนชำระ</span>
             </button>
         </div>
 
@@ -334,23 +348,20 @@
             </div>
         </div>
 
-        <!-- ================= PAGE 2 ================= -->
+        <!-- ================= PAGE 2 (ด้านในร้าน) ================= -->
         <div id="page-2" class="hidden-page flex flex-col gap-4 pt-2">
             <div class="text-center pb-1">
                 <h2 class="text-sm font-bold text-[#d87093]">🌸 ข้อมูลและโปรโมชั่นประจำร้าน 🌸</h2>
             </div>
 
-            <!-- โซน 4: งานเซลล์ (ควบคุมด้วยระบบหลังบ้าน) -->
             <div id="promo-1-box" class="info-card !bg-[#fff0f3] !border-[#ffb6c1]">
                 <div id="promo-1-content" class="text-[12px] text-[#5a4a5e] space-y-2 font-medium"></div>
             </div>
 
-            <!-- โซน 5: โปรเปิดบิล (ควบคุมด้วยระบบหลังบ้าน) -->
             <div id="promo-2-box" class="info-card !bg-[#fffcf5] !border-[#fce4ec]">
                 <div id="promo-2-content" class="text-[12px] text-[#5a4a5e] space-y-2 font-medium"></div>
             </div>
 
-            <!-- โซน 6: เอกสารและไฟแนนซ์ (คงไว้เหมือนเดิม) -->
             <div class="info-card !bg-[#f4f9ff] !border-[#b5e2fa]">
                 <h3 class="text-[13px] font-bold text-[#4682b4] mb-3">
                     🚨 วางดาวน์ไฟแนนซ์ประจำร้าน 🧸 เอกสารที่ใช้ 🧸
@@ -368,32 +379,90 @@
                 </div>
             </div>
 
-            <button onclick="goBack()" class="btn-back">
+            <button onclick="goBackToPage1()" class="btn-back">
                 <i class="fa-solid fa-arrow-left"></i> กลับไปหน้าร้าน
             </button>
         </div>
 
-        <!-- Footer -->
+        <!-- ================= PAGE 3 (ระบบเช็กยอดผ่อนชำระ) ================= -->
+        <div id="page-3" class="hidden-page flex flex-col gap-4 pt-2">
+            <div class="text-center pb-1">
+                <h2 class="text-sm font-bold text-[#d87093]">💳 ระบบเช็กยอดผ่อนชำระ 💳</h2>
+            </div>
+
+            <!-- กล่องค้นหา -->
+            <div class="info-card flex flex-col gap-3">
+                <label class="text-xs font-bold text-[#8c7894]">กรอกรหัสลูกค้าของท่าน:</label>
+                <input type="text" id="customer-id-input" class="admin-input uppercase !mt-0 text-center text-lg font-bold" placeholder="เช่น SF001">
+                <button onclick="searchCustomer()" class="btn-main !py-2 !text-sm">
+                    <i class="fa-solid fa-magnifying-glass"></i> ค้นหาข้อมูล
+                </button>
+            </div>
+
+            <!-- ข้อความแจ้งเตือนเมื่อไม่พบข้อมูล -->
+            <div id="installment-error" class="hidden-page text-center text-[13px] text-[#d87093] font-bold mt-2 bg-[#fff0f3] p-3 rounded-xl border border-[#ffb6c1]">
+                ไม่พบรหัสลูกค้านี้น้า ลองตรวจสอบรหัสอีกครั้งค่ะ 🥺
+            </div>
+
+            <!-- กล่องแสดงผลลัพธ์ข้อมูลลูกค้า -->
+            <div id="installment-result" class="hidden-page info-card !bg-[#fffcf5] !border-[#fce4ec]">
+                <!-- ข้อมูลจะถูกดึงมาโชว์ที่นี่ด้วย JavaScript -->
+            </div>
+
+            <button onclick="goBackFromPage3()" class="btn-back">
+                <i class="fa-solid fa-arrow-left"></i> กลับไปหน้าร้าน
+            </button>
+        </div>
+
         <div class="text-center text-[10px] text-[#a3889b] pt-2 pb-1">
             © Sunstory4 Official. All rights reserved. 💖
         </div>
     </div>
 
-    <!-- JavaScript ควบคุมหน้าบ้านและหลังบ้าน -->
+    <!-- JavaScript ควบคุมระบบทั้งหมด -->
     <script>
-        // ข้อมูลจำลองสำหรับโปรโมชั่นตอนเริ่มต้น
+        // 1. ข้อมูลจำลองสำหรับโปรโมชั่น
         let defaultPromo1 = `# ตอนนี้มี งานเซลล์ปิดสดนะค้าบ 🎀\n• Iphone xr 2,600฿ (ตัวเดียว) 🧸\n• Iphone 7 plus 800฿ (ตัวเดียว) 🧸\n• Iphone 7 900฿ (มีหลายตัว) 🧸`;
         let defaultPromo2 = `# 🧸 โปรเปิดบิล 17-31 สิงหาคม 🧸\n👉 เปิดบิล 10฿ ลด 200฿\n👉 เปิดบิล 50฿ ลด 500฿\n👉 เปิดบิล 100฿ ลด 1,000฿\n# 🎀 ใช้ได้ทั้งผ่อนไปใช้ไป/ผ่อนครบรับของเลยนะคะ 🎀 💖`;
 
+        // 2. ข้อมูลจำลองลูกค้าระบบผ่อน (Mock Data)
+        const mockCustomers = {
+            "SF001": {
+                name: "คุณ ธนพร คนสวยสุด",
+                age: 25,
+                type: "ผ่อนไปใช้ไป (ส่งรายสัปดาห์)",
+                model: "iPhone 14 Pro (128GB)",
+                condition: "มือ 2 (เครื่องนอก)",
+                color: "ดำ (สีสำรอง: ขาว)",
+                defect: "จอแจ้ง, รอยตามการใช้งาน",
+                total: "18,000",
+                paid: "4,000",
+                balance: "14,000",
+                statusColor: "text-[#d87093]" // สีชมพูแดง
+            },
+            "SF002": {
+                name: "คุณ สุดหล่อ รักซันสตอรี่",
+                age: 20,
+                type: "ผ่อนครบรับของ (ส่งรายเดือน)",
+                model: "iPad Air 5 (256GB)",
+                condition: "มือ 1 (เครื่องไทย)",
+                color: "ม่วงพาสเทล (สีสำรอง: ชมพู)",
+                defect: "ไม่มี (มือ 1)",
+                total: "25,000",
+                paid: "20,000",
+                balance: "5,000",
+                statusColor: "text-[#d97706]" // สีเหลืองทอง
+            }
+        };
+
         window.onload = function() {
-            // ตั้งค่าข้อความในกล่องแอดมิน
             document.getElementById('edit-promo-1').value = defaultPromo1;
             document.getElementById('edit-promo-2').value = defaultPromo2;
             renderPromo(defaultPromo1, 'promo-1-content', 'promo-1-box');
             renderPromo(defaultPromo2, 'promo-2-content', 'promo-2-box');
         };
 
-        /* ---- ระบบควบคุมการเปลี่ยนหน้าเว็บ ---- */
+        /* ---- การเปลี่ยนหน้า (Page Navigation) ---- */
         function enterStore() {
             try {
                 document.getElementById('page-1').classList.add('hidden-page');
@@ -414,11 +483,67 @@
             }
         }
 
-        function goBack() {
+        function goBackToPage1() {
             document.getElementById('page-2').classList.add('hidden-page');
             document.getElementById('page-1').classList.remove('hidden-page');
             document.getElementById('progress-bar').style.width = '0%';
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /* ---- ระบบเช็กยอดผ่อน (Page 3) ---- */
+        function openPage3() {
+            document.getElementById('page-1').classList.add('hidden-page');
+            // header-zones ไม่โดนซ่อน ยังคงแสดงอยู่ด้านบนเสมอ
+            document.getElementById('page-3').classList.remove('hidden-page');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goBackFromPage3() {
+            document.getElementById('page-3').classList.add('hidden-page');
+            document.getElementById('page-1').classList.remove('hidden-page');
+            
+            // เคลียร์ค่าค้นหา
+            document.getElementById('customer-id-input').value = '';
+            document.getElementById('installment-result').classList.add('hidden-page');
+            document.getElementById('installment-error').classList.add('hidden-page');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function searchCustomer() {
+            // รับค่าจากช่อง ค้นหา ลบช่องว่าง และทำเป็นตัวพิมพ์ใหญ่ทั้งหมด (เช่น sf001 -> SF001)
+            const inputId = document.getElementById('customer-id-input').value.trim().toUpperCase();
+            const resultBox = document.getElementById('installment-result');
+            const errorBox = document.getElementById('installment-error');
+
+            if (mockCustomers[inputId]) {
+                const data = mockCustomers[inputId];
+                
+                // วาดโครงสร้างการ์ดข้อมูล
+                resultBox.innerHTML = `
+                    <div class="text-[13px] font-bold text-[#c75b80] mb-3 border-b border-dashed border-[#f8d7e3] pb-2 flex justify-between items-center">
+                        <span>🎀 รหัสลูกค้า: ${inputId}</span>
+                        <span class="text-[10px] bg-white px-2 py-1 rounded-full text-[#5a4a5e] border border-[#fce4ec]">อายุ ${data.age} ปี</span>
+                    </div>
+                    <div class="text-[12px] text-[#5a4a5e] space-y-2 font-medium">
+                        <p>👤 <b>ชื่อ:</b> ${data.name}</p>
+                        <p>🏷️ <b>ประเภท:</b> <span class="text-[#d87093]">${data.type}</span></p>
+                        <p>📱 <b>รุ่นที่ผ่อน:</b> ${data.model} | ${data.condition}</p>
+                        <p>🎨 <b>สี:</b> ${data.color}</p>
+                        <p>⚠️ <b>ตำหนิเครื่อง:</b> ${data.defect}</p>
+                        <div class="mt-3 pt-3 border-t border-dashed border-[#f8d7e3] space-y-1">
+                            <p>💰 <b>ยอดเครื่องรวม:</b> ${data.total} ฿</p>
+                            <p>💸 <b>ยอดที่ส่งแล้ว:</b> ${data.paid} ฿</p>
+                            <p class="text-[14px] mt-2 font-bold ${data.statusColor}">🎯 ยอดคงเหลือ: ${data.balance} ฿</p>
+                        </div>
+                    </div>
+                `;
+                resultBox.classList.remove('hidden-page');
+                errorBox.classList.add('hidden-page');
+            } else {
+                // ถ้าค้นหาไม่เจอ
+                resultBox.classList.add('hidden-page');
+                errorBox.classList.remove('hidden-page');
+            }
         }
 
         /* ---- ระบบจำลองแอดมิน (Admin Panel) ---- */
@@ -443,11 +568,14 @@
         }
 
         function saveAdminData() {
-            // 1. อัปเดตสถานะ
-            document.getElementById('display-status-time').innerText = document.getElementById('edit-status-time').value;
-            document.getElementById('display-status-shipping').innerText = document.getElementById('edit-status-shipping').value;
+            const statusTimeBox = document.getElementById('display-status-time');
+            statusTimeBox.innerText = document.getElementById('edit-status-time').value;
+            statusTimeBox.style.color = document.getElementById('edit-color-time').value;
 
-            // 2. อัปเดตโปรโมชั่น (พร้อมฟังก์ชันซ่อนกล่อง & จัดหน้าตัวหนา)
+            const statusShipBox = document.getElementById('display-status-shipping');
+            statusShipBox.innerText = document.getElementById('edit-status-shipping').value;
+            statusShipBox.style.color = document.getElementById('edit-color-shipping').value;
+
             let p1 = document.getElementById('edit-promo-1').value;
             let p2 = document.getElementById('edit-promo-2').value;
             
@@ -458,21 +586,17 @@
             closeModals();
         }
 
-        // ฟังก์ชันแปลงข้อความและซ่อนกล่อง
         function renderPromo(text, containerId, boxId) {
             const box = document.getElementById(boxId);
             const container = document.getElementById(containerId);
             
-            // ถ้าข้อความว่างเปล่า ให้ซ่อนกล่องทิ้งไปเลย
             if (!text || !text.trim()) {
                 box.classList.add('hidden-page');
                 return;
             }
             
-            // ถ้ามีข้อความ ให้แสดงกล่องตามปกติ
             box.classList.remove('hidden-page');
             
-            // แปลงเครื่องหมาย # เป็นตัวหนาสีชมพู
             const lines = text.split('\n');
             let html = '';
             lines.forEach(line => {

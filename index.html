@@ -9,6 +9,10 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
+    <!-- Firebase SDK (ระบบเชื่อมต่อฐานข้อมูล) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { 
@@ -101,6 +105,7 @@
             flex-shrink: 0;
             background-color: #fff;
             box-shadow: 0 4px 10px rgba(216, 112, 147, 0.15);
+            cursor: pointer;
         }
         .brand-image-frame img { width: 100%; height: 100%; object-fit: cover; }
 
@@ -246,7 +251,7 @@
             </div>
             
             <div class="mb-4">
-                <label class="text-xs font-bold text-[#8c7894]">สถานะร้าน (เลือกสี & แก้ข้อความ):</label>
+                <label class="text-xs font-bold text-[#8c7894]">สถานะร้าน (เลือกสีพาสเทล & แก้ข้อความ):</label>
                 <div class="flex items-center gap-2">
                     <input type="color" id="edit-color-time" value="#059669" class="color-picker">
                     <input type="text" id="edit-status-time" class="admin-input !mt-[6px]" value="🟢 สถานะ : เปิดให้บริการปกติ">
@@ -254,7 +259,7 @@
             </div>
 
             <div class="mb-4">
-                <label class="text-xs font-bold text-[#8c7894]">สถานะการจัดส่ง (เลือกสี & แก้ข้อความ):</label>
+                <label class="text-xs font-bold text-[#8c7894]">สถานะการจัดส่ง (เลือกสีพาสเทล & แก้ข้อความ):</label>
                 <div class="flex items-center gap-2">
                     <input type="color" id="edit-color-shipping" value="#3b82f6" class="color-picker">
                     <input type="text" id="edit-status-shipping" class="admin-input !mt-[6px]" value="🚚 สถานะ : ส่งตามปกติ">
@@ -271,7 +276,7 @@
                 <textarea id="edit-promo-2" class="admin-input" rows="4"></textarea>
             </div>
 
-            <button onclick="saveAdminData()" class="btn-main py-2">บันทึกข้อมูล</button>
+            <button onclick="saveAdminData()" class="btn-main py-2">บันทึกข้อมูลเข้าระบบ</button>
         </div>
     </div>
 
@@ -286,8 +291,8 @@
                     </h1>
                     <p class="sunstory-slogan">"ผ่อน วางดาวน์ ปิดสด ต้องซันสตอรี่โฟร์ เท่านั้น"</p>
                 </div>
-                <!-- ซ่อนทางเข้าแอดมินไว้ที่รูปภาพอย่างเนียนๆ -->
-                <div class="brand-image-frame" onclick="openLoginModal()" style="cursor: default;">
+                <!-- ทางเข้าแอดมินลับที่รูปโปรไฟล์ -->
+                <div class="brand-image-frame" onclick="openLoginModal()">
                     <img src="Sun.JPG" alt="Sunstory4 Logo" onerror="this.src='https://via.placeholder.com/150/ffb6c1/ffffff?text=Sun.JPG'">
                 </div>
             </div>
@@ -326,13 +331,11 @@
                 </div>
             </div>
 
-            <!-- ปุ่มเข้าสู่ร้านเดิม -->
             <button onclick="enterStore()" class="btn-main mt-2">
                 <span>เข้าสู่ร้าน Sunstory4</span>
                 <i class="fa-solid fa-mobile-screen"></i>
             </button>
             
-            <!-- เพิ่มปุ่มเช็กยอดผ่อนชำระ (สีพาสเทลน่ารักๆ) -->
             <button onclick="openPage3()" class="btn-secondary">
                 <span>🔍 เช็กยอดผ่อนชำระ</span>
             </button>
@@ -390,7 +393,6 @@
                 <h2 class="text-sm font-bold text-[#d87093]">💳 ระบบเช็กยอดผ่อนชำระ 💳</h2>
             </div>
 
-            <!-- กล่องค้นหา -->
             <div class="info-card flex flex-col gap-3">
                 <label class="text-xs font-bold text-[#8c7894]">กรอกรหัสลูกค้าของท่าน:</label>
                 <input type="text" id="customer-id-input" class="admin-input uppercase !mt-0 text-center text-lg font-bold" placeholder="เช่น SF001">
@@ -399,14 +401,12 @@
                 </button>
             </div>
 
-            <!-- ข้อความแจ้งเตือนเมื่อไม่พบข้อมูล -->
             <div id="installment-error" class="hidden-page text-center text-[13px] text-[#d87093] font-bold mt-2 bg-[#fff0f3] p-3 rounded-xl border border-[#ffb6c1]">
                 ไม่พบรหัสลูกค้านี้น้า ลองตรวจสอบรหัสอีกครั้งค่ะ 🥺
             </div>
 
-            <!-- กล่องแสดงผลลัพธ์ข้อมูลลูกค้า -->
             <div id="installment-result" class="hidden-page info-card !bg-[#fffcf5] !border-[#fce4ec]">
-                <!-- ข้อมูลจะถูกดึงมาโชว์ที่นี่ด้วย JavaScript -->
+                <!-- ผลลัพธ์ข้อมูลลูกค้า -->
             </div>
 
             <button onclick="goBackFromPage3()" class="btn-back">
@@ -419,14 +419,28 @@
         </div>
     </div>
 
-    <!-- JavaScript ควบคุมระบบทั้งหมด -->
+    <!-- JavaScript + Firebase Integration -->
     <script>
-        // 1. ข้อมูลจำลองสำหรับโปรโมชั่น
+        // 1. ตั้งค่ากุญแจรีโมท Firebase ของพี่อาเต๋า
+        const firebaseConfig = {
+            apiKey: "AIzaSyC2SoaNI5hCs6RCczGQv8b7-ofIQHmzX0c",
+            authDomain: "sunstory4-e842b.firebaseapp.com",
+            databaseURL: "https://sunstory4-e842b-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "sunstory4-e842b",
+            storageBucket: "sunstory4-e842b.appspot.com",
+            messagingSenderId: "943190824766",
+            appId: "1:943190824766:web:3cebc0a30687b303ca7e6f"
+        };
+
+        // เริ่มต้นเชื่อมต่อ Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
         let defaultPromo1 = `# ตอนนี้มี งานเซลล์ปิดสดนะค้าบ 🎀\n• Iphone xr 2,600฿ (ตัวเดียว) 🧸\n• Iphone 7 plus 800฿ (ตัวเดียว) 🧸\n• Iphone 7 900฿ (มีหลายตัว) 🧸`;
         let defaultPromo2 = `# 🧸 โปรเปิดบิล 17-31 สิงหาคม 🧸\n👉 เปิดบิล 10฿ ลด 200฿\n👉 เปิดบิล 50฿ ลด 500฿\n👉 เปิดบิล 100฿ ลด 1,000฿\n# 🎀 ใช้ได้ทั้งผ่อนไปใช้ไป/ผ่อนครบรับของเลยนะคะ 🎀 💖`;
 
-        // 2. ข้อมูลจำลองลูกค้าระบบผ่อน (Mock Data)
-        const mockCustomers = {
+        // ข้อมูลจำลองลูกค้า (สามารถเพิ่มรายชื่อคนอื่นลงไปในฐานข้อมูล Firebase ได้ในอนาคตครับ)
+        let mockCustomers = {
             "SF001": {
                 name: "คุณ ธนพร คนสวยสุด",
                 age: 25,
@@ -438,7 +452,7 @@
                 total: "18,000",
                 paid: "4,000",
                 balance: "14,000",
-                statusColor: "text-[#d87093]" // สีชมพูแดง
+                statusColor: "text-[#d87093]"
             },
             "SF002": {
                 name: "คุณ สุดหล่อ รักซันสตอรี่",
@@ -451,15 +465,50 @@
                 total: "25,000",
                 paid: "20,000",
                 balance: "5,000",
-                statusColor: "text-[#d97706]" // สีเหลืองทอง
+                statusColor: "text-[#d97706]"
             }
         };
 
+        // โหลดข้อมูลอัตโนมัติจาก Firebase เมื่อเปิดเว็บ
         window.onload = function() {
-            document.getElementById('edit-promo-1').value = defaultPromo1;
-            document.getElementById('edit-promo-2').value = defaultPromo2;
-            renderPromo(defaultPromo1, 'promo-1-content', 'promo-1-box');
-            renderPromo(defaultPromo2, 'promo-2-content', 'promo-2-box');
+            db.ref('storeConfig').once('value').then((snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    // โหลดสถานะร้าน
+                    document.getElementById('display-status-time').innerText = data.statusTime || "🟢 สถานะ : เปิดให้บริการปกติ";
+                    document.getElementById('display-status-time').style.color = data.colorTime || "#059669";
+                    document.getElementById('edit-status-time').value = data.statusTime || "🟢 สถานะ : เปิดให้บริการปกติ";
+                    document.getElementById('edit-color-time').value = data.colorTime || "#059669";
+
+                    // โหลดสถานะจัดส่ง
+                    document.getElementById('display-status-shipping').innerText = data.statusShip || "🚚 สถานะ : ส่งตามปกติ";
+                    document.getElementById('display-status-shipping').style.color = data.colorShip || "#3b82f6";
+                    document.getElementById('edit-status-shipping').value = data.statusShip || "🚚 สถานะ : ส่งตามปกติ";
+                    document.getElementById('edit-color-shipping').value = data.colorShip || "#3b82f6";
+
+                    // โหลดโปรโมชั่น
+                    let p1 = data.promo1 !== undefined ? data.promo1 : defaultPromo1;
+                    let p2 = data.promo2 !== undefined ? data.promo2 : defaultPromo2;
+                    document.getElementById('edit-promo-1').value = p1;
+                    document.getElementById('edit-promo-2').value = p2;
+                    renderPromo(p1, 'promo-1-content', 'promo-1-box');
+                    renderPromo(p2, 'promo-2-content', 'promo-2-box');
+                } else {
+                    // ถ้ายังไม่มีข้อมูล ให้ใช้ค่าเริ่มต้น
+                    document.getElementById('edit-promo-1').value = defaultPromo1;
+                    document.getElementById('edit-promo-2').value = defaultPromo2;
+                    renderPromo(defaultPromo1, 'promo-1-content', 'promo-1-box');
+                    renderPromo(defaultPromo2, 'promo-2-content', 'promo-2-box');
+                }
+            });
+
+            // โหลดข้อมูลลูกค้าจาก Firebase (ถ้ามี)
+            db.ref('customers').once('value').then((snapshot) => {
+                const custData = snapshot.val();
+                if (custData) {
+                    mockCustomers = custData;
+                }
+            });
         };
 
         /* ---- การเปลี่ยนหน้า (Page Navigation) ---- */
@@ -493,7 +542,6 @@
         /* ---- ระบบเช็กยอดผ่อน (Page 3) ---- */
         function openPage3() {
             document.getElementById('page-1').classList.add('hidden-page');
-            // header-zones ไม่โดนซ่อน ยังคงแสดงอยู่ด้านบนเสมอ
             document.getElementById('page-3').classList.remove('hidden-page');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -501,8 +549,6 @@
         function goBackFromPage3() {
             document.getElementById('page-3').classList.add('hidden-page');
             document.getElementById('page-1').classList.remove('hidden-page');
-            
-            // เคลียร์ค่าค้นหา
             document.getElementById('customer-id-input').value = '';
             document.getElementById('installment-result').classList.add('hidden-page');
             document.getElementById('installment-error').classList.add('hidden-page');
@@ -510,15 +556,12 @@
         }
 
         function searchCustomer() {
-            // รับค่าจากช่อง ค้นหา ลบช่องว่าง และทำเป็นตัวพิมพ์ใหญ่ทั้งหมด (เช่น sf001 -> SF001)
             const inputId = document.getElementById('customer-id-input').value.trim().toUpperCase();
             const resultBox = document.getElementById('installment-result');
             const errorBox = document.getElementById('installment-error');
 
             if (mockCustomers[inputId]) {
                 const data = mockCustomers[inputId];
-                
-                // วาดโครงสร้างการ์ดข้อมูล
                 resultBox.innerHTML = `
                     <div class="text-[13px] font-bold text-[#c75b80] mb-3 border-b border-dashed border-[#f8d7e3] pb-2 flex justify-between items-center">
                         <span>🎀 รหัสลูกค้า: ${inputId}</span>
@@ -540,13 +583,12 @@
                 resultBox.classList.remove('hidden-page');
                 errorBox.classList.add('hidden-page');
             } else {
-                // ถ้าค้นหาไม่เจอ
                 resultBox.classList.add('hidden-page');
                 errorBox.classList.remove('hidden-page');
             }
         }
 
-        /* ---- ระบบจำลองแอดมิน (Admin Panel) ---- */
+        /* ---- ระบบแอดมิน (Admin Panel & Firebase Save) ---- */
         function openLoginModal() {
             document.getElementById('login-modal').classList.remove('hidden-page');
             document.getElementById('admin-pass').value = '';
@@ -568,22 +610,38 @@
         }
 
         function saveAdminData() {
-            const statusTimeBox = document.getElementById('display-status-time');
-            statusTimeBox.innerText = document.getElementById('edit-status-time').value;
-            statusTimeBox.style.color = document.getElementById('edit-color-time').value;
+            const statusTime = document.getElementById('edit-status-time').value;
+            const colorTime = document.getElementById('edit-color-time').value;
+            const statusShip = document.getElementById('edit-status-shipping').value;
+            const colorShip = document.getElementById('edit-color-shipping').value;
+            const promo1 = document.getElementById('edit-promo-1').value;
+            const promo2 = document.getElementById('edit-promo-2').value;
 
-            const statusShipBox = document.getElementById('display-status-shipping');
-            statusShipBox.innerText = document.getElementById('edit-status-shipping').value;
-            statusShipBox.style.color = document.getElementById('edit-color-shipping').value;
+            // บันทึกข้อมูลขึ้น Firebase ทันที
+            db.ref('storeConfig').set({
+                statusTime: statusTime,
+                colorTime: colorTime,
+                statusShip: statusShip,
+                colorShip: colorShip,
+                promo1: promo1,
+                promo2: promo2
+            }, (error) => {
+                if (error) {
+                    alert('บันทึกไม่สำเร็จ ลองใหม่อีกครั้งนะคะ 🥺');
+                } else {
+                    // อัปเดตหน้าจอทันที
+                    document.getElementById('display-status-time').innerText = statusTime;
+                    document.getElementById('display-status-time').style.color = colorTime;
+                    document.getElementById('display-status-shipping').innerText = statusShip;
+                    document.getElementById('display-status-shipping').style.color = colorShip;
+                    
+                    renderPromo(promo1, 'promo-1-content', 'promo-1-box');
+                    renderPromo(promo2, 'promo-2-content', 'promo-2-box');
 
-            let p1 = document.getElementById('edit-promo-1').value;
-            let p2 = document.getElementById('edit-promo-2').value;
-            
-            renderPromo(p1, 'promo-1-content', 'promo-1-box');
-            renderPromo(p2, 'promo-2-content', 'promo-2-box');
-
-            alert('บันทึกข้อมูลเรียบร้อยแล้วค่ะ 🐰✨');
-            closeModals();
+                    alert('บันทึกข้อมูลเข้าระบบเรียบร้อยแล้วค่ะ 🐰✨');
+                    closeModals();
+                }
+            });
         }
 
         function renderPromo(text, containerId, boxId) {

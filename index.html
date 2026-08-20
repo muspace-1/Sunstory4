@@ -442,11 +442,11 @@
                     </div>
                     <div>
                         <label class="text-xs font-bold text-[#8c7894]">เลขบัญชีธนาคารร้าน (สำหรับแก้ไข):</label>
-                        <input type="text" id="edit-bank-info" class="admin-input !mt-0 text-sm" value="กสิกรไทย: 123-4-56789-0">
+                        <input type="text" id="edit-bank-info" class="admin-input !mt-0 text-sm" value="111-2-33333-4">
                     </div>
                     <div>
                         <label class="text-xs font-bold text-[#8c7894]">TrueMoney Wallet (สำหรับแก้ไข):</label>
-                        <input type="text" id="edit-wallet-info" class="admin-input !mt-0 text-sm" value="089-xxx-xxxx">
+                        <input type="text" id="edit-wallet-info" class="admin-input !mt-0 text-sm" value="099-999-9999">
                     </div>
                     <button onclick="saveAdminData()" class="btn-main py-2 !text-sm">บันทึกข้อมูลเข้าระบบ</button>
                 </div>
@@ -579,10 +579,10 @@
         function copyText(text) {
             try {
                 navigator.clipboard.writeText(text).then(() => {
-                    alert('คัดลอกเลขบัญชีเรียบร้อยแล้วค่ะ! นำไปวางโอนได้เลย 📋✨');
+                    alert('คัดลอก "' + text + '" เรียบร้อยแล้วค่ะ! นำไปวางได้เลย 📋✨');
                 });
             } catch(err) {
-                alert('อุปกรณ์ไม่รองรับการคัดลอกอัตโนมัติ รบกวนจดเลขบัญชีนะคะ 🥺');
+                alert('อุปกรณ์ไม่รองรับการคัดลอกอัตโนมัติ รบกวนจดข้อมูลนะคะ 🥺');
             }
         }
 
@@ -667,8 +667,9 @@
             try {
                 db.ref('storeConfig').once('value').then((snapshot) => {
                     const configData = snapshot.val() || {};
-                    const bankText = configData.bankInfo || "กสิกรไทย: 123-4-56789-0";
-                    const walletText = configData.walletInfo || "089-xxx-xxxx";
+                    // แก้ไขเลขบัญชีเริ่มต้นเป็นเลขสมมติตามที่สั่ง
+                    const bankText = configData.bankInfo || "111-2-33333-4";
+                    const walletText = configData.walletInfo || "099-999-9999";
 
                     if (mockCustomers[inputId] && mockCustomers[inputId].phone === inputPhone) {
                         const data = mockCustomers[inputId];
@@ -692,39 +693,56 @@
                                 </div>
                             </div>
 
-                            <!-- ข้อมูลบัญชีรับเงิน (ชื่อกนกอร) & ปุ่มคัดลอกย่อขนาด -->
-                            <div class="info-card !bg-[#fff0f3] !border-[#ffb6c1]">
-                                <div class="text-sm font-bold text-[#d87093] mb-1 flex items-center justify-center gap-1">
-                                    <i class="fa-solid fa-wallet"></i> ช่องทางชำระเงินของร้าน
-                                </div>
-                                <p class="text-sm font-bold text-[#c75b80] mb-3 text-center">ชื่อบัญชี : กนกอร</p>
-                                
-                                <div class="space-y-2 mb-3 text-sm font-medium">
-                                    <div class="bg-white p-2 rounded-xl border border-[#ffb6c1] flex justify-between items-center gap-2">
-                                        <span class="truncate pl-1">🏦 <b>${bankText}</b></span>
-                                        <button onclick="copyText('${bankText}')" class="bg-[#f3d9ce] text-[#5a4a5e] px-2.5 py-1 rounded-lg text-[11px] font-bold hover:bg-[#ffb6c1] shrink-0 active:scale-90 transition-transform">คัดลอก</button>
-                                    </div>
-                                    <div class="bg-white p-2 rounded-xl border border-[#ffb6c1] flex justify-between items-center gap-2">
-                                        <span class="truncate pl-1">👛 <b>Wallet: ${walletText}</b></span>
-                                        <button onclick="copyText('${walletText}')" class="bg-[#f3d9ce] text-[#5a4a5e] px-2.5 py-1 rounded-lg text-[11px] font-bold hover:bg-[#ffb6c1] shrink-0 active:scale-90 transition-transform">คัดลอก</button>
-                                    </div>
+                            <!-- ================= โซนชำระเงินใหม่สุดคิ้วท์ ================= -->
+                            <div class="mt-4 payment-section relative">
+                                <div class="text-center font-bold text-[#d87093] mb-4 text-sm flex items-center justify-center gap-1">
+                                    <i class="fa-solid fa-wallet"></i> ช่องทางชำระเงินของร้าน 🎀
                                 </div>
 
-                                <div class="bg-white p-3 rounded-xl border border-dashed border-[#d87093] text-center">
-                                    <p class="text-[13px] font-bold text-[#d87093]">
-                                        💡 "กำกับโน๊ตสลิปทุกครั้งด้วยนะคะ ว่า ซื้อขายกับซันบายโฟน" 🌸
-                                    </p>
+                                <!-- กล่องแจ้งเตือน Memo -->
+                                <div class="relative border-2 border-dashed border-[#ff9aab] bg-[#fffafa] rounded-[18px] p-4 text-center mb-4 mt-2">
+                                    <div class="absolute -top-3 left-4 bg-[#ff5277] text-white text-[11px] font-bold px-3 py-0.5 rounded-full shadow-sm">สำคัญ!</div>
+                                    <div class="text-[13px] text-[#5a4a5e] mb-1">ก่อนโอนรบกวนพิมพ์ <b>"บันทึกช่วยจำ"</b><br>กำกับสลิปให้ทางร้านด้วยนะคะ 💖</div>
+                                    <div class="text-[17px] font-bold text-[#ff5277] mb-2 mt-2">ซื้อขายกับซันบายโฟน</div>
+                                    <button onclick="copyText('ซื้อขายกับซันบายโฟน')" class="bg-white border border-[#ffb6c1] text-[#ff5277] px-4 py-1.5 rounded-full text-[12px] font-bold shadow-sm active:scale-95 transition-transform"><i class="fa-regular fa-copy"></i> คัดลอกข้อความ</button>
                                 </div>
-                            </div>
-                            
-                            <!-- ฟอร์มแนบสลิป -->
-                            <div class="info-card flex flex-col gap-2.5">
-                                <p class="text-sm font-bold text-[#d87093]">📤 แจ้งชำระเงิน / แนบสลิป:</p>
-                                <input type="number" class="admin-input !mt-0 text-base" placeholder="จำนวนเงินที่โอน (เช่น 1500)">
-                                <input type="file" class="admin-input !mt-0 text-xs py-2.5 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-[#f8d7e3] file:text-[#d87093] hover:file:bg-[#ffb6c1]">
-                                <button onclick="alert('จำลองการส่งสลิปเรียบร้อย! รอแอดมินตรวจสอบ 🌸')" class="btn-main !py-3 !text-sm mt-1">
-                                    <i class="fa-solid fa-paper-plane"></i> ส่งสลิปให้แอดมิน
-                                </button>
+
+                                <!-- กล่องธนาคาร (KTB) -->
+                                <div class="relative bg-gradient-to-br from-[#e0f2fe] to-[#bae6fd] border border-[#7dd3fc] rounded-2xl p-4 mb-3 flex justify-between items-center shadow-sm">
+                                    <i class="fa-solid fa-star absolute -top-2.5 -right-2 text-[#7dd3fc] text-2xl drop-shadow-sm"></i>
+                                    <div>
+                                        <div class="text-[14px] font-bold text-[#0284c7] mb-1">กรุงไทย (KTB) 💙</div>
+                                        <div class="text-xl font-bold text-[#0f172a] tracking-wide">${bankText}</div>
+                                        <div class="text-[12px] text-[#334155] font-medium mt-1">ชื่อบัญชี: กนกอร</div>
+                                    </div>
+                                    <button onclick="copyText('${bankText}')" class="bg-white text-[#0284c7] px-3.5 py-1.5 rounded-xl text-[12px] font-bold shadow-sm active:scale-95 transition-transform shrink-0"><i class="fa-regular fa-copy"></i> คัดลอก</button>
+                                </div>
+
+                                <!-- กล่องธนาคาร (Wallet) -->
+                                <div class="relative bg-gradient-to-br from-[#fce7f3] to-[#fbcfe8] border border-[#f9a8d4] rounded-2xl p-4 mb-3 flex justify-between items-center shadow-sm">
+                                    <i class="fa-solid fa-heart absolute -bottom-2 -left-2 text-[#f9a8d4] text-2xl drop-shadow-sm"></i>
+                                    <div>
+                                        <div class="text-[14px] font-bold text-[#be185d] mb-1">TrueMoney Wallet 🩷</div>
+                                        <div class="text-xl font-bold text-[#0f172a] tracking-wide">${walletText}</div>
+                                        <div class="text-[12px] text-[#334155] font-medium mt-1">ชื่อบัญชี: กนกอร</div>
+                                        <div class="text-[11px] font-bold text-[#e11d48] mt-1 bg-white/60 inline-block px-2 py-0.5 rounded-md">*วอเล็ต บวกเพิ่ม +2.9% นะคะ*</div>
+                                    </div>
+                                    <button onclick="copyText('${walletText}')" class="bg-white text-[#be185d] px-3.5 py-1.5 rounded-xl text-[12px] font-bold shadow-sm active:scale-95 transition-transform shrink-0"><i class="fa-regular fa-copy"></i> คัดลอก</button>
+                                </div>
+                                
+                                <div class="text-center text-[11px] font-medium text-[#8c7894] mt-3 mb-4 bg-white/50 py-1.5 rounded-lg border border-[#f8d7e3]">
+                                    ⚠️ โอนผิด โอนใหม่ ไม่โอนคืนนะคะ รบกวนเช็กชื่อก่อนโอนน้า 🌸
+                                </div>
+
+                                <!-- ปุ่มแนบสลิป -->
+                                <div class="info-card flex flex-col gap-2.5 !bg-white">
+                                    <p class="text-sm font-bold text-[#d87093]">📤 แจ้งชำระเงิน / แนบสลิป:</p>
+                                    <input type="number" class="admin-input !mt-0 text-base" placeholder="จำนวนเงินที่โอน (เช่น 1500)">
+                                    <input type="file" class="admin-input !mt-0 text-xs py-2.5 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-[#f8d7e3] file:text-[#d87093] hover:file:bg-[#ffb6c1] cursor-pointer">
+                                    <button onclick="alert('จำลองการส่งสลิปเรียบร้อย! รอแอดมินตรวจสอบ 🌸')" class="btn-main !py-3 !text-sm mt-1">
+                                        <i class="fa-solid fa-paper-plane"></i> ส่งสลิปให้แอดมิน
+                                    </button>
+                                </div>
                             </div>
                         `;
                         resultBox.classList.remove('hidden-page');

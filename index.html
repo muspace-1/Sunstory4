@@ -15,11 +15,13 @@
     
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        /* 🎨 อัปเดต: พื้นหลังลายสมุดโน้ต Grid Note สีฟ้าพาสเทล */
         body { 
             font-family: 'Kanit', sans-serif; 
-            background-color: #fff9fa;
-            background-image: url("data:image/svg+xml,%3Csvg width='50' height='50' viewBox='0 0 50 50' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M25 39.7l-.6-.5C11.5 28.7 8 22 8 16.4c0-4.9 3.9-8.8 8.8-8.8 2.8 0 5.5 1.3 7.2 3.3 1.7-2 4.4-3.3 7.2-3.3 4.9 0 8.8 3.9 8.8 8.8 0 5.6-3.5 12.3-16.4 22.8l-.6.5z' fill='%23ffd1dc' fill-opacity='0.4'/%3E%3C/svg%3E");
-            background-size: 50px 50px;
+            background-color: #f4faff;
+            background-image: radial-gradient(#baddf9 1.5px, transparent 1.5px);
+            background-size: 20px 20px;
             color: #5a4a5e; 
             min-height: 100vh;
             display: flex;
@@ -42,7 +44,15 @@
             gap: 16px;
             position: relative;
             overflow: hidden;
+            z-index: 10;
         }
+
+        /* ของตกแต่ง ดาวและหัวใจพื้นหลัง (อยู่นอกกล่องหลัก) */
+        .bg-deco { position: fixed; z-index: 0; pointer-events: none; }
+        .bg-deco-1 { top: 8%; left: 5%; font-size: 2rem; opacity: 0.5; text-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .bg-deco-2 { bottom: 15%; right: 5%; font-size: 2.5rem; opacity: 0.5; text-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .bg-deco-3 { top: 45%; right: 6%; font-size: 1.5rem; opacity: 0.4; text-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .bg-deco-4 { bottom: 12%; left: 8%; font-size: 1.8rem; opacity: 0.4; text-shadow: 0 2px 4px rgba(0,0,0,0.05); }
 
         .brand-header-box {
             background: #fff5f8;
@@ -231,9 +241,19 @@
             border-radius: 0.5rem; cursor: pointer; overflow: hidden;
             flex-shrink: 0; margin-top: 6px;
         }
+
+        /* หมุนนาฬิกาทรายตอนส่งสลิป */
+        .rotate-animation { animation: rotate-clock 2s linear infinite; }
+        @keyframes rotate-clock { 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
+
+    <!-- 🎨 กิมมิกของตกแต่ง (ดาวและหัวใจ) -->
+    <div class="bg-deco bg-deco-1">🌟</div>
+    <div class="bg-deco bg-deco-2">💖</div>
+    <div class="bg-deco bg-deco-3">🌟</div>
+    <div class="bg-deco bg-deco-4">💖</div>
 
     <!-- Modal ล็อกอินแอดมิน (ใส่รหัสผ่าน) -->
     <div id="login-modal" class="modal-overlay hidden-page">
@@ -249,13 +269,13 @@
 
     <!-- Modal เด้งรูปสลิปขนาดใหญ่ -->
     <div id="slip-modal" class="modal-overlay hidden-page">
-        <div class="modal-content text-center">
+        <div class="modal-content text-center !max-w-md">
             <div class="flex justify-between items-center mb-3">
                 <h2 class="text-base font-bold text-[#d87093]">🖼️ ตรวจสอบรูปสลิปโอนเงิน</h2>
                 <button onclick="closeSlipModal()" class="text-[#a3889b] text-xl active:scale-90 transition-transform"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="bg-[#fff9fa] p-2 rounded-xl border border-[#f8d7e3] mb-3">
-                <img id="slip-img-preview" src="https://via.placeholder.com/300x500/ffb6c1/ffffff?text=Slip+Example" alt="Slip" class="w-full rounded-lg max-h-[60vh] object-contain mx-auto">
+                <img id="slip-img-preview" src="https://via.placeholder.com/300x500/ffb6c1/ffffff?text=Slip+Example" alt="Slip" class="w-full rounded-lg max-h-[70vh] object-contain mx-auto">
             </div>
             <button onclick="closeSlipModal()" class="btn-main !py-2 !text-sm">ปิดหน้าต่าง</button>
         </div>
@@ -452,23 +472,30 @@
                 </div>
             </div>
 
-            <!-- โซนรายการสลิปรอตรวจ -->
+            <!-- 🎯 อัปเดต: โซนรายการสลิปรอตรวจแบบใหม่ โชว์ข้อมูลครบ มีแว่นขยาย และปุ่มชัดเจน -->
             <div class="info-card !bg-[#fff0f3] !border-[#ffb6c1]">
                 <h3 class="text-sm font-bold text-[#d87093] mb-3">📥 รายการสลิปรอตรวจสอบ</h3>
                 <div class="bg-white p-3.5 rounded-xl border border-[#f8d7e3] space-y-2 text-sm font-medium">
                     <div class="flex justify-between items-center text-base font-bold text-[#c75b80] border-b border-dashed border-[#f8d7e3] pb-1.5">
                         <span>รหัส: SF001</span>
-                        <span>ยอดโอน: 1,500 ฿</span>
+                        <span class="text-[11px] bg-[#fff0f3] px-2 py-1 rounded-full border border-[#ffb6c1]">รอตรวจสอบ</span>
                     </div>
-                    <p class="text-base">📱 <b>ชื่อรุ่น:</b> iPhone 14 Pro (128GB)</p>
-                    <p class="text-base text-[#d87093]">🎯 <b>ยอดคงเหลือปัจจุบัน:</b> 14,000 ฿</p>
-                    <div class="flex items-center justify-between pt-3 border-t border-dashed border-[#f8d7e3]">
-                        <button onclick="openSlipModal('https://via.placeholder.com/300x500/ffb6c1/ffffff?text=Slip+Example')" class="bg-[#f3d9ce] text-[#5a4a5e] px-3.5 py-2 rounded-xl text-xs font-bold hover:bg-[#ffb6c1] active:scale-95 transition-transform">
-                            <i class="fa-solid fa-image"></i> กดดูรูปสลิป
+                    <p class="text-[13px]">👤 <b>ชื่อลูกค้า:</b> คุณ ธนพร คนสวยสุด</p>
+                    <p class="text-[13px]">📱 <b>รุ่น:</b> iPhone 14 Pro (128GB)</p>
+                    <p class="text-[13px] text-[#4682b4]">⏱️ <b>เวลาส่งสลิป:</b> 20/08/2026 14:30 น.</p>
+                    <p class="text-[13px] text-[#059669]">💰 <b>ยอดโอน:</b> 1,500 ฿</p>
+                    
+                    <div class="flex flex-col gap-2 pt-3 border-t border-dashed border-[#f8d7e3]">
+                        <button onclick="openSlipModal('https://via.placeholder.com/300x500/ffb6c1/ffffff?text=Slip+Example')" class="bg-[#f3d9ce] text-[#5a4a5e] px-3 py-2 rounded-xl text-[12px] font-bold hover:bg-[#ffb6c1] active:scale-95 transition-transform w-full shadow-sm">
+                            <i class="fa-solid fa-magnifying-glass"></i> กดขยายดูรูปสลิปเต็มจอ
                         </button>
                         <div class="flex gap-2">
-                            <button onclick="alert('อนุมัติยอดเรียบร้อย! หักลบยอดและซิงค์ชีตสำเร็จ 🌸')" class="bg-emerald-500 text-white px-3.5 py-2 rounded-xl text-xs font-bold active:scale-95 transition-transform">✅ อนุมัติ</button>
-                            <button onclick="alert('ปฏิเสธสลิปแล้ว')" class="bg-rose-400 text-white px-3.5 py-2 rounded-xl text-xs font-bold active:scale-95 transition-transform">❌ ปฏิเสธ</button>
+                            <button onclick="alert('✅ อนุมัติยอดเรียบร้อย!\nระบบจะบวกเลขในช่อง M และหักลบ N, P ในชีตให้อัตโนมัติ')" class="bg-emerald-500 text-white px-3 py-2.5 rounded-xl text-[12px] font-bold active:scale-95 transition-transform flex-1 shadow-sm">
+                                ✅ อนุมัติยอด
+                            </button>
+                            <button onclick="alert('❌ ปฏิเสธสลิปแล้ว\nตีกลับสลิปนี้ ไม่มีการแก้ตัวเลขใดๆ ในชีต')" class="bg-rose-400 text-white px-3 py-2.5 rounded-xl text-[12px] font-bold active:scale-95 transition-transform flex-1 shadow-sm">
+                                ❌ ไม่อนุมัติ / สลิปปลอม
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -508,34 +535,27 @@
         let defaultPromo1 = `# ตอนนี้มี งานเซลล์ปิดสดนะค้าบ 🎀\n• Iphone xr 2,600฿ (ตัวเดียว) 🧸\n• Iphone 7 plus 800฿ (ตัวเดียว) 🧸\n• Iphone 7 900฿ (มีหลายตัว) 🧸`;
         let defaultPromo2 = `# 🧸 โปรเปิดบิล 17-31 สิงหาคม 🧸\n👉 เปิดบิล 10฿ ลด 200฿\n👉 เปิดบิล 50฿ ลด 500฿\n👉 เปิดบิล 100฿ ลด 1,000฿\n# 🎀 ใช้ได้ทั้งผ่อนไปใช้ไป/ผ่อนครบรับของเลยนะคะ 🎀 💖`;
 
+        // 🎯 อัปเดต: เพิ่มข้อมูล creditTarget และ creditLeft สำหรับหลอดพลัง
         let mockCustomers = {
             "SF001": {
-                name: "คุณ ธนพร คนสวยสุด",
-                phone: "5678",
-                age: 25,
-                type: "ผ่อนไปใช้ไป (ส่งรายสัปดาห์)",
-                model: "iPhone 14 Pro (128GB)",
-                condition: "มือ 2 (เครื่องนอก)",
-                color: "ดำ (สีสำรอง: ขาว)",
-                defect: "จอแจ้ง, รอยตามการใช้งาน",
-                total: "18,000",
-                paid: "4,000",
-                balance: "14,000",
-                statusColor: "text-[#d87093]"
+                name: "คุณ ธนพร คนสวยสุด", phone: "5678", age: 25,
+                type: "ผ่อนไปใช้ไป (ส่งรายสัปดาห์)", model: "iPhone 14 Pro (128GB)",
+                condition: "มือ 2 (เครื่องนอก)", color: "ดำ (สีสำรอง: ขาว)", defect: "จอแจ้ง, รอยตามการใช้งาน",
+                total: "18,000", paid: "4,000", balance: "14,000", statusColor: "text-[#d87093]",
+                creditTarget: 10000, creditLeft: 6000 // ข้อมูลสำหรับหลอดพลัง
             },
             "SF002": {
-                name: "คุณ สุดหล่อ รักซันสตอรี่",
-                phone: "1234",
-                age: 20,
-                type: "ผ่อนครบรับของ (ส่งรายเดือน)",
-                model: "iPad Air 5 (256GB)",
-                condition: "มือ 1 (เครื่องไทย)",
-                color: "ม่วงพาสเทล (สีสำรอง: ชมพู)",
-                defect: "ไม่มี (มือ 1)",
-                total: "25,000",
-                paid: "20,000",
-                balance: "5,000",
-                statusColor: "text-[#d97706]"
+                name: "คุณ สุดหล่อ รักซันสตอรี่", phone: "1234", age: 20,
+                type: "ผ่อนครบรับของ (ส่งรายเดือน)", model: "iPad Air 5 (256GB)",
+                condition: "มือ 1 (เครื่องไทย)", color: "ม่วงพาสเทล (สีสำรอง: ชมพู)", defect: "ไม่มี (มือ 1)",
+                total: "25,000", paid: "20,000", balance: "5,000", statusColor: "text-[#d97706]"
+            },
+            "SF003": {
+                name: "คุณ น่ารัก สดใส", phone: "9999", age: 22,
+                type: "ผ่อนไปใช้ไป (ส่งรายสัปดาห์)", model: "iPhone 13 (128GB)",
+                condition: "มือ 1 (เครื่องไทย)", color: "ชมพู", defect: "ไม่มี",
+                total: "22,000", paid: "10,000", balance: "12,000", statusColor: "text-[#d87093]",
+                creditTarget: 10000, creditLeft: 0 // เครดิตผ่านแล้ว 0 บาท
             }
         };
 
@@ -656,6 +676,7 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        /* 🎯 อัปเดต: ฟังก์ชันค้นหาข้อมูล พร้อมหลอดพลังและปุ่มอัปโหลดสลิปแบบเดิม */
         function searchCustomer() {
             const btn = document.getElementById('btn-search');
             btn.disabled = true;
@@ -667,12 +688,48 @@
             try {
                 db.ref('storeConfig').once('value').then((snapshot) => {
                     const configData = snapshot.val() || {};
-                    // แก้ไขเลขบัญชีเริ่มต้นเป็นเลขสมมติตามที่สั่ง
                     const bankText = configData.bankInfo || "111-2-33333-4";
                     const walletText = configData.walletInfo || "099-999-9999";
 
                     if (mockCustomers[inputId] && mockCustomers[inputId].phone === inputPhone) {
                         const data = mockCustomers[inputId];
+                        
+                        // 🎯 แทรกระบบ "หลอดพลังดันยอดเครดิต" 
+                        let progressHtml = '';
+                        if (data.type.includes("ผ่อนไปใช้ไป")) {
+                            let percent = (parseInt(data.paid.replace(/,/g, '')) / data.creditTarget) * 100;
+                            if (percent > 100) percent = 100; // ล็อกไม่ให้หลอดทะลุ 100%
+
+                            if (data.creditLeft <= 0 || percent >= 100) {
+                                // กรณีเครดิตผ่านแล้ว
+                                progressHtml = `
+                                    <div class="mt-3 bg-[#f0fdf4] border border-[#bbf7d0] rounded-xl p-3 text-center shadow-sm">
+                                        <div class="text-[14px] font-bold text-[#166534] mb-1">🎉 ยินดีด้วย! เครดิตผ่านแล้ว 🎉</div>
+                                        <div class="text-[12px] font-medium text-[#15803d]">ทักแอดมินเพื่อรับเครื่องไปใช้ได้เลยค่า 💖</div>
+                                        <div class="w-full h-2.5 bg-[#dcfce7] rounded-full mt-2 overflow-hidden">
+                                            <div class="h-full bg-gradient-to-r from-[#4ade80] to-[#22c55e] w-full rounded-full"></div>
+                                        </div>
+                                    </div>
+                                `;
+                            } else {
+                                // กรณีหลอดกำลังดันยอด
+                                progressHtml = `
+                                    <div class="mt-3 bg-[#fff5f8] border border-[#f8d7e3] rounded-xl p-3 shadow-sm">
+                                        <div class="flex justify-between items-end mb-1">
+                                            <div class="text-[13px] font-bold text-[#d87093]">🎯 ภารกิจดันยอดรับเครื่อง!</div>
+                                            <div class="text-[11px] font-bold text-[#c75b80]">${Math.floor(percent)}%</div>
+                                        </div>
+                                        <div class="w-full h-2.5 bg-[#fce4ec] rounded-full overflow-hidden my-1.5">
+                                            <div class="h-full bg-gradient-to-r from-[#ff9bb3] to-[#c75b80] rounded-full transition-all duration-1000" style="width: ${percent}%;"></div>
+                                        </div>
+                                        <div class="text-[12px] text-[#c75b80] text-center font-medium">
+                                            🔥 ฮึบๆ อีกแค่ <b class="text-[14px]">${data.creditLeft.toLocaleString()}</b> บาท!
+                                        </div>
+                                    </div>
+                                `;
+                            }
+                        }
+
                         resultBox.innerHTML = `
                             <div class="info-card !bg-[#fffcf5] !border-[#fce4ec]">
                                 <div class="text-sm font-bold text-[#c75b80] mb-3 border-b border-dashed border-[#f8d7e3] pb-2 flex justify-between items-center">
@@ -691,57 +748,42 @@
                                         <p class="text-lg mt-2 font-bold ${data.statusColor}">🎯 ยอดคงเหลือ: ${data.balance} ฿</p>
                                     </div>
                                 </div>
+                                ${progressHtml}
                             </div>
 
-                            <!-- ================= โซนชำระเงินใหม่สุดคิ้วท์ ================= -->
-                            <div class="mt-4 payment-section relative">
-                                <div class="text-center font-bold text-[#d87093] mb-4 text-sm flex items-center justify-center gap-1">
-                                    <i class="fa-solid fa-wallet"></i> ช่องทางชำระเงินของร้าน 🎀
+                            <!-- 🎯 โซนชำระเงินและแนบสลิป "แบบเดิม" ตามคำสั่งบอส -->
+                            <div class="info-card flex flex-col gap-3 mt-1 !bg-white">
+                                <div class="text-sm font-bold text-[#d87093] border-b border-dashed border-[#f8d7e3] pb-2 text-center">
+                                    <i class="fa-solid fa-wallet"></i> ช่องทางชำระเงินของร้าน
                                 </div>
-
-                                <!-- กล่องแจ้งเตือน Memo -->
-                                <div class="relative border-2 border-dashed border-[#ff9aab] bg-[#fffafa] rounded-[18px] p-4 text-center mb-4 mt-2">
-                                    <div class="absolute -top-3 left-4 bg-[#ff5277] text-white text-[11px] font-bold px-3 py-0.5 rounded-full shadow-sm">สำคัญ!</div>
-                                    <div class="text-[13px] text-[#5a4a5e] mb-1">ก่อนโอนรบกวนพิมพ์ <b>"บันทึกช่วยจำ"</b><br>กำกับสลิปให้ทางร้านด้วยนะคะ 💖</div>
-                                    <div class="text-[17px] font-bold text-[#ff5277] mb-2 mt-2">ซื้อขายกับซันบายโฟน</div>
-                                    <button onclick="copyText('ซื้อขายกับซันบายโฟน')" class="bg-white border border-[#ffb6c1] text-[#ff5277] px-4 py-1.5 rounded-full text-[12px] font-bold shadow-sm active:scale-95 transition-transform"><i class="fa-regular fa-copy"></i> คัดลอกข้อความ</button>
-                                </div>
-
-                                <!-- กล่องธนาคาร (KTB) -->
-                                <div class="relative bg-gradient-to-br from-[#e0f2fe] to-[#bae6fd] border border-[#7dd3fc] rounded-2xl p-4 mb-3 flex justify-between items-center shadow-sm">
-                                    <i class="fa-solid fa-star absolute -top-2.5 -right-2 text-[#7dd3fc] text-2xl drop-shadow-sm"></i>
-                                    <div>
-                                        <div class="text-[14px] font-bold text-[#0284c7] mb-1">กรุงไทย (KTB) 💙</div>
-                                        <div class="text-xl font-bold text-[#0f172a] tracking-wide">${bankText}</div>
-                                        <div class="text-[12px] text-[#334155] font-medium mt-1">ชื่อบัญชี: กนกอร</div>
-                                    </div>
-                                    <button onclick="copyText('${bankText}')" class="bg-white text-[#0284c7] px-3.5 py-1.5 rounded-xl text-[12px] font-bold shadow-sm active:scale-95 transition-transform shrink-0"><i class="fa-regular fa-copy"></i> คัดลอก</button>
-                                </div>
-
-                                <!-- กล่องธนาคาร (Wallet) -->
-                                <div class="relative bg-gradient-to-br from-[#fce7f3] to-[#fbcfe8] border border-[#f9a8d4] rounded-2xl p-4 mb-3 flex justify-between items-center shadow-sm">
-                                    <i class="fa-solid fa-heart absolute -bottom-2 -left-2 text-[#f9a8d4] text-2xl drop-shadow-sm"></i>
-                                    <div>
-                                        <div class="text-[14px] font-bold text-[#be185d] mb-1">TrueMoney Wallet 🩷</div>
-                                        <div class="text-xl font-bold text-[#0f172a] tracking-wide">${walletText}</div>
-                                        <div class="text-[12px] text-[#334155] font-medium mt-1">ชื่อบัญชี: กนกอร</div>
-                                        <div class="text-[11px] font-bold text-[#e11d48] mt-1 bg-white/60 inline-block px-2 py-0.5 rounded-md">*วอเล็ต บวกเพิ่ม +2.9% นะคะ*</div>
-                                    </div>
-                                    <button onclick="copyText('${walletText}')" class="bg-white text-[#be185d] px-3.5 py-1.5 rounded-xl text-[12px] font-bold shadow-sm active:scale-95 transition-transform shrink-0"><i class="fa-regular fa-copy"></i> คัดลอก</button>
+                                <div class="text-[13px] text-[#5a4a5e] space-y-2 font-medium bg-[#f4faff] p-3 rounded-xl border border-[#baddf9]">
+                                    <p class="text-[14px] text-center font-bold text-[#c75b80] mb-2">ชื่อบัญชี : กนกอร</p>
+                                    <p class="flex justify-between items-center">
+                                        <span>🏦 <b>${bankText}</b></span>
+                                        <button onclick="copyText('${bankText}')" class="bg-white text-[#4682b4] px-2 py-1 rounded shadow-sm text-[11px] active:scale-95">คัดลอก</button>
+                                    </p>
+                                    <p class="flex justify-between items-center">
+                                        <span>👛 <b>Wallet: ${walletText}</b></span>
+                                        <button onclick="copyText('${walletText}')" class="bg-white text-[#d87093] px-2 py-1 rounded shadow-sm text-[11px] active:scale-95">คัดลอก</button>
+                                    </p>
                                 </div>
                                 
-                                <div class="text-center text-[11px] font-medium text-[#8c7894] mt-3 mb-4 bg-white/50 py-1.5 rounded-lg border border-[#f8d7e3]">
-                                    ⚠️ โอนผิด โอนใหม่ ไม่โอนคืนนะคะ รบกวนเช็กชื่อก่อนโอนน้า 🌸
-                                </div>
-
-                                <!-- ปุ่มแนบสลิป -->
-                                <div class="info-card flex flex-col gap-2.5 !bg-white">
-                                    <p class="text-sm font-bold text-[#d87093]">📤 แจ้งชำระเงิน / แนบสลิป:</p>
-                                    <input type="number" class="admin-input !mt-0 text-base" placeholder="จำนวนเงินที่โอน (เช่น 1500)">
-                                    <input type="file" class="admin-input !mt-0 text-xs py-2.5 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-[#f8d7e3] file:text-[#d87093] hover:file:bg-[#ffb6c1] cursor-pointer">
-                                    <button onclick="alert('จำลองการส่งสลิปเรียบร้อย! รอแอดมินตรวจสอบ 🌸')" class="btn-main !py-3 !text-sm mt-1">
+                                <div id="upload-zone" class="flex flex-col gap-2 mt-1">
+                                    <p class="text-sm font-bold text-[#d87093]">📤 แนบสลิปโอนเงิน:</p>
+                                    <input type="number" class="admin-input !mt-0 text-sm" placeholder="จำนวนเงินที่โอน (เช่น 1500)">
+                                    <input type="file" class="admin-input !mt-0 text-xs py-2 file:mr-3 file:py-1 file:px-2 file:rounded-lg file:border-0 file:font-bold file:bg-[#f8d7e3] file:text-[#d87093]">
+                                    <button onclick="submitSlip()" class="btn-main !py-2.5 !text-sm mt-1">
                                         <i class="fa-solid fa-paper-plane"></i> ส่งสลิปให้แอดมิน
                                     </button>
+                                </div>
+                                
+                                <!-- 🎯 ป้ายแจ้งสถานะ รอตรวจสอบสลิป (จะโชว์เมื่อกดส่งสลิป) -->
+                                <div id="slip-status" class="hidden-page mt-1 bg-[#fff0f3] border border-[#ffb6c1] rounded-xl p-3 text-center shadow-sm">
+                                    <div class="text-[14px] font-bold text-[#d87093]">
+                                        <i class="fa-solid fa-hourglass-half rotate-animation inline-block mr-1"></i> 
+                                        สถานะ: รอตรวจสอบสลิป
+                                    </div>
+                                    <div class="text-[12px] text-[#8c7894] mt-1 font-medium">แอดมินกำลังตรวจสอบสักครู่นะคะ 🌸</div>
                                 </div>
                             </div>
                         `;
@@ -759,6 +801,12 @@
             } catch(e) {
                 btn.disabled = false;
             }
+        }
+
+        /* 🎯 อัปเดต: ฟังก์ชันจำลองการส่งสลิป ซ่อนปุ่มอัปโหลด โชว์ป้ายสถานะแทน */
+        function submitSlip() {
+            document.getElementById('upload-zone').classList.add('hidden-page');
+            document.getElementById('slip-status').classList.remove('hidden-page');
         }
 
         /* ---- ระบบแอดมิน (Admin Panel) ตัดหน้าลูกค้าทิ้งทั้งหมดเมื่อเข้าระบบ ---- */

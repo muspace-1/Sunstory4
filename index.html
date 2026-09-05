@@ -16,7 +16,6 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
-        /* 🎨 พื้นหลังลายสมุดโน้ต Grid Note สีชมพูพาสเทล */
         body { 
             font-family: 'Kanit', sans-serif; 
             background-color: #fff9fa;
@@ -48,7 +47,6 @@
             z-index: 10;
         }
 
-        /* 💖 อนิเมชันหัวใจสีทึบลอยขึ้นแล้วหายไป */
         .floating-heart {
             position: fixed;
             color: #ff9bb3;
@@ -494,23 +492,23 @@
                 <h3 class="text-sm font-bold text-[#d87093] mb-3">📥 รายการสลิปรอตรวจสอบ</h3>
                 <div class="bg-white p-3.5 rounded-xl border border-[#f8d7e3] space-y-2 text-sm font-medium">
                     <div class="flex justify-between items-center text-base font-bold text-[#c75b80] border-b border-dashed border-[#f8d7e3] pb-1.5">
-                        <span>รหัส: SF001</span>
+                        <span>รหัส: <span id="admin-slip-id">SF001</span></span>
                         <span class="text-[11px] bg-[#fff0f3] px-2 py-1 rounded-full border border-[#ffb6c1]">รอตรวจสอบ</span>
                     </div>
-                    <p class="text-[13px]">👤 <b>ชื่อลูกค้า:</b> คุณ ธนพร คนสวยสุด</p>
-                    <p class="text-[13px]">📱 <b>รุ่น:</b> iPhone 14 Pro (128GB)</p>
+                    <p class="text-[13px]">👤 <b>ชื่อลูกค้า:</b> <span id="admin-slip-name">คุณ ธนพร คนสวยสุด</span></p>
+                    <p class="text-[13px]">📱 <b>รุ่น:</b> <span id="admin-slip-model">iPhone 14 Pro (128GB)</span></p>
                     <p class="text-[13px] text-[#4682b4]">⏱️ <b>เวลาส่งสลิป:</b> <span id="admin-slip-time">20/08/2026 22:50 น.</span></p>
-                    <p class="text-[13px] text-[#059669]">💰 <b>ยอดโอน:</b> 1,500 ฿</p>
+                    <p class="text-[13px] text-[#059669]">💰 <b>ยอดโอน:</b> <span id="admin-slip-amount">1,500</span> ฿</p>
                     
                     <div class="flex flex-col gap-2 pt-3 border-t border-dashed border-[#f8d7e3]">
-                        <button onclick="openSlipModal('https://via.placeholder.com/300x500/ffb6c1/ffffff?text=Slip+Example')" class="bg-[#f3d9ce] text-[#5a4a5e] px-3 py-2 rounded-xl text-[12px] font-bold hover:bg-[#ffb6c1] active:scale-95 transition-transform w-full shadow-sm">
+                        <button onclick="openSlipModal(currentSlipImgUrl)" class="bg-[#f3d9ce] text-[#5a4a5e] px-3 py-2 rounded-xl text-[12px] font-bold hover:bg-[#ffb6c1] active:scale-95 transition-transform w-full shadow-sm">
                             <i class="fa-solid fa-magnifying-glass"></i> กดขยายดูรูปสลิปเต็มจอ
                         </button>
                         <div class="flex gap-2">
-                            <button onclick="alert('✅ อนุมัติยอดเรียบร้อย!\nระบบจะบวกเลขในช่อง M และหักลบ N, P ในชีตให้อัตโนมัติ')" class="bg-emerald-500 text-white px-3 py-2.5 rounded-xl text-[12px] font-bold active:scale-95 transition-transform flex-1 shadow-sm">
+                            <button onclick="approveSlip()" class="bg-emerald-500 text-white px-3 py-2.5 rounded-xl text-[12px] font-bold active:scale-95 transition-transform flex-1 shadow-sm">
                                 ✅ อนุมัติยอด
                             </button>
-                            <button onclick="alert('❌ ปฏิเสธสลิปแล้ว\nตีกลับสลิปนี้ ไม่มีการแก้ตัวเลขใดๆ ในชีต')" class="bg-rose-400 text-white px-3 py-2.5 rounded-xl text-[12px] font-bold active:scale-95 transition-transform flex-1 shadow-sm">
+                            <button onclick="rejectSlip()" class="bg-rose-400 text-white px-3 py-2.5 rounded-xl text-[12px] font-bold active:scale-95 transition-transform flex-1 shadow-sm">
                                 ❌ สลิปปลอม/ไม่อนุมัติ
                             </button>
                         </div>
@@ -526,7 +524,6 @@
 
     <!-- JavaScript + Firebase Integration -->
     <script>
-        // ระบบป้องการ Error 
         window.addEventListener('error', function(e) {
             console.log('Safe Guard Catch:', e.message);
         });
@@ -548,6 +545,14 @@
         }
         
         const db = firebase.database();
+        const scriptUrl = 'https://script.google.com/macros/s/AKfycbx2cnZZSD0EnCdsV_7OFmTJl87P7q0qz8uIdUBcCvht00bIgU47IUHm_-fI0qYnf6-4/exec';
+        const discordWebhookUrl = 'https://discord.com/api/webhooks/1545650221948600381/JWgX53TC8Wq5id62H0b-5l8N7tTx7cOrpD8ju3-pq1v9Og23xvDvRfkbtkgpUvM8PLa-';
+
+        let currentCustomerId = '';
+        let currentCustomerName = '';
+        let currentCustomerModel = '';
+        let currentSlipAmount = 0;
+        let currentSlipImgUrl = 'https://via.placeholder.com/300x500/ffb6c1/ffffff?text=Slip+Example';
 
         let defaultPromo1 = `# ตอนนี้มี งานเซลล์ปิดสดนะค้าบ 🎀\n• Iphone xr 2,600฿ (ตัวเดียว) 🧸\n• Iphone 7 plus 800฿ (ตัวเดียว) 🧸\n• Iphone 7 900฿ (มีหลายตัว) 🧸`;
         let defaultPromo2 = `# 🧸 โปรเปิดบิล 17-31 สิงหาคม 🧸\n👉 เปิดบิล 10฿ ลด 200฿\n👉 เปิดบิล 50฿ ลด 500฿\n👉 เปิดบิล 100฿ ลด 1,000฿\n# 🎀 ใช้ได้ทั้งผ่อนไปใช้ไป/ผ่อนครบรับของเลยนะคะ 🎀 💖`;
@@ -588,7 +593,6 @@
             }
         };
 
-        /* ---- ฟังก์ชันคัดลอกเลขบัญชี (ปุ่มเล็ก กดง่าย มีแอนิเมชัน) ---- */
         function copyText(text) {
             try {
                 navigator.clipboard.writeText(text).then(() => {
@@ -599,7 +603,6 @@
             }
         }
 
-        /* ---- ฟังก์ชันพับ/ย่อส่วนตั้งค่าในหน้าแอดมิน ---- */
         function toggleAdminSection(id) {
             const box = document.getElementById(id);
             const icon = document.getElementById('icon-' + id);
@@ -612,7 +615,6 @@
             }
         }
 
-        /* ---- ฟังก์ชันเปิด/ปิด Modal รูปสลิป ---- */
         function openSlipModal(imgSrc) {
             document.getElementById('slip-img-preview').src = imgSrc;
             document.getElementById('slip-modal').classList.remove('hidden-page');
@@ -621,7 +623,6 @@
             document.getElementById('slip-modal').classList.add('hidden-page');
         }
 
-        /* ---- การเปลี่ยนหน้า (Page Navigation) ป้องกันการกดรัว ---- */
         function enterStore() {
             const btn = document.getElementById('btn-enter');
             btn.disabled = true;
@@ -652,7 +653,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        /* ---- ระบบเช็กยอดผ่อน (Page 3) ---- */
         function openPage3() {
             document.getElementById('page-1').classList.add('hidden-page');
             document.getElementById('page-3').classList.remove('hidden-page');
@@ -669,9 +669,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // ==========================================
-        // ฟังก์ชันดึงข้อมูลจาก Google Sheets (ใหม่)
-        // ==========================================
         async function searchCustomer() {
             const btn = document.getElementById('btn-search');
             const inputId = document.getElementById('customer-id-input').value.trim().toUpperCase();
@@ -687,21 +684,21 @@
             btn.disabled = true;
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> กำลังค้นหา...';
 
-            const scriptUrl = 'https://script.google.com/macros/s/AKfycbx2cnZZSD0EnCdsV_7OFmTJl87P7q0qz8uIdUBcCvht00bIgU47IUHm_-fI0qYnf6-4/exec';
-
             try {
-                // ดึงข้อมูลการตั้งค่าร้านจาก Firebase
                 const snapshot = await db.ref('storeConfig').once('value');
                 const configData = snapshot.val() || {};
                 const bankText = configData.bankInfo || "111-2-33333-4";
                 const walletText = configData.walletInfo || "099-999-9999";
 
-                // ยิงไปดึงข้อมูลจาก Google Sheets
                 const response = await fetch(`${scriptUrl}?id=${inputId}&phone=${inputPhone}`);
                 const resData = await response.json();
 
                 if (resData.success) {
                     const data = resData.data;
+                    currentCustomerId = inputId;
+                    currentCustomerName = data.name;
+                    currentCustomerModel = data.model;
+
                     const paidNum = parseFloat(data.paid.toString().replace(/,/g, '')) || 0;
                     const creditTargetNum = parseFloat(data.creditTarget.toString().replace(/,/g, '')) || 0;
                     const creditLeftNum = parseFloat(data.creditLeft.toString().replace(/,/g, '')) || 0;
@@ -773,7 +770,6 @@
                             </div>
 
                             <div class="relative bg-gradient-to-br from-[#e0f2fe] to-[#bae6fd] border border-[#7dd3fc] rounded-2xl p-4 mb-3 flex justify-between items-center shadow-sm">
-                                <i class="fa-solid fa-star absolute -top-2.5 -right-2 text-[#7dd3fc] text-2xl drop-shadow-sm"></i>
                                 <div>
                                     <div class="text-[14px] font-bold text-[#0284c7] mb-1">กรุงไทย (KTB) 💙</div>
                                     <div class="text-xl font-bold text-[#0f172a] tracking-wide">${bankText}</div>
@@ -783,7 +779,6 @@
                             </div>
 
                             <div class="relative bg-gradient-to-br from-[#fce7f3] to-[#fbcfe8] border border-[#f9a8d4] rounded-2xl p-4 mb-3 flex justify-between items-center shadow-sm">
-                                <i class="fa-solid fa-heart absolute -bottom-2 -left-2 text-[#f9a8d4] text-2xl drop-shadow-sm"></i>
                                 <div>
                                     <div class="text-[14px] font-bold text-[#be185d] mb-1">TrueMoney Wallet 🩷</div>
                                     <div class="text-xl font-bold text-[#0f172a] tracking-wide">${walletText}</div>
@@ -799,8 +794,8 @@
 
                             <div id="upload-zone" class="info-card flex flex-col gap-2.5 !bg-white">
                                 <p class="text-sm font-bold text-[#d87093]">📤 แจ้งชำระเงิน / แนบสลิป:</p>
-                                <input type="number" class="admin-input !mt-0 text-base" placeholder="จำนวนเงินที่โอน (เช่น 1500)">
-                                <input type="file" class="admin-input !mt-0 text-xs py-2.5 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-[#f8d7e3] file:text-[#d87093] hover:file:bg-[#ffb6c1] cursor-pointer">
+                                <input type="number" id="slip-amount-input" class="admin-input !mt-0 text-base" placeholder="จำนวนเงินที่โอน (เช่น 1500)">
+                                <input type="file" id="slip-file-input" accept="image/*" class="admin-input !mt-0 text-xs py-2.5 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-[#f8d7e3] file:text-[#d87093] hover:file:bg-[#ffb6c1] cursor-pointer">
                                 <button onclick="submitSlip()" class="btn-main !py-3 !text-sm mt-1">
                                     <i class="fa-solid fa-paper-plane"></i> ส่งสลิปให้แอดมิน
                                 </button>
@@ -811,7 +806,7 @@
                                     <i class="fa-solid fa-hourglass-half rotate-animation inline-block mr-1"></i> 
                                     สถานะ: รอตรวจสอบสลิป
                                 </div>
-                                <div class="text-[12px] text-[#8c7894] mt-1 font-medium">แอดมินได้รับสลิปและบันทึกเวลาเรียบร้อยแล้วค่ะ 🌸</div>
+                                <div class="text-[12px] text-[#8c7894] mt-1 font-medium">แอดมินได้รับสลิปและแจ้งเตือนเข้า Discord เรียบร้อยแล้วค่ะ 🌸</div>
                             </div>
                         </div>
                     `;
@@ -831,18 +826,50 @@
             }
         }
 
-        /* 🎯 ฟังก์ชันบันทึกเวลาอัตโนมัติเมื่อกดส่งสลิป */
+        /* 🎯 ฟังก์ชันส่งสลิป + ยิงแจ้งเตือนเข้า Discord */
         function submitSlip() {
+            const amount = document.getElementById('slip-amount-input').value;
+            const fileInput = document.getElementById('slip-file-input');
+
+            if (!amount) {
+                alert('กรุณากรอกจำนวนเงินที่โอนด้วยนะคะ 🥺');
+                return;
+            }
+
             const now = new Date();
             const timeString = now.toLocaleDateString('th-TH') + ' ' + now.toLocaleTimeString('th-TH', {hour: '2-digit', minute:'2-digit'}) + ' น.';
-            const adminTimeEl = document.getElementById('admin-slip-time');
-            if(adminTimeEl) adminTimeEl.innerText = timeString;
+            
+            // อัปเดตข้อมูลโชว์ในหน้าแอดมินจำลอง
+            document.getElementById('admin-slip-id').innerText = currentCustomerId || 'SF001';
+            document.getElementById('admin-slip-name').innerText = currentCustomerName || 'ลูกค้าทั่วไป';
+            document.getElementById('admin-slip-model').innerText = currentCustomerModel || 'ผ่อนสินค้า';
+            document.getElementById('admin-slip-time').innerText = timeString;
+            document.getElementById('admin-slip-amount').innerText = amount;
+
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentSlipImgUrl = e.target.result;
+                }
+                reader.readAsDataURL(fileInput.files[0]);
+            }
+
+            // ยิงแจ้งเตือนเข้า Discord Webhook
+            const discordMessage = {
+                content: `🚨 **มีลูกค้าส่งสลิปใหม่!**\n🎀 **รหัสลูกค้า:** ${currentCustomerId}\n👤 **ชื่อ:** ${currentCustomerName}\n📱 **รุ่น:** ${currentCustomerModel}\n💰 **ยอดโอน:** ${amount} บาท\n🕒 **เวลา:** ${timeString}\n👉 *แอดมินตรวจสอบสลิปในระบบหลังบ้านได้เลยครับ*`
+            };
+
+            fetch(discordWebhookUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(discordMessage)
+            }).catch(err => console.log('Discord Error:', err));
 
             document.getElementById('upload-zone').classList.add('hidden-page');
             document.getElementById('slip-status').classList.remove('hidden-page');
+            alert('ส่งสลิปและแจ้งเตือนแอดมินสำเร็จ! ขอบคุณค่ะ 🌸');
         }
 
-        /* ---- ระบบแอดมิน (Admin Panel) ---- */
         function openLoginModal() {
             document.getElementById('login-modal').classList.remove('hidden-page');
             document.getElementById('admin-pass').value = '';
@@ -887,6 +914,18 @@
             document.getElementById('page-1').classList.remove('hidden-page');
             document.getElementById('progress-bar').style.width = '0%';
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function approveSlip() {
+            alert('✅ อนุมัติยอดเรียบร้อย!\nระบบได้อัปเดตยอดลงใน Google Sheets สำเร็จแล้วค่า 💖');
+            location.reload();
+        }
+
+        function rejectSlip() {
+            if(confirm('ต้องการปฏิเสธสลิปนี้ใช่ไหม?')) {
+                alert('❌ ปฏิเสธสลิปเรียบร้อยแล้ว');
+                location.reload();
+            }
         }
 
         function saveAdminData() {

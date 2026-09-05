@@ -16,11 +16,12 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
+        /* 🌸 พื้นหลังลายสมุดโน้ต Grid Note เน้นโทนชมพูพาสเทลสวยละมุน */
         body { 
             font-family: 'Kanit', sans-serif; 
-            background-color: #fff9fa;
-            background-image: radial-gradient(#ffb6c1 1.5px, transparent 1.5px);
-            background-size: 20px 20px;
+            background-color: #fff0f3;
+            background-image: radial-gradient(#ff9bb3 1.8px, transparent 1.8px);
+            background-size: 24px 24px;
             color: #5a4a5e; 
             min-height: 100vh;
             display: flex;
@@ -36,8 +37,8 @@
             max-width: 480px;
             background: #ffffff;
             border-radius: 2rem;
-            border: 2px solid #f8d7e3;
-            box-shadow: 0 15px 35px rgba(216, 112, 147, 0.15);
+            border: 2px solid #ffb6c1;
+            box-shadow: 0 15px 35px rgba(216, 112, 147, 0.2);
             padding: 24px;
             display: flex;
             flex-direction: column;
@@ -47,38 +48,39 @@
             z-index: 10;
         }
 
+        /* 💖 อนิเมชันหัวใจสีชมพูลอยขึ้น */
         .floating-heart {
             position: fixed;
-            color: #ff9bb3;
+            color: #ff5277;
             font-size: 20px;
             animation: floatUp 5s infinite ease-in;
             z-index: 0;
             pointer-events: none;
             opacity: 0;
         }
-        .fh-1 { left: 15%; font-size: 28px; animation-duration: 6s; animation-delay: 0s; }
-        .fh-2 { left: 85%; font-size: 22px; animation-duration: 5s; animation-delay: 2s; }
-        .fh-3 { left: 50%; font-size: 25px; animation-duration: 7s; animation-delay: 1s; }
-        .fh-4 { left: 70%; font-size: 18px; animation-duration: 4.5s; animation-delay: 3s; }
-        .fh-5 { left: 25%; font-size: 24px; animation-duration: 5.5s; animation-delay: 4s; }
+        .fh-1 { left: 10%; font-size: 28px; animation-duration: 6s; animation-delay: 0s; }
+        .fh-2 { left: 88%; font-size: 22px; animation-duration: 5s; animation-delay: 2s; }
+        .fh-3 { left: 45%; font-size: 26px; animation-duration: 7s; animation-delay: 1s; }
+        .fh-4 { left: 75%; font-size: 18px; animation-duration: 4.5s; animation-delay: 3s; }
+        .fh-5 { left: 20%; font-size: 24px; animation-duration: 5.5s; animation-delay: 4s; }
 
         @keyframes floatUp {
             0% { transform: translateY(100vh) scale(0.8); opacity: 0; }
-            15% { opacity: 0.6; }
-            80% { opacity: 0.6; }
-            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+            15% { opacity: 0.7; }
+            80% { opacity: 0.7; }
+            100% { transform: translateY(-10vh) scale(1.3); opacity: 0; }
         }
 
         .brand-header-box {
-            background: #fff5f8;
-            border: 2px solid #ffb6c1;
+            background: linear-gradient(135deg, #fff5f8, #ffe6ed);
+            border: 2px solid #ff9bb3;
             border-radius: 1.25rem;
             padding: 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+            box-shadow: 0 4px 12px rgba(216, 112, 147, 0.1);
         }
 
         .sunstory-title {
@@ -91,7 +93,7 @@
         .jump-letter {
             display: inline-block;
             position: relative;
-            background: linear-gradient(135deg, #ff9bb3 0%, #c75b80 100%);
+            background: linear-gradient(135deg, #ff5277 0%, #c75b80 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: bounce-up-down 2.2s infinite ease-in-out;
@@ -114,9 +116,9 @@
 
         .sunstory-slogan {
             font-size: 0.75rem;
-            color: #8c7894;
+            color: #a86b81;
             margin-top: 6px;
-            font-weight: 400;
+            font-weight: 500;
         }
 
         .brand-image-frame {
@@ -124,16 +126,17 @@
             height: 75px;
             border-radius: 1rem;
             overflow: hidden;
-            border: 2px solid #ffb6c1;
+            border: 2px solid #ff5277;
             flex-shrink: 0;
             background-color: #fff;
+            box-shadow: 0 4px 10px rgba(255, 82, 119, 0.2);
             cursor: pointer;
         }
         .brand-image-frame img { width: 100%; height: 100%; object-fit: cover; }
 
         .account-alert-box {
             background: #fff0f3;
-            border: 2px dashed #d87093;
+            border: 2px dashed #ff5277;
             border-radius: 1.25rem;
             padding: 16px;
             text-align: center;
@@ -143,13 +146,13 @@
             background: #ffffff;
             border-radius: 1.25rem;
             padding: 16px;
-            border: 2px solid #f8d7e3;
-            box-shadow: 0 4px 12px rgba(216, 112, 147, 0.05);
+            border: 2px solid #ffccd5;
+            box-shadow: 0 4px 12px rgba(216, 112, 147, 0.08);
             line-height: 1.6;
         }
 
         .btn-main {
-            background: linear-gradient(135deg, #d87093, #c75b80);
+            background: linear-gradient(135deg, #ff5277, #d87093);
             color: white;
             width: 100%;
             padding: 16px;
@@ -158,39 +161,42 @@
             font-size: 1rem;
             border: none;
             cursor: pointer;
-            box-shadow: 0 6px 15px rgba(216, 112, 147, 0.35);
+            box-shadow: 0 6px 15px rgba(255, 82, 119, 0.35);
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
+            transition: transform 0.2s;
         }
         .btn-main:active { transform: scale(0.98); }
 
         .btn-secondary {
-            background: linear-gradient(135deg, #f3d9ce, #f8d7e3);
+            background: linear-gradient(135deg, #ffe5ed, #ffccd5);
             color: #d87093;
             width: 100%;
             padding: 16px;
             border-radius: 1.25rem;
             font-weight: 600;
             font-size: 1rem;
-            border: 2px solid #ffb6c1;
+            border: 2px solid #ff9bb3;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
+            transition: transform 0.2s;
         }
+        .btn-secondary:active { transform: scale(0.98); }
 
         .btn-back {
-            background: #f3d9ce;
-            color: #5a4a5e;
+            background: #ffe5ed;
+            color: #c75b80;
             width: 100%;
             padding: 12px;
             border-radius: 1.25rem;
             font-weight: 600;
             font-size: 0.9rem;
-            border: none;
+            border: 1px solid #ffb6c1;
             cursor: pointer;
             display: flex; align-items: center; justify-content: center; gap: 6px;
             margin-top: 10px;
@@ -213,31 +219,31 @@
         }
         
         .progress-bar-bg {
-            width: 90%; height: 14px; background-color: #f3eaee; border-radius: 20px;
-            overflow: hidden; margin-top: 25px;
+            width: 90%; height: 14px; background-color: #ffe5ed; border-radius: 20px;
+            overflow: hidden; margin-top: 25px; border: 1px solid #ffb6c1;
         }
         .progress-bar-fill {
-            height: 100%; background: linear-gradient(90deg, #ff9bb3, #c75b80);
+            height: 100%; background: linear-gradient(90deg, #ff5277, #d87093);
             width: 0%; border-radius: 20px; transition: width 1.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center;
-            z-index: 100; padding: 16px;
+            background: rgba(90, 74, 94, 0.6); display: flex; justify-content: center; align-items: center;
+            z-index: 100; padding: 16px; backdrop-filter: blur(3px);
         }
         .modal-content {
             background: white; border-radius: 1.5rem; width: 100%; max-width: 400px;
-            padding: 24px; border: 2px solid #f8d7e3; box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            padding: 24px; border: 2px solid #ff5277; box-shadow: 0 10px 25px rgba(255, 82, 119, 0.2);
         }
         .admin-input {
-            width: 100%; padding: 12px; border: 1px solid #e8d7f1; border-radius: 0.75rem;
+            width: 100%; padding: 12px; border: 1px solid #ffb6c1; border-radius: 0.75rem;
             font-family: 'Kanit', sans-serif; font-size: 1rem; margin-top: 6px;
-            outline: none; color: #5a4a5e;
+            outline: none; color: #5a4a5e; background-color: #fff9fa;
         }
-        .admin-input:focus { border-color: #d87093; }
+        .admin-input:focus { border-color: #ff5277; box-shadow: 0 0 0 3px rgba(255, 82, 119, 0.15); }
         .color-picker {
-            width: 42px; height: 42px; padding: 0; border: 2px solid #e8d7f1; 
+            width: 42px; height: 42px; padding: 0; border: 2px solid #ffb6c1; 
             border-radius: 0.5rem; cursor: pointer; flex-shrink: 0; margin-top: 6px;
         }
         .rotate-animation { animation: rotate-clock 2s linear infinite; }
@@ -246,6 +252,7 @@
 </head>
 <body>
 
+    <!-- 🌸 ดอกไม้ & น้องกระต่ายลอยละล่อง (Heart Animation) -->
     <i class="fa-solid fa-heart floating-heart fh-1"></i>
     <i class="fa-solid fa-heart floating-heart fh-2"></i>
     <i class="fa-solid fa-heart floating-heart fh-3"></i>
@@ -256,8 +263,8 @@
     <div id="login-modal" class="modal-overlay hidden-page">
         <div class="modal-content">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-lg font-bold text-[#d87093]">🐰 แอดมินเข้าสู่ระบบ</h2>
-                <button onclick="closeModals()" class="text-[#a3889b] text-xl"><i class="fa-solid fa-xmark"></i></button>
+                <h2 class="text-lg font-bold text-[#ff5277]">🐰 แอดมินเข้าสู่ระบบ</h2>
+                <button onclick="closeModals()" class="text-[#a86b81] text-xl"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <input type="password" id="admin-pass" class="admin-input mb-4" placeholder="ใส่รหัสผ่าน (1234)...">
             <button id="btn-login" onclick="checkPassword()" class="btn-main py-2">ยืนยันรหัสผ่าน</button>
@@ -268,10 +275,10 @@
     <div id="slip-modal" class="modal-overlay hidden-page">
         <div class="modal-content text-center !max-w-md">
             <div class="flex justify-between items-center mb-3">
-                <h2 class="text-base font-bold text-[#d87093]">🖼️ ตรวจสอบรูปสลิปโอนเงิน</h2>
-                <button onclick="closeSlipModal()" class="text-[#a3889b] text-xl"><i class="fa-solid fa-xmark"></i></button>
+                <h2 class="text-base font-bold text-[#ff5277]">🖼️ ตรวจสอบรูปสลิปโอนเงิน</h2>
+                <button onclick="closeSlipModal()" class="text-[#a86b81] text-xl"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div class="bg-[#fff9fa] p-2 rounded-xl border border-[#f8d7e3] mb-3">
+            <div class="bg-[#fff9fa] p-2 rounded-xl border border-[#ffb6c1] mb-3">
                 <img id="slip-img-preview" src="" alt="Slip" class="w-full rounded-lg max-h-[70vh] object-contain mx-auto">
             </div>
             <button onclick="closeSlipModal()" class="btn-main !py-2 !text-sm">ปิดหน้าต่าง</button>
@@ -287,40 +294,40 @@
                         <span class="jump-letter d-0">S</span><span class="jump-letter d-1">u</span><span class="jump-letter d-2">n</span><span class="jump-letter d-3">s</span><span class="jump-letter d-4">t</span><span class="jump-letter d-5">o</span><span class="jump-letter d-6">r</span><span class="jump-letter d-7">y</span><span class="jump-letter d-8">4</span>
                         <i class="fa-solid fa-heart jump-letter d-9"></i>
                     </h1>
-                    <p class="sunstory-slogan">"ผ่อน วางดาวน์ ปิดสด ต้องซันสตอรี่โฟร์ เท่านั้น"</p>
+                    <p class="sunstory-slogan">"ผ่อน วางดาวน์ ปิดสด ต้องซันสตอรี่โฟร์ เท่านั้น 🌸"</p>
                 </div>
-                <div class="brand-image-frame" onclick="openLoginModal()">
+                <div class="brand-image-frame" onclick="openLoginModal()" title="คลิกเข้าหลังบ้านแอดมิน">
                     <img src="Sun.JPG" alt="Logo" onerror="this.src='https://via.placeholder.com/150/ffb6c1/ffffff?text=Sun'">
                 </div>
             </div>
             <div class="account-alert-box">
-                <div class="text-xs font-bold text-[#d87093] mb-1 flex items-center justify-center gap-1">
+                <div class="text-xs font-bold text-[#ff5277] mb-1 flex items-center justify-center gap-1">
                     <i class="fa-solid fa-triangle-exclamation"></i> แจ้งเพื่อทราบ / ป้องกันมิจฉาชีพ
                 </div>
                 <p class="text-sm font-medium text-[#5a4a5e]">
-                    ชื่อบัญชีโอนเงิน : <span class="font-bold text-[#d87093] text-base">กนกอร</span> เท่านั้น!
+                    ชื่อบัญชีโอนเงิน : <span class="font-bold text-[#ff5277] text-base">กนกอร</span> เท่านั้น!
                 </p>
-                <p class="text-[11px] text-[#8c7894] mt-1">นอกเหนือจากชื่อนี้ ห้ามโอนเด็ดขาดนะคะ ⚠️</p>
+                <p class="text-[11px] text-[#a86b81] mt-1">นอกเหนือจากชื่อนี้ ห้ามโอนเด็ดขาดนะคะ ⚠️</p>
             </div>
         </div>
 
         <!-- PAGE 1 -->
         <div id="page-1" class="flex flex-col gap-4 transition-opacity duration-300">
             <div class="info-card">
-                <div id="display-status-time" class="text-[13px] font-bold mb-2 border-b border-dashed border-[#e8d7f1] pb-2" style="color: #059669;">
+                <div id="display-status-time" class="text-[13px] font-bold mb-2 border-b border-dashed border-[#ffccd5] pb-2" style="color: #059669;">
                     🟢 สถานะ : เปิดให้บริการปกติ
                 </div>
                 <div class="text-[12px] text-[#5a4a5e] space-y-3 font-medium">
-                    <p>เปิดให้บริการเวลาพื้นฐาน 09.30 - 21.30 น. (เปิดทุกวัน)</p>
+                    <p>🐰 เปิดให้บริการเวลาพื้นฐาน 09.30 - 21.30 น. (เปิดทุกวัน)</p>
                     <p>ลูกค้ารอทางพี่แอดมินไล่ตอบแชทจากด้านล่างขึ้นบน งดดันแชทนะคะ หากไม่ตอบแชทนานเกินสามารถดันแชทมาได้เลยนะคะ 🌷</p>
                 </div>
             </div>
             <div class="info-card">
-                <div id="display-status-shipping" class="text-[13px] font-bold mb-2 border-b border-dashed border-[#f8d7e3] pb-2" style="color: #3b82f6;">
+                <div id="display-status-shipping" class="text-[13px] font-bold mb-2 border-b border-dashed border-[#ffccd5] pb-2" style="color: #3b82f6;">
                     🚚 สถานะ : ส่งตามปกติ
                 </div>
                 <div class="text-[12px] text-[#5a4a5e] space-y-3 font-medium">
-                    <p>สั่งซื้อสินค้าก่อนเวลา 12.00 ส่งวันพรุ่งนี้ หากสั่งหลัง 12.00 ส่งวันถัดไปของวันพรุ่งนี้</p>
+                    <p>🌸 สั่งซื้อสินค้าก่อนเวลา 12.00 ส่งวันพรุ่งนี้ หากสั่งหลัง 12.00 ส่งวันถัดไป</p>
                     <p>🛑 หยุดส่งของทุกวันจันทร์</p>
                 </div>
             </div>
@@ -336,7 +343,7 @@
         <!-- LOADING -->
         <div id="loading-screen" class="hidden-page loading-container">
             <div class="bunny-icon">🐰</div>
-            <h2 id="loading-text" class="text-[16px] font-bold text-[#d87093] mb-1">น้องกระต่ายเตรียมข้อมูลนะคะ...</h2>
+            <h2 id="loading-text" class="text-[16px] font-bold text-[#ff5277] mb-1">น้องกระต่ายเตรียมข้อมูลนะคะ...</h2>
             <div class="progress-bar-bg">
                 <div id="progress-bar" class="progress-bar-fill"></div>
             </div>
@@ -345,12 +352,12 @@
         <!-- PAGE 2 -->
         <div id="page-2" class="hidden-page flex flex-col gap-4 pt-2">
             <div class="text-center pb-1">
-                <h2 class="text-sm font-bold text-[#d87093]">🌸 ข้อมูลและโปรโมชั่นประจำร้าน 🌸</h2>
+                <h2 class="text-sm font-bold text-[#ff5277]">🌸 ข้อมูลและโปรโมชั่นประจำร้าน 🌸</h2>
             </div>
-            <div id="promo-1-box" class="info-card !bg-[#fff0f3] !border-[#ffb6c1]">
+            <div id="promo-1-box" class="info-card !bg-[#fff0f3] !border-[#ff9bb3]">
                 <div id="promo-1-content" class="text-[12px] text-[#5a4a5e] space-y-2 font-medium"></div>
             </div>
-            <div id="promo-2-box" class="info-card !bg-[#fffcf5] !border-[#fce4ec]">
+            <div id="promo-2-box" class="info-card !bg-[#fffcf5] !border-[#ffccd5]">
                 <div id="promo-2-content" class="text-[12px] text-[#5a4a5e] space-y-2 font-medium"></div>
             </div>
             <button onclick="goBackToPage1('page-2')" class="btn-back">
@@ -361,22 +368,22 @@
         <!-- PAGE 3 (เช็กยอด) -->
         <div id="page-3" class="hidden-page flex flex-col gap-4 pt-2">
             <div class="text-center pb-1">
-                <h2 class="text-sm font-bold text-[#d87093]">💳 ระบบเช็กยอดผ่อนชำระ 💳</h2>
+                <h2 class="text-sm font-bold text-[#ff5277]">💳 ระบบเช็กยอดผ่อนชำระ 💳</h2>
             </div>
             <div class="info-card flex flex-col gap-3">
                 <div>
-                    <label class="text-sm font-bold text-[#8c7894]">รหัสลูกค้า:</label>
-                    <input type="text" id="customer-id-input" class="admin-input uppercase !mt-1 text-center text-lg font-bold" placeholder="เช่น SHF1325">
+                    <label class="text-sm font-bold text-[#a86b81]">รหัสลูกค้า:</label>
+                    <input type="text" id="customer-id-input" class="admin-input uppercase !mt-1 text-center text-lg font-bold" placeholder="เช่น SF001">
                 </div>
                 <div>
-                    <label class="text-sm font-bold text-[#8c7894]">เบอร์โทรศัพท์ (4 ตัวท้าย):</label>
-                    <input type="text" id="customer-phone-input" maxlength="4" class="admin-input !mt-1 text-center text-lg font-bold" placeholder="เช่น 1234">
+                    <label class="text-sm font-bold text-[#a86b81]">เบอร์โทรศัพท์ (4 ตัวท้าย):</label>
+                    <input type="text" id="customer-phone-input" maxlength="4" class="admin-input !mt-1 text-center text-lg font-bold" placeholder="เช่น 5678">
                 </div>
                 <button id="btn-search" onclick="searchCustomer()" class="btn-main !py-3 !text-base mt-1">
                     <i class="fa-solid fa-magnifying-glass"></i> ค้นหาข้อมูล
                 </button>
             </div>
-            <div id="installment-error" class="hidden-page text-center text-[13px] text-[#d87093] font-bold mt-2 bg-[#fff0f3] p-3 rounded-xl border border-[#ffb6c1]">
+            <div id="installment-error" class="hidden-page text-center text-[13px] text-[#ff5277] font-bold mt-2 bg-[#fff0f3] p-3 rounded-xl border border-[#ff9bb3]">
                 ไม่พบรหัสลูกค้าหรือเบอร์โทรไม่ถูกต้องค่ะ 🥺
             </div>
             <div id="installment-result" class="hidden-page flex flex-col gap-3"></div>
@@ -387,61 +394,61 @@
 
         <!-- ADMIN PANEL -->
         <div id="admin-full-page" class="hidden-page flex flex-col gap-4 pt-2">
-            <div class="flex justify-between items-center bg-[#fff5f8] border border-[#ffb6c1] p-3 rounded-xl">
-                <h2 class="text-sm font-bold text-[#d87093]">⚙️ แผงควบคุมแอดมิน</h2>
-                <button onclick="backToMainFromAdmin()" class="text-xs bg-[#f3d9ce] text-[#5a4a5e] px-3 py-1.5 rounded-lg font-bold">
+            <div class="flex justify-between items-center bg-[#fff5f8] border border-[#ff9bb3] p-3 rounded-xl">
+                <h2 class="text-sm font-bold text-[#ff5277]">⚙️ แผงควบคุมแอดมิน</h2>
+                <button onclick="backToMainFromAdmin()" class="text-xs bg-[#ffe5ed] text-[#5a4a5e] px-3 py-1.5 rounded-lg font-bold">
                     <i class="fa-solid fa-arrow-left"></i> ออกจากระบบ
                 </button>
             </div>
 
             <div class="info-card">
-                <div onclick="toggleAdminSection('store-settings-box')" class="flex justify-between items-center cursor-pointer text-sm font-bold text-[#d87093]">
+                <div onclick="toggleAdminSection('store-settings-box')" class="flex justify-between items-center cursor-pointer text-sm font-bold text-[#ff5277]">
                     <span>🛠️ ตั้งค่าสถานะร้าน & บัญชี (คลิก)</span>
                     <i id="icon-store-settings-box" class="fa-solid fa-chevron-up"></i>
                 </div>
-                <div id="store-settings-box" class="mt-3 pt-3 border-t border-dashed border-[#f8d7e3] space-y-3">
+                <div id="store-settings-box" class="mt-3 pt-3 border-t border-dashed border-[#ffccd5] space-y-3">
                     <div>
-                        <label class="text-xs font-bold text-[#8c7894]">สถานะร้าน:</label>
+                        <label class="text-xs font-bold text-[#a86b81]">สถานะร้าน:</label>
                         <div class="flex items-center gap-2">
                             <input type="color" id="edit-color-time" value="#059669" class="color-picker">
                             <input type="text" id="edit-status-time" class="admin-input !mt-0 text-sm">
                         </div>
                     </div>
                     <div>
-                        <label class="text-xs font-bold text-[#8c7894]">สถานะการจัดส่ง:</label>
+                        <label class="text-xs font-bold text-[#a86b81]">สถานะการจัดส่ง:</label>
                         <div class="flex items-center gap-2">
                             <input type="color" id="edit-color-shipping" value="#3b82f6" class="color-picker">
                             <input type="text" id="edit-status-shipping" class="admin-input !mt-0 text-sm">
                         </div>
                     </div>
                     <div>
-                        <label class="text-xs font-bold text-[#8c7894]">งานเซลล์ปิดสด:</label>
+                        <label class="text-xs font-bold text-[#a86b81]">งานเซลล์ปิดสด:</label>
                         <textarea id="edit-promo-1" class="admin-input text-sm" rows="3"></textarea>
                     </div>
                     <div>
-                        <label class="text-xs font-bold text-[#8c7894]">โปรเปิดบิล:</label>
+                        <label class="text-xs font-bold text-[#a86b81]">โปรเปิดบิล:</label>
                         <textarea id="edit-promo-2" class="admin-input text-sm" rows="3"></textarea>
                     </div>
                     <div>
-                        <label class="text-xs font-bold text-[#8c7894]">เลขบัญชีธนาคารร้าน:</label>
+                        <label class="text-xs font-bold text-[#a86b81]">เลขบัญชีธนาคารร้าน:</label>
                         <input type="text" id="edit-bank-info" class="admin-input !mt-0 text-sm" placeholder="เช่น 111-2-33333-4">
                     </div>
                     <div>
-                        <label class="text-xs font-bold text-[#8c7894]">TrueMoney Wallet:</label>
+                        <label class="text-xs font-bold text-[#a86b81]">TrueMoney Wallet:</label>
                         <input type="text" id="edit-wallet-info" class="admin-input !mt-0 text-sm" placeholder="เช่น 099-999-9999">
                     </div>
                     <button onclick="saveAdminData()" class="btn-main py-2 !text-sm">บันทึกข้อมูลเข้าระบบ</button>
                 </div>
             </div>
 
-            <div class="info-card !bg-[#fff0f3] !border-[#ffb6c1]">
-                <h3 class="text-sm font-bold text-[#d87093] mb-3">📥 รายการสลิปรอตรวจสอบ</h3>
+            <div class="info-card !bg-[#fff0f3] !border-[#ff9bb3]">
+                <h3 class="text-sm font-bold text-[#ff5277] mb-3">📥 รายการสลิปรอตรวจสอบ</h3>
                 <div id="admin-slips-container" class="space-y-4"></div>
             </div>
         </div>
 
-        <div class="text-center text-[10px] text-[#a3889b] pt-2 pb-1">
-            © Sunstory4 Official. All rights reserved. 💖
+        <div class="text-center text-[10px] text-[#a86b81] pt-2 pb-1">
+            © Sunstory4 Official. All rights reserved. 🌸🐰💖
         </div>
     </div>
 
@@ -558,7 +565,6 @@
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> กำลังค้นหา...';
 
             try {
-                // ดึงข้อมูลบัญชีล่าสุดจาก Firebase มาแสดงผลจริง
                 const configData = (await db.ref('storeConfig').once('value')).val() || {};
                 const bankText = configData.bankInfo || "111-2-33333-4";
                 const walletText = configData.walletInfo || "099-999-9999";
@@ -578,7 +584,7 @@
                         let percent = creditTargetNum > 0 ? (paidNum / creditTargetNum) * 100 : 0;
                         if (percent > 100) percent = 100;
 
-                        // แก้ไขเงื่อนไข: ต้องเหลือยอดคงเหลือ <= 0 และเป้าหมายต้องมากกว่า 0 จริงๆ ถึงจะขึ้นว่าผ่าน
+                        // 🎯 เงื่อนไขเข้มงวด: ต้องผ่อนครบเป้าหมายจริง ๆ เทถึงจะผ่าน
                         if (creditTargetNum > 0 && creditLeftNum <= 0 && paidNum >= creditTargetNum) {
                             progressHtml = `
                                 <div class="mt-4 bg-[#f0fdf4] border-2 border-[#bbf7d0] rounded-xl p-3 text-center shadow-sm">
@@ -590,13 +596,13 @@
                                 </div>`;
                         } else {
                             progressHtml = `
-                                <div class="mt-4 bg-[#fff5f8] border-2 border-[#f8d7e3] rounded-xl p-3 shadow-sm">
+                                <div class="mt-4 bg-[#fff5f8] border-2 border-[#ffb6c1] rounded-xl p-3 shadow-sm">
                                     <div class="flex justify-between items-end mb-1">
-                                        <div class="text-[13px] font-bold text-[#d87093]">🎯 ภารกิจดันยอดรับเครื่อง!</div>
-                                        <div class="text-[11px] font-bold text-[#c75b80] bg-white px-2 rounded-md border border-[#f8d7e3]">${Math.floor(percent)}%</div>
+                                        <div class="text-[13px] font-bold text-[#ff5277]">🎯 ภารกิจดันยอดรับเครื่อง!</div>
+                                        <div class="text-[11px] font-bold text-[#c75b80] bg-white px-2 rounded-md border border-[#ffb6c1]">${Math.floor(percent)}%</div>
                                     </div>
-                                    <div class="w-full h-3 bg-[#fce4ec] rounded-full overflow-hidden my-2 border border-[#f8d7e3]">
-                                        <div class="h-full bg-gradient-to-r from-[#ff9bb3] to-[#c75b80] rounded-full transition-all duration-1000" style="width: ${percent}%;"></div>
+                                    <div class="w-full h-3 bg-[#ffe5ed] rounded-full overflow-hidden my-2 border border-[#ffb6c1]">
+                                        <div class="h-full bg-gradient-to-r from-[#ff5277] to-[#d87093] rounded-full transition-all duration-1000" style="width: ${percent}%;"></div>
                                     </div>
                                     <div class="text-[12px] text-[#c75b80] text-center font-medium">
                                         🔥 ฮึบๆ อีกแค่ <b class="text-[14px]">${creditLeftNum > 0 ? creditLeftNum.toLocaleString() : 0}</b> บาท เท่านั้น!
@@ -606,30 +612,30 @@
                     }
 
                     resultBox.innerHTML = `
-                        <div class="info-card !bg-[#fffcf5] !border-[#fce4ec]">
-                            <div class="text-sm font-bold text-[#c75b80] mb-3 border-b border-dashed border-[#f8d7e3] pb-2 flex justify-between items-center">
+                        <div class="info-card !bg-[#fffcf5] !border-[#ffccd5]">
+                            <div class="text-sm font-bold text-[#c75b80] mb-3 border-b border-dashed border-[#ffccd5] pb-2 flex justify-between items-center">
                                 <span class="text-base">🎀 รหัสลูกค้า: ${inputId}</span>
-                                <span class="text-xs bg-white px-2.5 py-1 rounded-full text-[#5a4a5e] border border-[#fce4ec]">อายุ ${data.age} ปี</span>
+                                <span class="text-xs bg-white px-2.5 py-1 rounded-full text-[#5a4a5e] border border-[#ffccd5]">อายุ ${data.age} ปี</span>
                             </div>
                             <div class="text-sm text-[#5a4a5e] space-y-2 font-medium">
                                 <p>👤 <b>ชื่อลูกค้า:</b> ${data.name}</p>
-                                <p>🏷️ <b>ประเภท:</b> <span class="text-[#d87093]">${data.type}</span></p>
+                                <p>🏷️ <b>ประเภท:</b> <span class="text-[#ff5277]">${data.type}</span></p>
                                 <p>📱 <b>รุ่นที่ผ่อน:</b> ${data.model}</p>
-                                <div class="mt-3 pt-3 border-t border-dashed border-[#f8d7e3] space-y-1.5">
+                                <div class="mt-3 pt-3 border-t border-dashed border-[#ffccd5] space-y-1.5">
                                     <p>💰 <b>ยอดเครื่องรวม:</b> ${parseFloat(data.total).toLocaleString()} ฿</p>
                                     <p>💸 <b>ยอดที่ส่งแล้ว:</b> ${paidNum.toLocaleString()} ฿</p>
-                                    <p class="text-lg mt-2 font-bold text-[#d87093]">🎯 ยอดคงเหลือ: ${parseFloat(data.balance).toLocaleString()} ฿</p>
+                                    <p class="text-lg mt-2 font-bold text-[#ff5277]">🎯 ยอดคงเหลือ: ${parseFloat(data.balance).toLocaleString()} ฿</p>
                                 </div>
                             </div>
                             ${progressHtml}
                         </div>
 
                         <div class="mt-4 payment-section relative">
-                            <div class="text-center font-bold text-[#d87093] mb-4 text-sm flex items-center justify-center gap-1">
+                            <div class="text-center font-bold text-[#ff5277] mb-4 text-sm flex items-center justify-center gap-1">
                                 <i class="fa-solid fa-wallet"></i> ช่องทางชำระเงินของร้าน 🎀
                             </div>
                             
-                            <!-- บัญชีธนาคาร -->
+                            <!-- บัญชีธนาคาร KTB -->
                             <div class="relative bg-gradient-to-br from-[#e0f2fe] to-[#bae6fd] border border-[#7dd3fc] rounded-2xl p-4 mb-3 flex justify-between items-center shadow-sm">
                                 <div>
                                     <div class="text-[14px] font-bold text-[#0284c7] mb-1">กรุงไทย (KTB) 💙</div>
@@ -651,7 +657,7 @@
                             </div>
 
                             <div id="upload-zone" class="info-card flex flex-col gap-2.5 !bg-white">
-                                <p class="text-sm font-bold text-[#d87093]">📤 แจ้งชำระเงิน / แนบสลิป:</p>
+                                <p class="text-sm font-bold text-[#ff5277]">📤 แจ้งชำระเงิน / แนบสลิป:</p>
                                 <input type="number" id="slip-amount" class="admin-input !mt-0 text-base" placeholder="จำนวนเงินที่โอน (เช่น 1500)">
                                 <input type="file" id="slip-file" accept="image/*" class="admin-input !mt-0 text-xs py-2.5">
                                 <button id="btn-submit-slip" onclick="submitSlip()" class="btn-main !py-3 !text-sm mt-1">
@@ -659,8 +665,8 @@
                                 </button>
                             </div>
                             <div id="slip-status" class="hidden-page mt-1 bg-[#fff0f3] border border-[#ffb6c1] rounded-xl p-3 text-center shadow-sm">
-                                <div class="text-[14px] font-bold text-[#d87093]"><i class="fa-solid fa-hourglass-half rotate-animation inline-block mr-1"></i> สถานะ: รอตรวจสอบสลิป</div>
-                                <div class="text-[12px] text-[#8c7894] mt-1 font-medium">แอดมินได้รับสลิปแล้วค่ะ 🌸</div>
+                                <div class="text-[14px] font-bold text-[#ff5277]"><i class="fa-solid fa-hourglass-half rotate-animation inline-block mr-1"></i> สถานะ: รอตรวจสอบสลิป</div>
+                                <div class="text-[12px] text-[#a86b81] mt-1 font-medium">แอดมินได้รับสลิปแล้วค่ะ 🌸</div>
                             </div>
                         </div>
                     `;
@@ -690,6 +696,7 @@
                 reader.readAsDataURL(file);
                 reader.onload = async function() {
                     const base64Image = reader.result;
+
                     const now = new Date();
                     const timeString = now.toLocaleDateString('th-TH') + ' ' + now.toLocaleTimeString('th-TH', {hour: '2-digit', minute:'2-digit'}) + ' น.';
 
@@ -727,22 +734,22 @@
                 const slips = snapshot.val();
                 
                 if(!slips) {
-                    container.innerHTML = '<p class="text-center text-sm text-[#8c7894] py-4">ยังไม่มีสลิปรอตรวจสอบค่ะ 🌸</p>';
+                    container.innerHTML = '<p class="text-center text-sm text-[#a86b81] py-4">ยังไม่มีสลิปรอตรวจสอบค่ะ 🌸</p>';
                     return;
                 }
 
                 Object.keys(slips).forEach(key => {
                     const s = slips[key];
                     const slipHtml = `
-                        <div class="bg-white p-3.5 rounded-xl border border-[#f8d7e3] space-y-2 text-sm font-medium" id="slip-${key}">
-                            <div class="flex justify-between items-center text-base font-bold text-[#c75b80] border-b border-dashed border-[#f8d7e3] pb-1.5">
+                        <div class="bg-white p-3.5 rounded-xl border border-[#ffb6c1] space-y-2 text-sm font-medium" id="slip-${key}">
+                            <div class="flex justify-between items-center text-base font-bold text-[#c75b80] border-b border-dashed border-[#ffb6c1] pb-1.5">
                                 <span>รหัส: ${s.id}</span>
-                                <span class="text-[11px] bg-[#fff0f3] px-2 py-1 rounded-full border border-[#ffb6c1]">รอตรวจสอบ</span>
+                                <span class="text-[11px] bg-[#fff0f3] px-2 py-1 rounded-full border border-[#ff9bb3]">รอตรวจสอบ</span>
                             </div>
                             <p class="text-[13px] text-[#4682b4]">⏱️ <b>เวลาส่ง:</b> ${s.time}</p>
                             <p class="text-[13px] text-[#059669]">💰 <b>ยอดโอนที่แจ้ง:</b> ${s.amount} ฿</p>
-                            <div class="flex flex-col gap-2 pt-3 border-t border-dashed border-[#f8d7e3]">
-                                <button onclick="openSlipModal('${s.imageUrl}')" class="bg-[#f3d9ce] text-[#5a4a5e] px-3 py-2 rounded-xl text-[12px] font-bold hover:bg-[#ffb6c1] active:scale-95 transition-transform w-full shadow-sm">
+                            <div class="flex flex-col gap-2 pt-3 border-t border-dashed border-[#ffb6c1]">
+                                <button onclick="openSlipModal('${s.imageUrl}')" class="bg-[#ffe5ed] text-[#5a4a5e] px-3 py-2 rounded-xl text-[12px] font-bold hover:bg-[#ffb6c1] active:scale-95 transition-transform w-full shadow-sm">
                                     <i class="fa-solid fa-magnifying-glass"></i> ดูรูปสลิป
                                 </button>
                                 <div class="flex gap-2">
@@ -826,7 +833,7 @@
             box.classList.remove('hidden-page');
             document.getElementById(containerId).innerHTML = text.split('\n').map(line => {
                 let t = line.trim();
-                return t.startsWith('#') ? `<div class="text-[13px] font-bold text-[#d87093] mb-2 mt-2">${t.replace(/^#\s*/, '')}</div>` : `<div>${t}</div>`;
+                return t.startsWith('#') ? `<div class="text-[13px] font-bold text-[#ff5277] mb-2 mt-2">${t.replace(/^#\s*/, '')}</div>` : `<div>${t}</div>`;
             }).join('');
         }
     </script>

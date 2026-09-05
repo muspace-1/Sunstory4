@@ -142,6 +142,18 @@
             overflow: hidden;
         }
 
+        /* เอฟเฟกต์เรืองแสงตรงชื่อ กนกอร */
+        .glow-name {
+            color: #ff2a5f;
+            font-weight: 700;
+            text-shadow: 0 0 8px rgba(255, 82, 119, 0.6), 0 0 15px rgba(255, 155, 179, 0.5);
+            animation: textGlow 2s infinite alternate;
+        }
+        @keyframes textGlow {
+            from { text-shadow: 0 0 4px rgba(255, 82, 119, 0.4); }
+            to { text-shadow: 0 0 12px rgba(255, 82, 119, 0.9), 0 0 20px rgba(255, 110, 145, 0.6); }
+        }
+
         .info-card {
             background: #ffffff;
             border-radius: 1.25rem;
@@ -153,7 +165,6 @@
             overflow: hidden;
         }
 
-        /* กิมมิคไอคอนสีทึบจางๆ สุ่มอยู่ในกรอบข้อความ */
         .watermark-icon {
             position: absolute;
             bottom: 5px;
@@ -266,6 +277,27 @@
         }
         .rotate-animation { animation: rotate-clock 2s linear infinite; }
         @keyframes rotate-clock { 100% { transform: rotate(360deg); } }
+
+        /* สไตล์ Tab สำหรับหน้าแอดมิน */
+        .admin-tab-btn {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border-radius: 0.75rem;
+            background: #ffe5ed;
+            color: #a86b81;
+            border: 1px solid #ffb6c1;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .admin-tab-btn.active {
+            background: linear-gradient(135deg, #ff5277, #d87093);
+            color: white;
+            border-color: #ff5277;
+            box-shadow: 0 4px 10px rgba(255, 82, 119, 0.3);
+        }
     </style>
 </head>
 <body>
@@ -276,7 +308,7 @@
     <i class="fa-solid fa-heart floating-heart fh-4"></i>
     <i class="fa-solid fa-heart floating-heart fh-5"></i>
 
-    <!-- Modal ล็อกอินแอดมิน (ใส่รหัส S01-S04) -->
+    <!-- Modal ล็อกอินแอดมิน -->
     <div id="login-modal" class="modal-overlay hidden-page">
         <div class="modal-content">
             <div class="flex justify-between items-center mb-4">
@@ -306,7 +338,7 @@
     </div>
 
     <div class="main-container">
-        <!-- Header (ซ่อนตอนอยู่หน้าแรก จะไปปรากฏพร้อมกันที่หน้าสองและหน้าสาม) -->
+        <!-- Header (ซ่อนตอนหน้าแรก จะแสดงพร้อมกันเมื่อเข้าหน้าโปรโมชั่นหรือเช็กยอด) -->
         <div id="header-zones" class="hidden-page flex flex-col gap-4">
             <div class="brand-header-box">
                 <div>
@@ -328,14 +360,14 @@
                         <i class="fa-solid fa-triangle-exclamation"></i> แจ้งเพื่อทราบ / ป้องกันมิจฉาชีพ
                     </div>
                     <p class="text-sm font-medium text-[#5a4a5e]">
-                        ชื่อบัญชีโอนเงิน : <span class="font-bold text-[#ff5277] text-base">กนกอร</span> เท่านั้น!
+                        ชื่อบัญชีโอนเงิน : <span class="glow-name text-base">กนกอร</span> เท่านั้น!
                     </p>
                     <p class="text-[11px] text-[#a86b81] mt-1.5">นอกเหนือจากชื่อนี้ ห้ามโอนเด็ดขาดนะคะ ⚠️</p>
                 </div>
             </div>
         </div>
 
-        <!-- PAGE 1 (หน้าแรกสุด แสดงปกติ) -->
+        <!-- PAGE 1 (หน้าแรกสุด) -->
         <div id="page-1" class="flex flex-col gap-4 transition-opacity duration-300">
             <div class="brand-header-box">
                 <div>
@@ -357,7 +389,7 @@
                         <i class="fa-solid fa-triangle-exclamation"></i> แจ้งเพื่อทราบ / ป้องกันมิจฉาชีพ
                     </div>
                     <p class="text-sm font-medium text-[#5a4a5e]">
-                        ชื่อบัญชีโอนเงิน : <span class="font-bold text-[#ff5277] text-base">กนกอร</span> เท่านั้น!
+                        ชื่อบัญชีโอนเงิน : <span class="glow-name text-base">กนกอร</span> เท่านั้น!
                     </p>
                     <p class="text-[11px] text-[#a86b81] mt-1.5">นอกเหนือจากชื่อนี้ ห้ามโอนเด็ดขาดนะคะ ⚠️</p>
                 </div>
@@ -396,7 +428,7 @@
             </button>
         </div>
 
-        <!-- LOADING (หน้าต่างหลอดโหลดตอนกดเข้าสู่ร้าน) -->
+        <!-- LOADING -->
         <div id="loading-screen" class="hidden-page loading-container">
             <div class="bunny-icon">🐰</div>
             <h2 id="loading-text" class="text-[16px] font-bold text-[#ff5277] mb-1">น้องกระต่ายเตรียมข้อมูลนะคะ...</h2>
@@ -405,7 +437,7 @@
             </div>
         </div>
 
-        <!-- PAGE 2 (หน้าโปรโมชั่น แสดงหัวข้อร้านขึ้นมาพร้อมกัน) -->
+        <!-- PAGE 2 (หน้าโปรโมชั่น) -->
         <div id="page-2" class="hidden-page flex flex-col gap-4 pt-2">
             <div class="text-center pb-1">
                 <h2 class="text-sm font-bold text-[#ff5277]">🌸 ข้อมูลและโปรโมชั่นประจำร้าน 🌸</h2>
@@ -423,7 +455,7 @@
             </button>
         </div>
 
-        <!-- PAGE 3 (เช็กยอด) -->
+        <!-- PAGE 3 (เช็กยอด + ระบบจำรหัสลูกค้าในเครื่อง) -->
         <div id="page-3" class="hidden-page flex flex-col gap-4 pt-2">
             <div class="text-center pb-1">
                 <h2 class="text-sm font-bold text-[#ff5277]">💳 ระบบเช็กยอดผ่อนชำระ 💳</h2>
@@ -453,7 +485,7 @@
             </button>
         </div>
 
-        <!-- ADMIN PANEL (แอดมินล้วนๆ ซ่อนหัวร้าน) -->
+        <!-- ADMIN PANEL (พร้อม Tab เมนูแยกส่วนชัดเจน) -->
         <div id="admin-full-page" class="hidden-page flex flex-col gap-4 pt-2">
             <div class="flex justify-between items-center bg-[#fff5f8] border border-[#ff9bb3] p-3 rounded-xl">
                 <div>
@@ -465,12 +497,26 @@
                 </button>
             </div>
 
-            <div class="info-card">
-                <div onclick="toggleAdminSection('store-settings-box')" class="flex justify-between items-center cursor-pointer text-sm font-bold text-[#ff5277]">
-                    <span>🛠️ ตั้งค่าสถานะร้าน & บัญชี (คลิก)</span>
-                    <i id="icon-store-settings-box" class="fa-solid fa-chevron-up"></i>
-                </div>
-                <div id="store-settings-box" class="mt-3 pt-3 border-t border-dashed border-[#ffccd5] space-y-3">
+            <!-- Tab เมนูเลือกหน้าแอดมิน -->
+            <div class="flex gap-2 bg-[#fff5f8] p-1.5 rounded-xl border border-[#ff9bb3]">
+                <button id="tab-btn-1" onclick="switchAdminTab(1)" class="admin-tab-btn active">
+                    <i class="fa-solid fa-list-check"></i> สลิปรอตรวจสอบ
+                </button>
+                <button id="tab-btn-2" onclick="switchAdminTab(2)" class="admin-tab-btn">
+                    <i class="fa-solid fa-gears"></i> ตั้งค่าร้าน & บัญชี
+                </button>
+            </div>
+
+            <!-- แท็บที่ 1: รายการสลิปรอตรวจสอบ (เปิดมาเจออันนี้แรกสุด) -->
+            <div id="admin-tab-content-1" class="info-card !bg-[#fff0f3] !border-[#ff9bb3]">
+                <h3 class="text-sm font-bold text-[#ff5277] mb-3">📥 รายการสลิปรอตรวจสอบ</h3>
+                <div id="admin-slips-container" class="space-y-4"></div>
+            </div>
+
+            <!-- แท็บที่ 2: ตั้งค่าสถานะร้าน & บัญชี (ซ่อนไว้ กดสลับมาดูได้) -->
+            <div id="admin-tab-content-2" class="info-card hidden-page">
+                <h3 class="text-sm font-bold text-[#ff5277] mb-3">🛠️ ตั้งค่าสถานะร้าน & บัญชี</h3>
+                <div class="space-y-3">
                     <div>
                         <label class="text-xs font-bold text-[#a86b81]">สถานะร้าน:</label>
                         <div class="flex items-center gap-2">
@@ -501,13 +547,8 @@
                         <label class="text-xs font-bold text-[#a86b81]">TrueMoney Wallet:</label>
                         <input type="text" id="edit-wallet-info" class="admin-input !mt-0 text-sm" placeholder="เช่น 099-999-9999">
                     </div>
-                    <button onclick="saveAdminData()" class="btn-main py-2 !text-sm">บันทึกข้อมูลเข้าระบบ</button>
+                    <button onclick="saveAdminData()" class="btn-main py-2 !text-sm mt-2">บันทึกข้อมูลเข้าระบบ</button>
                 </div>
-            </div>
-
-            <div class="info-card !bg-[#fff0f3] !border-[#ff9bb3]">
-                <h3 class="text-sm font-bold text-[#ff5277] mb-3">📥 รายการสลิปรอตรวจสอบ</h3>
-                <div id="admin-slips-container" class="space-y-4"></div>
             </div>
         </div>
 
@@ -560,17 +601,36 @@
                 renderPromo(p2, 'promo-2-content', 'promo-2-box');
             }).catch(err => console.error("Firebase error:", err));
             listenToPendingSlips();
+
+            // โหลดรหัสลูกค้าที่เคยบันทึกไว้ในเครื่อง (Remember Me)
+            const savedId = localStorage.getItem('sunstory_saved_id');
+            const savedPhone = localStorage.getItem('sunstory_saved_phone');
+            if (savedId) document.getElementById('customer-id-input').value = savedId;
+            if (savedPhone) document.getElementById('customer-phone-input').value = savedPhone;
         };
 
         function copyText(text) {
             navigator.clipboard.writeText(text).then(() => alert('คัดลอก "' + text + '" เรียบร้อยแล้วค่ะ! 📋✨')).catch(err => console.error("Copy failed", err));
         }
 
-        function toggleAdminSection(id) {
-            const box = document.getElementById(id);
-            const icon = document.getElementById('icon-' + id);
-            box.classList.toggle('hidden-page');
-            icon.className = box.classList.contains('hidden-page') ? "fa-solid fa-chevron-down" : "fa-solid fa-chevron-up";
+        // ฟังก์ชันสลับ Tab หน้าแอดมิน
+        function switchAdminTab(tabIndex) {
+            const btn1 = document.getElementById('tab-btn-1');
+            const btn2 = document.getElementById('tab-btn-2');
+            const content1 = document.getElementById('admin-tab-content-1');
+            const content2 = document.getElementById('admin-tab-content-2');
+
+            if (tabIndex === 1) {
+                btn1.classList.add('active');
+                btn2.classList.remove('active');
+                content1.classList.remove('hidden-page');
+                content2.classList.add('hidden-page');
+            } else {
+                btn2.classList.add('active');
+                btn1.classList.remove('active');
+                content2.classList.remove('hidden-page');
+                content1.classList.add('hidden-page');
+            }
         }
 
         function openSlipModal(imgSrc) {
@@ -594,7 +654,6 @@
             setTimeout(() => { document.getElementById('progress-bar').style.width = '100%'; }, 50);
             setTimeout(() => {
                 document.getElementById('loading-screen').classList.add('hidden-page');
-                // แสดงส่วนหัวร้านขึ้นมาพร้อมกับหน้าสอง
                 document.getElementById('header-zones').classList.remove('hidden-page');
                 document.getElementById('page-2').classList.remove('hidden-page');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -617,8 +676,6 @@
 
         function goBackFromPage3() {
             goBackToPage1('page-3');
-            document.getElementById('customer-id-input').value = '';
-            document.getElementById('customer-phone-input').value = '';
             document.getElementById('installment-result').classList.add('hidden-page');
             document.getElementById('installment-error').classList.add('hidden-page');
         }
@@ -635,6 +692,10 @@
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> กำลังค้นหา...';
 
             try {
+                // บันทึกรหัสลงในเครื่องลูกค้าอัตโนมัติ (Remember Me)
+                localStorage.setItem('sunstory_saved_id', inputId);
+                localStorage.setItem('sunstory_saved_phone', inputPhone);
+
                 const configData = (await db.ref('storeConfig').once('value')).val() || {};
                 const bankText = configData.bankInfo || "111-2-33333-4";
                 const walletText = configData.walletInfo || "099-999-9999";
@@ -927,6 +988,9 @@
             document.getElementById('page-2').classList.add('hidden-page');
             document.getElementById('page-3').classList.add('hidden-page');
             document.getElementById('admin-full-page').classList.remove('hidden-page');
+            
+            // เปิดหน้าแรกแอดมินที่แท็บสลิปรอตรวจสอบเสมอ
+            switchAdminTab(1);
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 

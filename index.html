@@ -255,7 +255,7 @@
     <i class="fa-solid fa-heart floating-heart fh-4"></i>
     <i class="fa-solid fa-heart floating-heart fh-5"></i>
 
-    <!-- Modal ล็อกอินแอดมิน (ใส่แค่รหัส S01 / S02 / S03 / S04 โดยไม่ใช้รหัสผ่าน 1234) -->
+    <!-- Modal ล็อกอินแอดมิน (ใส่แค่รหัส S01-S04) -->
     <div id="login-modal" class="modal-overlay hidden-page">
         <div class="modal-content">
             <div class="flex justify-between items-center mb-4">
@@ -285,7 +285,7 @@
     </div>
 
     <div class="main-container">
-        <!-- Header (หน้าร้านปกติ) -->
+        <!-- Header (แสดงผลที่หน้าแรก และหน้าสอง ตามปกติ) -->
         <div id="header-zones" class="flex flex-col gap-4">
             <div class="brand-header-box">
                 <div>
@@ -349,7 +349,7 @@
             </div>
         </div>
 
-        <!-- PAGE 2 -->
+        <!-- PAGE 2 (หน้าโปรโมชั่น แสดงหัวข้อร้านปกติ) -->
         <div id="page-2" class="hidden-page flex flex-col gap-4 pt-2">
             <div class="text-center pb-1">
                 <h2 class="text-sm font-bold text-[#ff5277]">🌸 ข้อมูลและโปรโมชั่นประจำร้าน 🌸</h2>
@@ -392,7 +392,7 @@
             </button>
         </div>
 
-        <!-- ADMIN PANEL (แอดมินล้วนๆ ตัดชื่อร้านและกรอบเตือนออก) -->
+        <!-- ADMIN PANEL (แอดมินล้วนๆ ซ่อนหัวร้านเฉพาะหน้านี้) -->
         <div id="admin-full-page" class="hidden-page flex flex-col gap-4 pt-2">
             <div class="flex justify-between items-center bg-[#fff5f8] border border-[#ff9bb3] p-3 rounded-xl">
                 <div>
@@ -527,35 +527,35 @@
             document.getElementById('login-modal').classList.add('hidden-page');
         }
 
-        function enterStore() { switchPage('page-1', 'page-2'); }
+        function enterStore() { 
+            document.getElementById('page-1').classList.add('hidden-page');
+            document.getElementById('loading-screen').classList.remove('hidden-page');
+            setTimeout(() => { document.getElementById('progress-bar').style.width = '100%'; }, 50);
+            setTimeout(() => {
+                document.getElementById('loading-screen').classList.add('hidden-page');
+                document.getElementById('page-2').classList.remove('hidden-page');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 1500);
+        }
+
         function goBackToPage1(fromPage) {
             document.getElementById(fromPage).classList.add('hidden-page');
             document.getElementById('page-1').classList.remove('hidden-page');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+
         function openPage3() {
             document.getElementById('page-1').classList.add('hidden-page');
             document.getElementById('page-3').classList.remove('hidden-page');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+
         function goBackFromPage3() {
             goBackToPage1('page-3');
             document.getElementById('customer-id-input').value = '';
             document.getElementById('customer-phone-input').value = '';
             document.getElementById('installment-result').classList.add('hidden-page');
             document.getElementById('installment-error').classList.add('hidden-page');
-        }
-        function switchPage(hideId, showId) {
-            document.getElementById(hideId).classList.add('hidden-page');
-            document.getElementById('header-zones').classList.add('hidden-page');
-            document.getElementById('loading-screen').classList.remove('hidden-page');
-            setTimeout(() => { document.getElementById('progress-bar').style.width = '100%'; }, 50);
-            setTimeout(() => {
-                document.getElementById('loading-screen').classList.add('hidden-page');
-                document.getElementById('header-zones').classList.add('hidden-page'); 
-                document.getElementById(showId).classList.remove('hidden-page');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }, 1500);
         }
 
         async function searchCustomer() {
@@ -583,7 +583,6 @@
                     const paidNum = parseFloat(data.paid.toString().replace(/,/g, '')) || 0;
                     const creditTargetNum = parseFloat(data.creditTarget.toString().replace(/,/g, '')) || 0;
                     
-                    // คำนวณยอดเงินที่ต้องส่งเพิ่มให้แม่นยำ ไม่ให้ติด 0 ผิดพลาด
                     let creditLeftNum = creditTargetNum - paidNum;
                     if (creditLeftNum < 0) creditLeftNum = 0;
                     
@@ -630,6 +629,7 @@
                                 <p>📱 <b>รุ่นที่ผ่อน:</b> ${data.model}</p>
                                 <div class="mt-3 pt-3 border-t border-dashed border-[#ffccd5] space-y-1.5">
                                     <p>💰 <b>ยอดเครื่องรวม:</b> ${parseFloat(data.total).toLocaleString()} ฿</p>
+                                    <p class="text-emerald-600 font-bold">🎁 <b>ส่วนลด:</b> ${data.discount ? parseFloat(data.discount).toLocaleString() : '0'} ฿</p>
                                     <p>💸 <b>ยอดที่ส่งแล้ว:</b> ${paidNum.toLocaleString()} ฿</p>
                                     <p class="text-lg mt-2 font-bold text-[#ff5277]">🎯 ยอดคงเหลือ: ${parseFloat(data.balance).toLocaleString()} ฿</p>
                                 </div>
@@ -823,24 +823,27 @@
             }
         }
 
-        // เช็ครหัสแอดมิน (ใส่แค่ S01 / S02 / S03 / S04 ไม่ต้องใช้ 1234 แล้ว)
         function checkPassword() {
             const adminIdInput = document.getElementById('admin-id-input').value.trim().toUpperCase();
 
             if (!adminIdInput) return alert('กรุณากรอกรหัสแอดมินด้วยค่ะ (เช่น S01) 🐰');
             
-            // บันทึกรหัสแอดมินและเข้าสู่ระบบทันที
             sessionStorage.setItem('sunstoryAdminId', adminIdInput);
             document.getElementById('admin-logged-in-label').innerText = 'ผู้ใช้งานระบบ: แอดมิน ' + adminIdInput;
             closeModals();
-            switchPage('page-1', 'admin-full-page');
+            
+            // ซ่อนหัวร้านเฉพาะตอนอยู่หน้าแอดมิน
+            document.getElementById('header-zones').classList.add('hidden-page');
+            document.getElementById('page-1').classList.add('hidden-page');
             document.getElementById('page-2').classList.add('hidden-page');
             document.getElementById('page-3').classList.add('hidden-page');
+            document.getElementById('admin-full-page').classList.remove('hidden-page');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function backToMainFromAdmin() {
             document.getElementById('admin-full-page').classList.add('hidden-page');
-            document.getElementById('header-zones').classList.remove('hidden-page'); 
+            document.getElementById('header-zones').classList.remove('hidden-page'); // แสดงหัวร้านคืนเมื่อออกจากระบบแอดมิน
             document.getElementById('page-1').classList.remove('hidden-page');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }

@@ -415,11 +415,11 @@
             <div class="info-card flex flex-col gap-3">
                 <div>
                     <label class="text-sm font-bold text-[#8c7894]">รหัสลูกค้า:</label>
-                    <input type="text" id="customer-id-input" class="admin-input uppercase !mt-1 text-center text-lg font-bold" placeholder="เช่น SF001">
+                    <input type="text" id="customer-id-input" class="admin-input uppercase !mt-1 text-center text-lg font-bold" placeholder="เช่น SHF1325">
                 </div>
                 <div>
                     <label class="text-sm font-bold text-[#8c7894]">เบอร์โทรศัพท์ (4 ตัวท้าย):</label>
-                    <input type="text" id="customer-phone-input" maxlength="4" class="admin-input !mt-1 text-center text-lg font-bold" placeholder="เช่น 5678">
+                    <input type="text" id="customer-phone-input" maxlength="4" class="admin-input !mt-1 text-center text-lg font-bold" placeholder="เช่น 1234">
                 </div>
                 <button id="btn-search" onclick="searchCustomer()" class="btn-main !py-3 !text-base mt-1">
                     <i class="fa-solid fa-magnifying-glass"></i> ค้นหาข้อมูล
@@ -552,55 +552,6 @@
         let defaultPromo1 = `# ตอนนี้มี งานเซลล์ปิดสดนะค้าบ 🎀\n• Iphone xr 2,600฿ (ตัวเดียว) 🧸\n• Iphone 7 plus 800฿ (ตัวเดียว) 🧸\n• Iphone 7 900฿ (มีหลายตัว) 🧸`;
         let defaultPromo2 = `# 🧸 โปรเปิดบิล 17-31 สิงหาคม 🧸\n👉 เปิดบิล 10฿ ลด 200฿\n👉 เปิดบิล 50฿ ลด 500฿\n👉 เปิดบิล 100฿ ลด 1,000฿\n# 🎀 ใช้ได้ทั้งผ่อนไปใช้ไป/ผ่อนครบรับของเลยนะคะ 🎀 💖`;
 
-        let mockCustomers = {
-            "SF001": {
-                name: "คุณ ธนพร คนสวยสุด",
-                phone: "5678",
-                age: 25,
-                type: "ผ่อนไปใช้ไป (ส่งรายสัปดาห์)",
-                model: "iPhone 14 Pro (128GB)",
-                condition: "มือ 2 (เครื่องนอก)",
-                color: "ดำ (สีสำรอง: ขาว)",
-                defect: "จอแจ้ง, รอยตามการใช้งาน",
-                total: "18,000",
-                paid: "4,000",
-                balance: "14,000",
-                statusColor: "text-[#d87093]",
-                creditTarget: 10000,
-                creditLeft: 6000
-            },
-            "SF002": {
-                name: "คุณ สุดหล่อ รักซันสตอรี่",
-                phone: "1234",
-                age: 20,
-                type: "ผ่อนครบรับของ (ส่งรายเดือน)",
-                model: "iPad Air 5 (256GB)",
-                condition: "มือ 1 (เครื่องไทย)",
-                color: "ม่วงพาสเทล (สีสำรอง: ชมพู)",
-                defect: "ไม่มี (มือ 1)",
-                total: "25,000",
-                paid: "20,000",
-                balance: "5,000",
-                statusColor: "text-[#d97706]"
-            },
-            "SF003": {
-                name: "คุณ น่ารัก สดใส",
-                phone: "9999",
-                age: 22,
-                type: "ผ่อนไปใช้ไป (ส่งรายสัปดาห์)",
-                model: "iPhone 13 (128GB)",
-                condition: "มือ 1 (เครื่องไทย)",
-                color: "ชมพู",
-                defect: "ไม่มี",
-                total: "22,000",
-                paid: "10,000",
-                balance: "12,000",
-                statusColor: "text-[#d87093]",
-                creditTarget: 10000,
-                creditLeft: 0
-            }
-        };
-
         window.onload = function() {
             try {
                 db.ref('storeConfig').once('value').then((snapshot) => {
@@ -718,152 +669,165 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function searchCustomer() {
+        // ==========================================
+        // ฟังก์ชันดึงข้อมูลจาก Google Sheets (ใหม่)
+        // ==========================================
+        async function searchCustomer() {
             const btn = document.getElementById('btn-search');
-            btn.disabled = true;
             const inputId = document.getElementById('customer-id-input').value.trim().toUpperCase();
             const inputPhone = document.getElementById('customer-phone-input').value.trim();
             const resultBox = document.getElementById('installment-result');
             const errorBox = document.getElementById('installment-error');
 
+            if (!inputId || !inputPhone) {
+                alert('กรุณากรอกรหัสลูกค้าและเบอร์โทรศัพท์ค่ะ 🐰');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> กำลังค้นหา...';
+
+            const scriptUrl = 'https://script.google.com/macros/s/AKfycbx2cnZZSD0EnCdsV_7OFmTJl87P7q0qz8uIdUBcCvht00bIgU47IUHm_-fI0qYnf6-4/exec';
+
             try {
-                db.ref('storeConfig').once('value').then((snapshot) => {
-                    const configData = snapshot.val() || {};
-                    const bankText = configData.bankInfo || "111-2-33333-4";
-                    const walletText = configData.walletInfo || "099-999-9999";
+                // ดึงข้อมูลการตั้งค่าร้านจาก Firebase
+                const snapshot = await db.ref('storeConfig').once('value');
+                const configData = snapshot.val() || {};
+                const bankText = configData.bankInfo || "111-2-33333-4";
+                const walletText = configData.walletInfo || "099-999-9999";
 
-                    if (mockCustomers[inputId] && mockCustomers[inputId].phone === inputPhone) {
-                        const data = mockCustomers[inputId];
-                        
-                        // 🎯 เช็กเงื่อนไขสร้าง "หลอดพลังดันยอด" (เฉพาะคนผ่อนไปใช้ไป)
-                        let progressHtml = '';
-                        if (data.type.includes("ผ่อนไปใช้ไป")) {
-                            let percent = (parseInt(data.paid.replace(/,/g, '')) / data.creditTarget) * 100;
-                            if (percent > 100) percent = 100;
+                // ยิงไปดึงข้อมูลจาก Google Sheets
+                const response = await fetch(`${scriptUrl}?id=${inputId}&phone=${inputPhone}`);
+                const resData = await response.json();
 
-                            if (data.creditLeft <= 0 || percent >= 100) {
-                                progressHtml = `
-                                    <div class="mt-4 bg-[#f0fdf4] border-2 border-[#bbf7d0] rounded-xl p-3 text-center shadow-sm">
-                                        <div class="text-[14px] font-bold text-[#166534] mb-1">🎉 ยินดีด้วย! เครดิตผ่านแล้ว 🎉</div>
-                                        <div class="text-[12px] font-medium text-[#15803d]">ทักหาแอดมินเพื่อรับเครื่องไปใช้ได้เลยค่า 💖</div>
-                                        <div class="w-full h-3 bg-[#dcfce7] rounded-full mt-2 overflow-hidden border border-[#bbf7d0]">
-                                            <div class="h-full bg-gradient-to-r from-[#4ade80] to-[#22c55e] w-full rounded-full"></div>
-                                        </div>
+                if (resData.success) {
+                    const data = resData.data;
+                    const paidNum = parseFloat(data.paid.toString().replace(/,/g, '')) || 0;
+                    const creditTargetNum = parseFloat(data.creditTarget.toString().replace(/,/g, '')) || 0;
+                    const creditLeftNum = parseFloat(data.creditLeft.toString().replace(/,/g, '')) || 0;
+                    
+                    let progressHtml = '';
+                    if (data.type.includes("ผ่อนไปใช้ไป")) {
+                        let percent = creditTargetNum > 0 ? (paidNum / creditTargetNum) * 100 : 0;
+                        if (percent > 100) percent = 100;
+
+                        if (creditLeftNum <= 0 || percent >= 100) {
+                            progressHtml = `
+                                <div class="mt-4 bg-[#f0fdf4] border-2 border-[#bbf7d0] rounded-xl p-3 text-center shadow-sm">
+                                    <div class="text-[14px] font-bold text-[#166534] mb-1">🎉 ยินดีด้วย! เครดิตผ่านแล้ว 🎉</div>
+                                    <div class="text-[12px] font-medium text-[#15803d]">ทักหาแอดมินเพื่อรับเครื่องไปใช้ได้เลยค่า 💖</div>
+                                    <div class="w-full h-3 bg-[#dcfce7] rounded-full mt-2 overflow-hidden border border-[#bbf7d0]">
+                                        <div class="h-full bg-gradient-to-r from-[#4ade80] to-[#22c55e] w-full rounded-full"></div>
                                     </div>
-                                `;
-                            } else {
-                                progressHtml = `
-                                    <div class="mt-4 bg-[#fff5f8] border-2 border-[#f8d7e3] rounded-xl p-3 shadow-sm">
-                                        <div class="flex justify-between items-end mb-1">
-                                            <div class="text-[13px] font-bold text-[#d87093]">🎯 ภารกิจดันยอดรับเครื่อง!</div>
-                                            <div class="text-[11px] font-bold text-[#c75b80] bg-white px-2 rounded-md border border-[#f8d7e3]">${Math.floor(percent)}%</div>
-                                        </div>
-                                        <div class="w-full h-3 bg-[#fce4ec] rounded-full overflow-hidden my-2 border border-[#f8d7e3]">
-                                            <div class="h-full bg-gradient-to-r from-[#ff9bb3] to-[#c75b80] rounded-full transition-all duration-1000" style="width: ${percent}%;"></div>
-                                        </div>
-                                        <div class="text-[12px] text-[#c75b80] text-center font-medium">
-                                            🔥 ฮึบๆ อีกแค่ <b class="text-[14px]">${data.creditLeft.toLocaleString()}</b> บาท เท่านั้น!
-                                        </div>
+                                </div>
+                            `;
+                        } else {
+                            progressHtml = `
+                                <div class="mt-4 bg-[#fff5f8] border-2 border-[#f8d7e3] rounded-xl p-3 shadow-sm">
+                                    <div class="flex justify-between items-end mb-1">
+                                        <div class="text-[13px] font-bold text-[#d87093]">🎯 ภารกิจดันยอดรับเครื่อง!</div>
+                                        <div class="text-[11px] font-bold text-[#c75b80] bg-white px-2 rounded-md border border-[#f8d7e3]">${Math.floor(percent)}%</div>
                                     </div>
-                                `;
-                            }
+                                    <div class="w-full h-3 bg-[#fce4ec] rounded-full overflow-hidden my-2 border border-[#f8d7e3]">
+                                        <div class="h-full bg-gradient-to-r from-[#ff9bb3] to-[#c75b80] rounded-full transition-all duration-1000" style="width: ${percent}%;"></div>
+                                    </div>
+                                    <div class="text-[12px] text-[#c75b80] text-center font-medium">
+                                        🔥 ฮึบๆ อีกแค่ <b class="text-[14px]">${creditLeftNum.toLocaleString()}</b> บาท เท่านั้น!
+                                    </div>
+                                </div>
+                            `;
                         }
-
-                        resultBox.innerHTML = `
-                            <div class="info-card !bg-[#fffcf5] !border-[#fce4ec]">
-                                <div class="text-sm font-bold text-[#c75b80] mb-3 border-b border-dashed border-[#f8d7e3] pb-2 flex justify-between items-center">
-                                    <span class="text-base">🎀 รหัสลูกค้า: ${inputId}</span>
-                                    <span class="text-xs bg-white px-2.5 py-1 rounded-full text-[#5a4a5e] border border-[#fce4ec]">อายุ ${data.age} ปี</span>
-                                </div>
-                                <div class="text-sm text-[#5a4a5e] space-y-2 font-medium">
-                                    <p>👤 <b>ชื่อลูกค้า:</b> ${data.name}</p>
-                                    <p>🏷️ <b>ประเภท:</b> <span class="text-[#d87093]">${data.type}</span></p>
-                                    <p>📱 <b>รุ่นที่ผ่อน:</b> ${data.model} | ${data.condition}</p>
-                                    <p>🎨 <b>สี:</b> ${data.color}</p>
-                                    <p>⚠️ <b>ตำหนิเครื่อง:</b> ${data.defect}</p>
-                                    <div class="mt-3 pt-3 border-t border-dashed border-[#f8d7e3] space-y-1.5">
-                                        <p>💰 <b>ยอดเครื่องรวม:</b> ${data.total} ฿</p>
-                                        <p>💸 <b>ยอดที่ส่งแล้ว:</b> ${data.paid} ฿</p>
-                                        <p class="text-lg mt-2 font-bold ${data.statusColor}">🎯 ยอดคงเหลือ: ${data.balance} ฿</p>
-                                    </div>
-                                </div>
-                                ${progressHtml}
-                            </div>
-
-                            <!-- ================= โซนชำระเงินใหม่สุดคิ้วท์ (ตามสั่ง) ================= -->
-                            <div class="mt-4 payment-section relative">
-                                <div class="text-center font-bold text-[#d87093] mb-4 text-sm flex items-center justify-center gap-1">
-                                    <i class="fa-solid fa-wallet"></i> ช่องทางชำระเงินของร้าน 🎀
-                                </div>
-
-                                <!-- กล่องแจ้งเตือน Memo -->
-                                <div class="relative border-2 border-dashed border-[#ff9aab] bg-[#fffafa] rounded-[18px] p-4 text-center mb-4 mt-2">
-                                    <div class="absolute -top-3 left-4 bg-[#ff5277] text-white text-[11px] font-bold px-3 py-0.5 rounded-full shadow-sm">สำคัญ!</div>
-                                    <div class="text-[13px] text-[#5a4a5e] mb-1">ก่อนโอนรบกวนพิมพ์ <b>"บันทึกช่วยจำ"</b><br>กำกับสลิปให้ทางร้านด้วยนะคะ 💖</div>
-                                    <div class="text-[17px] font-bold text-[#ff5277] mb-2 mt-2">ซื้อขายกับซันบายโฟน</div>
-                                    <button onclick="copyText('ซื้อขายกับซันบายโฟน')" class="bg-white border border-[#ffb6c1] text-[#ff5277] px-4 py-1.5 rounded-full text-[12px] font-bold shadow-sm active:scale-95 transition-transform"><i class="fa-regular fa-copy"></i> คัดลอกข้อความ</button>
-                                </div>
-
-                                <!-- กล่องธนาคาร (KTB) -->
-                                <div class="relative bg-gradient-to-br from-[#e0f2fe] to-[#bae6fd] border border-[#7dd3fc] rounded-2xl p-4 mb-3 flex justify-between items-center shadow-sm">
-                                    <i class="fa-solid fa-star absolute -top-2.5 -right-2 text-[#7dd3fc] text-2xl drop-shadow-sm"></i>
-                                    <div>
-                                        <div class="text-[14px] font-bold text-[#0284c7] mb-1">กรุงไทย (KTB) 💙</div>
-                                        <div class="text-xl font-bold text-[#0f172a] tracking-wide">${bankText}</div>
-                                        <div class="text-[12px] text-[#334155] font-medium mt-1">ชื่อบัญชี: กนกอร</div>
-                                    </div>
-                                    <button onclick="copyText('${bankText}')" class="bg-white text-[#0284c7] px-3.5 py-1.5 rounded-xl text-[12px] font-bold shadow-sm active:scale-95 transition-transform shrink-0"><i class="fa-regular fa-copy"></i> คัดลอก</button>
-                                </div>
-
-                                <!-- กล่องธนาคาร (Wallet) -->
-                                <div class="relative bg-gradient-to-br from-[#fce7f3] to-[#fbcfe8] border border-[#f9a8d4] rounded-2xl p-4 mb-3 flex justify-between items-center shadow-sm">
-                                    <i class="fa-solid fa-heart absolute -bottom-2 -left-2 text-[#f9a8d4] text-2xl drop-shadow-sm"></i>
-                                    <div>
-                                        <div class="text-[14px] font-bold text-[#be185d] mb-1">TrueMoney Wallet 🩷</div>
-                                        <div class="text-xl font-bold text-[#0f172a] tracking-wide">${walletText}</div>
-                                        <div class="text-[12px] text-[#334155] font-medium mt-1">ชื่อบัญชี: กนกอร</div>
-                                        <div class="text-[11px] font-bold text-[#e11d48] mt-1 bg-white/60 inline-block px-2 py-0.5 rounded-md">*วอเล็ต บวกเพิ่ม +2.9% นะคะ*</div>
-                                    </div>
-                                    <button onclick="copyText('${walletText}')" class="bg-white text-[#be185d] px-3.5 py-1.5 rounded-xl text-[12px] font-bold shadow-sm active:scale-95 transition-transform shrink-0"><i class="fa-regular fa-copy"></i> คัดลอก</button>
-                                </div>
-                                
-                                <div class="text-center text-[11px] font-medium text-[#8c7894] mt-3 mb-4 bg-white/50 py-1.5 rounded-lg border border-[#f8d7e3]">
-                                    ⚠️ โอนผิด โอนใหม่ ไม่โอนคืนนะคะ รบกวนเช็กชื่อก่อนโอนน้า 🌸
-                                </div>
-
-                                <!-- ฟอร์มแนบสลิป -->
-                                <div id="upload-zone" class="info-card flex flex-col gap-2.5 !bg-white">
-                                    <p class="text-sm font-bold text-[#d87093]">📤 แจ้งชำระเงิน / แนบสลิป:</p>
-                                    <input type="number" class="admin-input !mt-0 text-base" placeholder="จำนวนเงินที่โอน (เช่น 1500)">
-                                    <input type="file" class="admin-input !mt-0 text-xs py-2.5 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-[#f8d7e3] file:text-[#d87093] hover:file:bg-[#ffb6c1] cursor-pointer">
-                                    <button onclick="submitSlip()" class="btn-main !py-3 !text-sm mt-1">
-                                        <i class="fa-solid fa-paper-plane"></i> ส่งสลิปให้แอดมิน
-                                    </button>
-                                </div>
-
-                                <!-- ป้ายแจ้งสถานะ รอตรวจสอบสลิป -->
-                                <div id="slip-status" class="hidden-page mt-1 bg-[#fff0f3] border border-[#ffb6c1] rounded-xl p-3 text-center shadow-sm">
-                                    <div class="text-[14px] font-bold text-[#d87093]">
-                                        <i class="fa-solid fa-hourglass-half rotate-animation inline-block mr-1"></i> 
-                                        สถานะ: รอตรวจสอบสลิป
-                                    </div>
-                                    <div class="text-[12px] text-[#8c7894] mt-1 font-medium">แอดมินได้รับสลิปและบันทึกเวลาเรียบร้อยแล้วค่ะ 🌸</div>
-                                </div>
-                            </div>
-                        `;
-                        resultBox.classList.remove('hidden-page');
-                        errorBox.classList.add('hidden-page');
-                    } else {
-                        resultBox.classList.add('hidden-page');
-                        errorBox.classList.remove('hidden-page');
                     }
-                    btn.disabled = false;
-                }).catch(e => {
-                    btn.disabled = false;
-                    alert('เกิดข้อผิดพลาดในการโหลดข้อมูล กรุณาลองใหม่ค่ะ');
-                });
-            } catch(e) {
+
+                    resultBox.innerHTML = `
+                        <div class="info-card !bg-[#fffcf5] !border-[#fce4ec]">
+                            <div class="text-sm font-bold text-[#c75b80] mb-3 border-b border-dashed border-[#f8d7e3] pb-2 flex justify-between items-center">
+                                <span class="text-base">🎀 รหัสลูกค้า: ${inputId}</span>
+                                <span class="text-xs bg-white px-2.5 py-1 rounded-full text-[#5a4a5e] border border-[#fce4ec]">อายุ ${data.age} ปี</span>
+                            </div>
+                            <div class="text-sm text-[#5a4a5e] space-y-2 font-medium">
+                                <p>👤 <b>ชื่อลูกค้า:</b> ${data.name}</p>
+                                <p>🏷️ <b>ประเภท:</b> <span class="text-[#d87093]">${data.type}</span></p>
+                                <p>📱 <b>รุ่นที่ผ่อน:</b> ${data.model}</p>
+                                <p>🎨 <b>สี:</b> ${data.color}</p>
+                                <p>⚠️ <b>รายละเอียด:</b> ${data.condition}</p>
+                                <div class="mt-3 pt-3 border-t border-dashed border-[#f8d7e3] space-y-1.5">
+                                    <p>💰 <b>ยอดเครื่องรวม:</b> ${parseFloat(data.total).toLocaleString()} ฿</p>
+                                    <p>💸 <b>ยอดที่ส่งแล้ว:</b> ${paidNum.toLocaleString()} ฿</p>
+                                    <p class="text-lg mt-2 font-bold text-[#d87093]">🎯 ยอดคงเหลือ: ${parseFloat(data.balance).toLocaleString()} ฿</p>
+                                </div>
+                            </div>
+                            ${progressHtml}
+                        </div>
+
+                        <div class="mt-4 payment-section relative">
+                            <div class="text-center font-bold text-[#d87093] mb-4 text-sm flex items-center justify-center gap-1">
+                                <i class="fa-solid fa-wallet"></i> ช่องทางชำระเงินของร้าน 🎀
+                            </div>
+
+                            <div class="relative border-2 border-dashed border-[#ff9aab] bg-[#fffafa] rounded-[18px] p-4 text-center mb-4 mt-2">
+                                <div class="absolute -top-3 left-4 bg-[#ff5277] text-white text-[11px] font-bold px-3 py-0.5 rounded-full shadow-sm">สำคัญ!</div>
+                                <div class="text-[13px] text-[#5a4a5e] mb-1">ก่อนโอนรบกวนพิมพ์ <b>"บันทึกช่วยจำ"</b><br>กำกับสลิปให้ทางร้านด้วยนะคะ 💖</div>
+                                <div class="text-[17px] font-bold text-[#ff5277] mb-2 mt-2">ซื้อขายกับซันบายโฟน</div>
+                                <button onclick="copyText('ซื้อขายกับซันบายโฟน')" class="bg-white border border-[#ffb6c1] text-[#ff5277] px-4 py-1.5 rounded-full text-[12px] font-bold shadow-sm active:scale-95 transition-transform"><i class="fa-regular fa-copy"></i> คัดลอกข้อความ</button>
+                            </div>
+
+                            <div class="relative bg-gradient-to-br from-[#e0f2fe] to-[#bae6fd] border border-[#7dd3fc] rounded-2xl p-4 mb-3 flex justify-between items-center shadow-sm">
+                                <i class="fa-solid fa-star absolute -top-2.5 -right-2 text-[#7dd3fc] text-2xl drop-shadow-sm"></i>
+                                <div>
+                                    <div class="text-[14px] font-bold text-[#0284c7] mb-1">กรุงไทย (KTB) 💙</div>
+                                    <div class="text-xl font-bold text-[#0f172a] tracking-wide">${bankText}</div>
+                                    <div class="text-[12px] text-[#334155] font-medium mt-1">ชื่อบัญชี: กนกอร</div>
+                                </div>
+                                <button onclick="copyText('${bankText}')" class="bg-white text-[#0284c7] px-3.5 py-1.5 rounded-xl text-[12px] font-bold shadow-sm active:scale-95 transition-transform shrink-0"><i class="fa-regular fa-copy"></i> คัดลอก</button>
+                            </div>
+
+                            <div class="relative bg-gradient-to-br from-[#fce7f3] to-[#fbcfe8] border border-[#f9a8d4] rounded-2xl p-4 mb-3 flex justify-between items-center shadow-sm">
+                                <i class="fa-solid fa-heart absolute -bottom-2 -left-2 text-[#f9a8d4] text-2xl drop-shadow-sm"></i>
+                                <div>
+                                    <div class="text-[14px] font-bold text-[#be185d] mb-1">TrueMoney Wallet 🩷</div>
+                                    <div class="text-xl font-bold text-[#0f172a] tracking-wide">${walletText}</div>
+                                    <div class="text-[12px] text-[#334155] font-medium mt-1">ชื่อบัญชี: กนกอร</div>
+                                    <div class="text-[11px] font-bold text-[#e11d48] mt-1 bg-white/60 inline-block px-2 py-0.5 rounded-md">*วอเล็ต บวกเพิ่ม +2.9% นะคะ*</div>
+                                </div>
+                                <button onclick="copyText('${walletText}')" class="bg-white text-[#be185d] px-3.5 py-1.5 rounded-xl text-[12px] font-bold shadow-sm active:scale-95 transition-transform shrink-0"><i class="fa-regular fa-copy"></i> คัดลอก</button>
+                            </div>
+                            
+                            <div class="text-center text-[11px] font-medium text-[#8c7894] mt-3 mb-4 bg-white/50 py-1.5 rounded-lg border border-[#f8d7e3]">
+                                ⚠️ โอนผิด โอนใหม่ ไม่โอนคืนนะคะ รบกวนเช็กชื่อก่อนโอนน้า 🌸
+                            </div>
+
+                            <div id="upload-zone" class="info-card flex flex-col gap-2.5 !bg-white">
+                                <p class="text-sm font-bold text-[#d87093]">📤 แจ้งชำระเงิน / แนบสลิป:</p>
+                                <input type="number" class="admin-input !mt-0 text-base" placeholder="จำนวนเงินที่โอน (เช่น 1500)">
+                                <input type="file" class="admin-input !mt-0 text-xs py-2.5 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-[#f8d7e3] file:text-[#d87093] hover:file:bg-[#ffb6c1] cursor-pointer">
+                                <button onclick="submitSlip()" class="btn-main !py-3 !text-sm mt-1">
+                                    <i class="fa-solid fa-paper-plane"></i> ส่งสลิปให้แอดมิน
+                                </button>
+                            </div>
+
+                            <div id="slip-status" class="hidden-page mt-1 bg-[#fff0f3] border border-[#ffb6c1] rounded-xl p-3 text-center shadow-sm">
+                                <div class="text-[14px] font-bold text-[#d87093]">
+                                    <i class="fa-solid fa-hourglass-half rotate-animation inline-block mr-1"></i> 
+                                    สถานะ: รอตรวจสอบสลิป
+                                </div>
+                                <div class="text-[12px] text-[#8c7894] mt-1 font-medium">แอดมินได้รับสลิปและบันทึกเวลาเรียบร้อยแล้วค่ะ 🌸</div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    resultBox.classList.remove('hidden-page');
+                    errorBox.classList.add('hidden-page');
+                } else {
+                    resultBox.classList.add('hidden-page');
+                    errorBox.classList.remove('hidden-page');
+                }
+            } catch (e) {
+                alert('เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์ กรุณาลองใหม่ค่ะ');
+                console.error(e);
+            } finally {
                 btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-magnifying-glass"></i> ค้นหาข้อมูล';
             }
         }
 

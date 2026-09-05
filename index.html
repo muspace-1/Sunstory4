@@ -4,19 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sunstory4 - ผ่อน วางดาวน์ ปิดสด</title>
-    <!-- เรียกใช้งาน Tailwind CSS และ Font Awesome -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Firebase SDK (ระบบเชื่อมต่อฐานข้อมูล) -->
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
     
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
-        /* 🌸 พื้นหลังลายสมุดโน้ต Grid Note เน้นโทนชมพูพาสเทลสวยละมุน */
         body { 
             font-family: 'Kanit', sans-serif; 
             background-color: #fff0f3;
@@ -48,7 +46,6 @@
             z-index: 10;
         }
 
-        /* 💖 อนิเมชันหัวใจสีชมพูลอยขึ้น */
         .floating-heart {
             position: fixed;
             color: #ff5277;
@@ -252,22 +249,28 @@
 </head>
 <body>
 
-    <!-- 🌸 ดอกไม้ & น้องกระต่ายลอยละล่อง (Heart Animation) -->
     <i class="fa-solid fa-heart floating-heart fh-1"></i>
     <i class="fa-solid fa-heart floating-heart fh-2"></i>
     <i class="fa-solid fa-heart floating-heart fh-3"></i>
     <i class="fa-solid fa-heart floating-heart fh-4"></i>
     <i class="fa-solid fa-heart floating-heart fh-5"></i>
 
-    <!-- Modal ล็อกอินแอดมิน -->
+    <!-- Modal ล็อกอินแอดมิน (เพิ่มช่องกรอกรหัสแอดมิน S01-S04) -->
     <div id="login-modal" class="modal-overlay hidden-page">
         <div class="modal-content">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-lg font-bold text-[#ff5277]">🐰 แอดมินเข้าสู่ระบบ</h2>
                 <button onclick="closeModals()" class="text-[#a86b81] text-xl"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <input type="password" id="admin-pass" class="admin-input mb-4" placeholder="ใส่รหัสผ่าน (1234)...">
-            <button id="btn-login" onclick="checkPassword()" class="btn-main py-2">ยืนยันรหัสผ่าน</button>
+            <div class="mb-3">
+                <label class="text-xs font-bold text-[#a86b81]">รหัสแอดมิน (เช่น S01, S02, S03, S04):</label>
+                <input type="text" id="admin-id-input" class="admin-input uppercase !mt-1" placeholder="ใส่รหัสแอดมินของคุณ...">
+            </div>
+            <div class="mb-4">
+                <label class="text-xs font-bold text-[#a86b81]">รหัสผ่าน:</label>
+                <input type="password" id="admin-pass" class="admin-input !mt-1" placeholder="ใส่รหัสผ่าน (1234)...">
+            </div>
+            <button id="btn-login" onclick="checkPassword()" class="btn-main py-2">ยืนยันเข้าสู่ระบบ</button>
         </div>
     </div>
 
@@ -300,6 +303,8 @@
                     <img src="Sun.JPG" alt="Logo" onerror="this.src='https://via.placeholder.com/150/ffb6c1/ffffff?text=Sun'">
                 </div>
             </div>
+            
+            <!-- โครงสร้างข้อมูลบัญชีเดิมแบบเป๊ะๆ -->
             <div class="account-alert-box">
                 <div class="text-xs font-bold text-[#ff5277] mb-1 flex items-center justify-center gap-1">
                     <i class="fa-solid fa-triangle-exclamation"></i> แจ้งเพื่อทราบ / ป้องกันมิจฉาชีพ
@@ -311,7 +316,7 @@
             </div>
         </div>
 
-        <!-- PAGE 1 -->
+<!-- PAGE 1 -->
         <div id="page-1" class="flex flex-col gap-4 transition-opacity duration-300">
             <div class="info-card">
                 <div id="display-status-time" class="text-[13px] font-bold mb-2 border-b border-dashed border-[#ffccd5] pb-2" style="color: #059669;">
@@ -395,7 +400,10 @@
         <!-- ADMIN PANEL -->
         <div id="admin-full-page" class="hidden-page flex flex-col gap-4 pt-2">
             <div class="flex justify-between items-center bg-[#fff5f8] border border-[#ff9bb3] p-3 rounded-xl">
-                <h2 class="text-sm font-bold text-[#ff5277]">⚙️ แผงควบคุมแอดมิน</h2>
+                <div>
+                    <h2 class="text-sm font-bold text-[#ff5277]">⚙️ แผงควบคุมแอดมิน</h2>
+                    <p id="admin-logged-in-label" class="text-[11px] text-[#a86b81] font-bold mt-0.5">ผู้ใช้งาน: -</p>
+                </div>
                 <button onclick="backToMainFromAdmin()" class="text-xs bg-[#ffe5ed] text-[#5a4a5e] px-3 py-1.5 rounded-lg font-bold">
                     <i class="fa-solid fa-arrow-left"></i> ออกจากระบบ
                 </button>
@@ -422,11 +430,11 @@
                         </div>
                     </div>
                     <div>
-                        <label class="text-xs font-bold text-[#a86b81]">งานเซลล์ปิดสด:</label>
+                        <label class="text-xs font-bold text-[#a86b81]">งานเซลล์ปิดสด (ใส่ # เพื่อทำตัวหนา):</label>
                         <textarea id="edit-promo-1" class="admin-input text-sm" rows="3"></textarea>
                     </div>
                     <div>
-                        <label class="text-xs font-bold text-[#a86b81]">โปรเปิดบิล:</label>
+                        <label class="text-xs font-bold text-[#a86b81]">โปรเปิดบิล (ใส่ # เพื่อทำตัวหนา):</label>
                         <textarea id="edit-promo-2" class="admin-input text-sm" rows="3"></textarea>
                     </div>
                     <div>
@@ -454,7 +462,12 @@
 
     <script>
         const scriptUrl = 'https://script.google.com/macros/s/AKfycbx2cnZZSD0EnCdsV_7OFmTJl87P7q0qz8uIdUBcCvht00bIgU47IUHm_-fI0qYnf6-4/exec';
-        const discordWebhookUrl = 'https://discord.com/api/webhooks/1545650221948600381/JWgX53TC8Wq5id62H0b-5l8N7tTx7cOrpD8ju3-pq1v9Og23xvDvRfkbtkgpUvM8PLa-';
+        
+        // ห้อง Discord ห้องที่ 1: แจ้งเตือนสลิปใหม่
+        const discordWebhookSlip = 'https://discord.com/api/webhooks/1545650221948600381/JWgX53TC8Wq5id62H0b-5l8N7tTx7cOrpD8ju3-pq1v9Og23xvDvRfkbtkgpUvM8PLa-';
+        
+        // ห้อง Discord ห้องที่ 2: แจ้งเตือนผู้อนุมัติ (ตามที่คุณให้มาใหม่)
+        const discordWebhookAdmin = 'https://discord.com/api/webhooks/1545676162485715016/r-hqXE-gQfDIOCAw7Rm55Mze5HqiHdHPQCq7IKPSqp74kLW4hEoyyrUnvdcLjzQM8Gm_';
 
         const firebaseConfig = {
             apiKey: "AIzaSyC2SoaNI5hCs6RCczGQv8b7-ofIQHmzX0c",
@@ -516,6 +529,7 @@
         }
         function openLoginModal() {
             document.getElementById('login-modal').classList.remove('hidden-page');
+            document.getElementById('admin-id-input').value = '';
             document.getElementById('admin-pass').value = '';
         }
         function closeModals() {
@@ -584,7 +598,6 @@
                         let percent = creditTargetNum > 0 ? (paidNum / creditTargetNum) * 100 : 0;
                         if (percent > 100) percent = 100;
 
-                        // 🎯 เงื่อนไขเข้มงวด: ต้องผ่อนครบเป้าหมายจริง ๆ เทถึงจะผ่าน
                         if (creditTargetNum > 0 && creditLeftNum <= 0 && paidNum >= creditTargetNum) {
                             progressHtml = `
                                 <div class="mt-4 bg-[#f0fdf4] border-2 border-[#bbf7d0] rounded-xl p-3 text-center shadow-sm">
@@ -635,7 +648,6 @@
                                 <i class="fa-solid fa-wallet"></i> ช่องทางชำระเงินของร้าน 🎀
                             </div>
                             
-                            <!-- บัญชีธนาคาร KTB -->
                             <div class="relative bg-gradient-to-br from-[#e0f2fe] to-[#bae6fd] border border-[#7dd3fc] rounded-2xl p-4 mb-3 flex justify-between items-center shadow-sm">
                                 <div>
                                     <div class="text-[14px] font-bold text-[#0284c7] mb-1">กรุงไทย (KTB) 💙</div>
@@ -645,7 +657,6 @@
                                 <button onclick="copyText('${bankText}')" class="bg-white text-[#0284c7] px-3.5 py-1.5 rounded-xl text-[12px] font-bold active:scale-95 shrink-0"><i class="fa-regular fa-copy"></i> คัดลอก</button>
                             </div>
 
-                            <!-- TrueMoney Wallet -->
                             <div class="relative bg-gradient-to-br from-[#fce7f3] to-[#fbcfe8] border border-[#f9a8d4] rounded-2xl p-4 mb-3 flex justify-between items-center shadow-sm">
                                 <div>
                                     <div class="text-[14px] font-bold text-[#be185d] mb-1">TrueMoney Wallet 🩷</div>
@@ -696,10 +707,10 @@
                 reader.readAsDataURL(file);
                 reader.onload = async function() {
                     const base64Image = reader.result;
-
                     const now = new Date();
                     const timeString = now.toLocaleDateString('th-TH') + ' ' + now.toLocaleTimeString('th-TH', {hour: '2-digit', minute:'2-digit'}) + ' น.';
 
+                    // บันทึกลง Firebase (ห้องที่ 1: แจ้งสลิปใหม่)
                     await db.ref('pendingSlips').push({
                         id: currentCustomerId,
                         amount: amount,
@@ -711,7 +722,7 @@
                     const payload = {
                         content: `🚨 **มีลูกค้าส่งสลิปใหม่!**\n🎀 **รหัสลูกค้า:** ${currentCustomerId}\n💰 **ยอดโอนที่แจ้ง:** ${amount} บาท\n🕒 **เวลาส่ง:** ${timeString}\n👉 *เข้าเว็บแอดมินเพื่อตรวจสอบรูปสลิปและกดอนุมัติยอดครับ*`
                     };
-                    fetch(discordWebhookUrl, {
+                    fetch(discordWebhookSlip, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(payload)
@@ -769,19 +780,34 @@
         }
 
         async function approveSlip(dbKey, custId, amount) {
-            if(!confirm(`ยืนยันการอนุมัติยอด ${amount} บาท ให้กับรหัส ${custId} ใช่ไหม?\nระบบจะทำการอัปเดต Google Sheets ทันที`)) return;
+            const adminId = sessionStorage.getItem('sunstoryAdminId') || 'S01';
+            if(!confirm(`[แอดมิน: ${adminId}] ยืนยันการอนุมัติยอด ${amount} บาท ให้กับรหัส ${custId} ใช่ไหม?\nระบบจะอัปเดต Google Sheets ทันที`)) return;
             
             try {
+                // ส่งค่าไปอัปเดต Google Sheets พร้อมรหัสแอดมิน (ช่อง S) และเวลาอัปเดต (ช่อง R)
                 const response = await fetch(scriptUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify({ action: 'approveSlip', id: custId, amount: amount })
+                    body: JSON.stringify({ action: 'approveSlip', id: custId, amount: amount, adminId: adminId })
                 });
                 const res = await response.json();
                 
                 if(res.success) {
-                    alert('✅ อนุมัติสำเร็จ ยอดใน Sheet ถูกอัปเดตแล้ว!');
+                    alert('✅ อนุมัติสำเร็จ ยอดใน Google Sheets (ช่อง R & S) ถูกอัปเดตแล้ว!');
                     db.ref('pendingSlips/' + dbKey).remove();
+
+                    // ส่งแจ้งเตือนเข้า Discord ห้องที่ 2 (เฉพาะผู้อนุมัติ)
+                    const now = new Date();
+                    const timeString = now.toLocaleDateString('th-TH') + ' ' + now.toLocaleTimeString('th-TH', {hour: '2-digit', minute:'2-digit'}) + ' น.';
+                    const adminPayload = {
+                        content: `✅ **อนุมัติยอดสำเร็จ!**\n🎀 **รหัสลูกค้า:** ${custId}\n💰 **ยอดเงิน:** ${amount} ฿\n👤 **ผู้ออนุมัติ:** แอดมิน **${adminId}**\n🕒 **เวลา:** ${timeString}`
+                    };
+                    fetch(discordWebhookAdmin, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(adminPayload)
+                    });
+
                 } else {
                     alert('เกิดข้อผิดพลาด: ' + res.error);
                 }
@@ -795,20 +821,29 @@
         }
 
         function checkPassword() {
+            const adminIdInput = document.getElementById('admin-id-input').value.trim().toUpperCase();
             const pass = document.getElementById('admin-pass').value;
-            if(pass === '1234') {
+
+            if (!adminIdInput) return alert('กรุณากรอกรหัสแอดมินด้วยค่ะ (เช่น S01) 🐰');
+            if (pass === '1234') {
+                sessionStorage.setItem('sunstoryAdminId', adminIdInput);
+                document.getElementById('admin-logged-in-label').innerText = 'ผู้ใช้งานระบบ: แอดมิน ' + adminIdInput;
                 closeModals();
                 switchPage('page-1', 'admin-full-page');
                 document.getElementById('page-2').classList.add('hidden-page');
                 document.getElementById('page-3').classList.add('hidden-page');
-            } else { alert('รหัสผ่านไม่ถูกต้องค่ะ 🥺'); }
+            } else { 
+                alert('รหัสผ่านไม่ถูกต้องค่ะ 🥺'); 
+            }
         }
+
         function backToMainFromAdmin() {
             document.getElementById('admin-full-page').classList.add('hidden-page');
             document.getElementById('header-zones').classList.remove('hidden-page');
             document.getElementById('page-1').classList.remove('hidden-page');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+
         function saveAdminData() {
             db.ref('storeConfig').set({
                 statusTime: document.getElementById('edit-status-time').value,
@@ -827,13 +862,19 @@
                 }
             });
         }
+
+        // ระบบแปลง # เป็นตัวหนา
         function renderPromo(text, containerId, boxId) {
             const box = document.getElementById(boxId);
             if (!text || !text.trim()) return box.classList.add('hidden-page');
             box.classList.remove('hidden-page');
             document.getElementById(containerId).innerHTML = text.split('\n').map(line => {
                 let t = line.trim();
-                return t.startsWith('#') ? `<div class="text-[13px] font-bold text-[#ff5277] mb-2 mt-2">${t.replace(/^#\s*/, '')}</div>` : `<div>${t}</div>`;
+                if (t.startsWith('#')) {
+                    return `<div class="text-[13px] font-bold text-[#ff5277] mb-2 mt-2">${t.replace(/^#\s*/, '')}</div>`;
+                } else {
+                    return `<div>${t}</div>`;
+                }
             }).join('');
         }
     </script>

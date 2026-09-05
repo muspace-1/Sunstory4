@@ -255,18 +255,16 @@
     <i class="fa-solid fa-heart floating-heart fh-4"></i>
     <i class="fa-solid fa-heart floating-heart fh-5"></i>
 
-    <!-- Modal ล็อกอินแอดมิน (ช่องกรอกสั้นๆ แค่ S01) -->
+    <!-- Modal ล็อกอินแอดมิน (ใส่แค่รหัส S01 / S02 / S03 / S04 โดยไม่ใช้รหัสผ่าน 1234) -->
     <div id="login-modal" class="modal-overlay hidden-page">
         <div class="modal-content">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-lg font-bold text-[#ff5277]">🐰 แอดมินเข้าสู่ระบบ</h2>
                 <button onclick="closeModals()" class="text-[#a86b81] text-xl"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div class="mb-3">
-                <input type="text" id="admin-id-input" class="admin-input uppercase text-center font-bold text-lg" placeholder="S01">
-            </div>
             <div class="mb-4">
-                <input type="password" id="admin-pass" class="admin-input text-center font-bold text-lg" placeholder="รหัสผ่าน (1234)">
+                <label class="text-xs font-bold text-[#a86b81]">กรอกรหัสแอดมิน (เช่น S01):</label>
+                <input type="text" id="admin-id-input" class="admin-input uppercase text-center font-bold text-lg" placeholder="S01">
             </div>
             <button id="btn-login" onclick="checkPassword()" class="btn-main py-2">เข้าสู่ระบบ</button>
         </div>
@@ -394,7 +392,7 @@
             </button>
         </div>
 
-        <!-- ADMIN PANEL (แอดมินล้วนๆ ตัดชื่อร้านและกรอบเตือนออกแล้ว) -->
+        <!-- ADMIN PANEL (แอดมินล้วนๆ ตัดชื่อร้านและกรอบเตือนออก) -->
         <div id="admin-full-page" class="hidden-page flex flex-col gap-4 pt-2">
             <div class="flex justify-between items-center bg-[#fff5f8] border border-[#ff9bb3] p-3 rounded-xl">
                 <div>
@@ -524,7 +522,6 @@
         function openLoginModal() {
             document.getElementById('login-modal').classList.remove('hidden-page');
             document.getElementById('admin-id-input').value = '';
-            document.getElementById('admin-pass').value = '';
         }
         function closeModals() {
             document.getElementById('login-modal').classList.add('hidden-page');
@@ -555,7 +552,7 @@
             setTimeout(() => { document.getElementById('progress-bar').style.width = '100%'; }, 50);
             setTimeout(() => {
                 document.getElementById('loading-screen').classList.add('hidden-page');
-                document.getElementById('header-zones').classList.add('hidden-page'); // ซ่อนหัวร้านถาวรเมื่อเข้าหน้าแอดมิน
+                document.getElementById('header-zones').classList.add('hidden-page'); 
                 document.getElementById(showId).classList.remove('hidden-page');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }, 1500);
@@ -585,7 +582,10 @@
                     const data = resData.data;
                     const paidNum = parseFloat(data.paid.toString().replace(/,/g, '')) || 0;
                     const creditTargetNum = parseFloat(data.creditTarget.toString().replace(/,/g, '')) || 0;
-                    const creditLeftNum = parseFloat(data.creditLeft.toString().replace(/,/g, '')) || 0;
+                    
+                    // คำนวณยอดเงินที่ต้องส่งเพิ่มให้แม่นยำ ไม่ให้ติด 0 ผิดพลาด
+                    let creditLeftNum = creditTargetNum - paidNum;
+                    if (creditLeftNum < 0) creditLeftNum = 0;
                     
                     let progressHtml = '';
                     if (data.type.includes("ผ่อนไปใช้ไป")) {
@@ -612,7 +612,7 @@
                                         <div class="h-full bg-gradient-to-r from-[#ff5277] to-[#d87093] rounded-full transition-all duration-1000" style="width: ${percent}%;"></div>
                                     </div>
                                     <div class="text-[12px] text-[#c75b80] text-center font-medium">
-                                        🔥 ฮึบๆ อีกแค่ <b class="text-[14px]">${creditLeftNum > 0 ? creditLeftNum.toLocaleString() : 0}</b> บาท เท่านั้น!
+                                        🔥 ฮึบๆ อีกแค่ <b class="text-[14px]">${creditLeftNum.toLocaleString()}</b> บาท เท่านั้น!
                                     </div>
                                 </div>`;
                         }
@@ -823,26 +823,24 @@
             }
         }
 
+        // เช็ครหัสแอดมิน (ใส่แค่ S01 / S02 / S03 / S04 ไม่ต้องใช้ 1234 แล้ว)
         function checkPassword() {
             const adminIdInput = document.getElementById('admin-id-input').value.trim().toUpperCase();
-            const pass = document.getElementById('admin-pass').value;
 
             if (!adminIdInput) return alert('กรุณากรอกรหัสแอดมินด้วยค่ะ (เช่น S01) 🐰');
-            if (pass === '1234') {
-                sessionStorage.setItem('sunstoryAdminId', adminIdInput);
-                document.getElementById('admin-logged-in-label').innerText = 'ผู้ใช้งานระบบ: แอดมิน ' + adminIdInput;
-                closeModals();
-                switchPage('page-1', 'admin-full-page');
-                document.getElementById('page-2').classList.add('hidden-page');
-                document.getElementById('page-3').classList.add('hidden-page');
-            } else { 
-                alert('รหัสผ่านไม่ถูกต้องค่ะ 🥺'); 
-            }
+            
+            // บันทึกรหัสแอดมินและเข้าสู่ระบบทันที
+            sessionStorage.setItem('sunstoryAdminId', adminIdInput);
+            document.getElementById('admin-logged-in-label').innerText = 'ผู้ใช้งานระบบ: แอดมิน ' + adminIdInput;
+            closeModals();
+            switchPage('page-1', 'admin-full-page');
+            document.getElementById('page-2').classList.add('hidden-page');
+            document.getElementById('page-3').classList.add('hidden-page');
         }
 
         function backToMainFromAdmin() {
             document.getElementById('admin-full-page').classList.add('hidden-page');
-            document.getElementById('header-zones').classList.remove('hidden-page'); // แสดงหัวร้านคืนเมื่อออกจากระบบแอดมิน
+            document.getElementById('header-zones').classList.remove('hidden-page'); 
             document.getElementById('page-1').classList.remove('hidden-page');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }

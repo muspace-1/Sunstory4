@@ -306,6 +306,7 @@
     <i class="fa-solid fa-heart floating-heart fh-4"></i>
     <i class="fa-solid fa-heart floating-heart fh-5"></i>
 
+    <!-- 🐰 Modal เข้าสู่ระบบแอดมิน -->
     <div id="login-modal" class="modal-overlay hidden-page">
         <div class="modal-content">
             <div class="flex justify-between items-center mb-4">
@@ -320,6 +321,7 @@
         </div>
     </div>
 
+    <!-- 🖼️ Modal ดูรูปสลิป -->
     <div id="slip-modal" class="modal-overlay hidden-page">
         <div class="modal-content text-center !max-w-md">
             <div class="flex justify-between items-center mb-3">
@@ -362,6 +364,7 @@
             </div>
         </div>
 
+        <!-- หน้าแรก (Page 1) -->
         <div id="page-1" class="flex flex-col gap-4 transition-opacity duration-300">
             <div class="brand-header-box">
                 <div>
@@ -422,6 +425,7 @@
             </button>
         </div>
 
+        <!-- หน้าโหลด (Loading) -->
         <div id="loading-screen" class="hidden-page loading-container">
             <div class="bunny-icon">🐰</div>
             <h2 id="loading-text" class="text-[16px] font-bold text-[#ff5277] mb-1">น้องกระต่ายเตรียมข้อมูลนะคะ...</h2>
@@ -430,6 +434,7 @@
             </div>
         </div>
 
+        <!-- หน้ารายละเอียดโปรโมชั่น (Page 2) -->
         <div id="page-2" class="hidden-page flex flex-col gap-4 pt-2">
             <div class="text-center pb-1">
                 <h2 class="text-sm font-bold text-[#ff5277]">🌸 ข้อมูลและโปรโมชั่นประจำร้าน 🌸</h2>
@@ -447,6 +452,7 @@
             </button>
         </div>
 
+        <!-- หน้าเช็กยอด (Page 3) -->
         <div id="page-3" class="hidden-page flex flex-col gap-4 pt-2">
             <div class="text-center pb-1">
                 <h2 class="text-sm font-bold text-[#ff5277]">💳 ระบบเช็กยอดผ่อนชำระ 💳</h2>
@@ -476,6 +482,7 @@
             </button>
         </div>
 
+        <!-- แผงควบคุมแอดมิน (Admin Page) -->
         <div id="admin-full-page" class="hidden-page flex flex-col gap-4 pt-2">
             <div class="flex justify-between items-center bg-[#fff5f8] border border-[#ff9bb3] p-3 rounded-xl">
                 <div>
@@ -629,23 +636,6 @@
             navigator.clipboard.writeText(text).then(() => alert('คัดลอก "' + text + '" เรียบร้อยแล้วค่ะ! 📋✨')).catch(err => console.error("Copy failed", err));
         }
 
-        function toggleWalletFee() {
-            const checkbox = document.getElementById('wallet-fee-checkbox');
-            const amountInput = document.getElementById('slip-amount');
-            const displayBox = document.getElementById('wallet-calculated-text');
-            
-            if (!amountInput || !displayBox) return;
-            const baseAmount = parseFloat(amountInput.value) || 0;
-
-            if (checkbox && checkbox.checked && baseAmount > 0) {
-                const totalWithFee = Math.ceil(baseAmount * 1.029);
-                displayBox.innerHTML = `ยอดโอนรวมค่าธรรมเนียม Wallet 2.9% คือ: <b class="text-[#be185d] text-base">${totalWithFee.toLocaleString()} บาท</b> (จากยอด ${baseAmount.toLocaleString()})`;
-                displayBox.classList.remove('hidden-page');
-            } else {
-                displayBox.classList.add('hidden-page');
-            }
-        }
-
         function switchAdminTab(tabIndex) {
             const btn1 = document.getElementById('tab-btn-1');
             const btn2 = document.getElementById('tab-btn-2');
@@ -743,6 +733,7 @@
                     let creditLeftNum = creditTargetNum - paidNum;
                     if (creditLeftNum < 0) creditLeftNum = 0;
                     
+                    // 🚨 ตรวจสอบสถานะล็อกเครื่อง (Lock Screen)
                     if (data.contractStatus === "ล็อกเครื่อง") {
                         resultBox.innerHTML = `
                             <div class="info-card !bg-rose-50 !border-rose-400 text-center py-6">
@@ -792,6 +783,7 @@
                         }
                     }
 
+                    // 📌 ปุ่มดูรูปสัญญา (ดึงจากคอลัมน์ X)
                     let contractBtnHtml = '';
                     if (data.contractLink && data.contractLink.trim() !== '') {
                         contractBtnHtml = `
@@ -845,20 +837,14 @@
                                 <button onclick="copyText('${bankText}')" class="bg-white text-[#0284c7] px-3.5 py-1.5 rounded-xl text-[12px] font-bold active:scale-95 shrink-0"><i class="fa-regular fa-copy"></i> คัดลอก</button>
                             </div>
 
-                            <div class="relative bg-gradient-to-br from-[#fce7f3] to-[#fbcfe8] border border-[#f9a8d4] rounded-2xl p-4 mb-3 shadow-sm">
-                                <div class="flex justify-between items-center">
-                                    <div>
-                                        <div class="text-[14px] font-bold text-[#be185d] mb-1">TrueMoney Wallet 🩷</div>
-                                        <div class="text-xl font-bold text-[#0f172a]">${walletText}</div>
-                                        <div class="text-[12px] text-[#334155] font-medium mt-1">ชื่อบัญชี: กนกอร</div>
-                                    </div>
-                                    <button onclick="copyText('${walletText}')" class="bg-white text-[#be185d] px-3.5 py-1.5 rounded-xl text-[12px] font-bold active:scale-95 shrink-0"><i class="fa-regular fa-copy"></i> คัดลอก</button>
+                            <div class="relative bg-gradient-to-br from-[#fce7f3] to-[#fbcfe8] border border-[#f9a8d4] rounded-2xl p-4 mb-3 flex justify-between items-center shadow-sm">
+                                <div>
+                                    <div class="text-[14px] font-bold text-[#be185d] mb-1">TrueMoney Wallet 🩷</div>
+                                    <div class="text-xl font-bold text-[#0f172a]">${walletText}</div>
+                                    <div class="text-[12px] text-[#334155] font-medium mt-1">ชื่อบัญชี: กนกอร</div>
+                                    <div class="text-[11px] font-bold text-[#e11d48] mt-1">*วอเล็ตบวกเพิ่ม +2.9%*</div>
                                 </div>
-                                <div class="mt-3 pt-2 border-t border-rose-200 flex items-center gap-2">
-                                    <input type="checkbox" id="wallet-fee-checkbox" onchange="toggleWalletFee()" class="w-4 h-4 accent-[#ff5277] cursor-pointer">
-                                    <label for="wallet-fee-checkbox" class="text-xs font-bold text-[#be185d] cursor-pointer">บวกค่าธรรมเนียม Wallet 2.9% (คำนวณอัตโนมัติ)</label>
-                                </div>
-                                <div id="wallet-calculated-text" class="hidden-page text-xs font-medium text-[#831843] mt-1 bg-white/80 p-2 rounded-lg border border-rose-200"></div>
+                                <button onclick="copyText('${walletText}')" class="bg-white text-[#be185d] px-3.5 py-1.5 rounded-xl text-[12px] font-bold active:scale-95 shrink-0"><i class="fa-regular fa-copy"></i> คัดลอก</button>
                             </div>
 
                             <div class="bg-[#fff0f3] border-2 border-dashed border-[#ff5277] rounded-2xl p-4 mb-3 text-center shadow-sm relative overflow-hidden">
@@ -880,7 +866,7 @@
                                 <i class="fa-solid fa-file-arrow-up watermark-icon"></i>
                                 <div class="card-content-inner flex flex-col gap-2.5">
                                     <p class="text-sm font-bold text-[#ff5277]">📤 แจ้งชำระเงิน / แนบสลิป:</p>
-                                    <input type="number" id="slip-amount" oninput="toggleWalletFee()" class="admin-input !mt-0 text-base" placeholder="จำนวนเงินที่โอน (เช่น 1500)">
+                                    <input type="number" id="slip-amount" class="admin-input !mt-0 text-base" placeholder="จำนวนเงินที่โอน (เช่น 1500)">
                                     <input type="file" id="slip-file" accept="image/*" class="admin-input !mt-0 text-xs py-2.5">
                                     <button id="btn-submit-slip" onclick="submitSlip()" class="btn-main !py-3 !text-sm mt-1">
                                         <i class="fa-solid fa-paper-plane"></i> ส่งสลิปให้แอดมิน
@@ -967,6 +953,7 @@
             }
         }
 
+        // 📌 ฟังชั่นแสดงรายการสลิปฝั่งแอดมิน (พร้อมปุ่มติ๊กค่าธรรมเนียม Wallet 2.9%)
         function listenToPendingSlips() {
             db.ref('pendingSlips').on('value', (snapshot) => {
                 const container = document.getElementById('admin-slips-container');
@@ -988,13 +975,23 @@
                                 <span class="text-[11px] bg-[#fff0f3] px-2 py-1 rounded-full border border-[#ff9bb3]">รอตรวจสอบ</span>
                             </div>
                             <p class="text-[13px] text-[#4682b4]">⏱️ <b>เวลาส่ง:</b> ${s.time}</p>
-                            <p class="text-[13px] text-[#059669]">💰 <b>ยอดโอนที่แจ้ง:</b> ${s.amount} ฿</p>
+                            <p class="text-[13px] text-[#059669]">💰 <b>ยอดโอนที่ลูกค้าแจ้ง:</b> <span id="display-amt-${key}">${s.amount}</span> ฿</p>
+                            
+                            <!-- 📌 ติ๊กบวกค่าธรรมเนียม Wallet 2.9% เฉพาะฝั่งแอดมิน -->
+                            <div class="bg-pink-50 p-2.5 rounded-lg border border-pink-200 my-2">
+                                <label class="flex items-center gap-2 cursor-pointer text-xs font-bold text-[#be185d]">
+                                    <input type="checkbox" id="admin-fee-chk-${key}" onchange="calculateAdminFee('${key}', ${s.amount})" class="w-4 h-4 accent-[#ff5277]">
+                                    ลูกค้าโอนผ่าน Wallet (+ค่าธรรมเนียม 2.9%)
+                                </label>
+                                <div id="admin-calc-box-${key}" class="hidden-page text-[11px] text-rose-700 font-bold mt-1"></div>
+                            </div>
+
                             <div class="flex flex-col gap-2 pt-3 border-t border-dashed border-[#ffb6c1]">
                                 <button onclick="openSlipModal('${s.imageUrl}')" class="bg-[#ffe5ed] text-[#5a4a5e] px-3 py-2 rounded-xl text-[12px] font-bold hover:bg-[#ffb6c1] active:scale-95 transition-transform w-full shadow-sm">
                                     <i class="fa-solid fa-magnifying-glass"></i> ดูรูปสลิป
                                 </button>
                                 <div class="flex gap-2">
-                                    <button onclick="approveSlip('${key}', '${s.id}', ${s.amount})" class="bg-emerald-500 text-white px-3 py-2.5 rounded-xl text-[12px] font-bold active:scale-95 flex-1 shadow-sm">
+                                    <button onclick="approveSlipWithFee('${key}', '${s.id}', ${s.amount})" class="bg-emerald-500 text-white px-3 py-2.5 rounded-xl text-[12px] font-bold active:scale-95 flex-1 shadow-sm">
                                         ✅ อนุมัติยอด
                                     </button>
                                     <button onclick="rejectSlip('${key}')" class="bg-rose-400 text-white px-3 py-2.5 rounded-xl text-[12px] font-bold active:scale-95 flex-1 shadow-sm">
@@ -1011,29 +1008,48 @@
             });
         }
 
-        async function approveSlip(dbKey, custId, amount) {
+        function calculateAdminFee(key, baseAmount) {
+            const chk = document.getElementById(`admin-fee-chk-${key}`);
+            const displayAmt = document.getElementById(`display-amt-${key}`);
+            const calcBox = document.getElementById(`admin-calc-box-${key}`);
+            
+            if (chk.checked) {
+                const totalWithFee = Math.ceil(baseAmount * 1.029);
+                displayAmt.innerHTML = `<span class="text-rose-600 line-through">${baseAmount}</span> ➔ <b>${totalWithFee}</b> (รวม 2.9%)`;
+                calcBox.innerText = `ยอดที่จะใช้ออนุมัติเข้าระบบคือ: ${totalWithFee} บาท`;
+                calcBox.classList.remove('hidden-page');
+            } else {
+                displayAmt.innerHTML = baseAmount;
+                calcBox.classList.add('hidden-page');
+            }
+        }
+
+        async function approveSlipWithFee(dbKey, custId, baseAmount) {
+            const chk = document.getElementById(`admin-fee-chk-${dbKey}`);
+            const finalAmount = chk && chk.checked ? Math.ceil(baseAmount * 1.029) : baseAmount;
+
             const adminId = sessionStorage.getItem('sunstoryAdminId') || 'S01';
             const adminInfo = adminMap[adminId] || { name: "แอดมิน", mention: adminId };
 
-            if(!confirm(`[แอดมิน: ${adminInfo.name} (${adminId})] ยืนยันการอนุมัติยอด ${amount} บาท ให้กับรหัส ${custId} ใช่ไหม?\nระบบจะอัปเดต Google Sheets ทันที`)) return;
+            if(!confirm(`[แอดมิน: ${adminInfo.name} (${adminId})] ยืนยันการอนุมัติยอด ${finalAmount} บาท ให้กับรหัส ${custId} ใช่ไหม?\nระบบจะอัปเดต Google Sheets ทันที`)) return;
             
             try {
                 const response = await fetch(scriptUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify({ action: 'approveSlip', id: custId, amount: amount, adminId: adminId })
+                    body: JSON.stringify({ action: 'approveSlip', id: custId, amount: finalAmount, adminId: adminId })
                 });
                 const res = await response.json();
                 
                 if(res && res.success) {
-                    alert('✅ อนุมัติสำเร็จ ยอดใน Google Sheets (ช่อง R & S) ถูกอัปเดตแล้ว!');
+                    alert('✅ อนุมัติสำเร็จ ยอดใน Google Sheets ถูกอัปเดตแล้ว!');
                     db.ref('pendingSlips/' + dbKey).remove();
 
                     const now = new Date();
                     const timeString = now.toLocaleDateString('th-TH') + ' ' + now.toLocaleTimeString('th-TH', {hour: '2-digit', minute:'2-digit'}) + ' น.';
                     
                     const adminPayload = {
-                        content: `✅ **อนุมัติยอดสำเร็จ!**\n🎀 **รหัสลูกค้า:** ${custId}\n💰 **ยอดเงิน:** ${amount} ฿\n👤 **ผู้ออนุมัติ:** ${adminInfo.mention} (แอดมิน **${adminId} - ${adminInfo.name}**)\n🕒 **เวลา:** ${timeString}`
+                        content: `✅ **อนุมัติยอดสำเร็จ!**\n🎀 **รหัสลูกค้า:** ${custId}\n💰 **ยอดเงิน:** ${finalAmount} ฿\n👤 **ผู้ออนุมัติ:** ${adminInfo.mention} (แอดมิน **${adminId} - ${adminInfo.name}**)\n🕒 **เวลา:** ${timeString}`
                     };
                     fetch(discordWebhookAdmin, {
                         method: 'POST',

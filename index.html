@@ -553,12 +553,11 @@
     </div>
 
     <script>
-        const scriptUrl = 'https://script.google.com/macros/s/AKfycbx2cnZZSD0EnCdsV_7OFmTJl87P7q0qz8uIdUBcCvht00bIgU47IUHm_-fI0qYnf6-4/exec';
+        const scriptUrl = 'https://script.google.com/macros/s/AKfycbz01r3teMCn6XTC873l7sLjavYwtb1FNyb-6vAT-3YfBW9QNXVUwacX8wsj29IXE6tQ/exec';
         
         const discordWebhookSlip = 'https://discord.com/api/webhooks/1545650221948600381/JWgX53TC8Wq5id62H0b-5l8N7tTx7cOrpD8ju3-pq1v9Og23xvDvRfkbtkgpUvM8PLa-';
         const discordWebhookAdmin = 'https://discord.com/api/webhooks/1545676162485715016/r-hqXE-gQfDIOCAw7Rm55Mze5HqiHdHPQCq7IKPSqp74kLW4hEoyyrUnvdcLjzQM8Gm_';
 
-        // 📌 ตารางจับคู่รหัสแอดมินกับชื่อ และ Discord Role สำหรับ Mention
         const adminMap = {
             "S01": { name: "คุณมิน", mention: "<@&1545675524993720340>" },
             "S02": { name: "คุณกัส", mention: "<@&1545675560997494794>" },
@@ -628,6 +627,24 @@
 
         function copyText(text) {
             navigator.clipboard.writeText(text).then(() => alert('คัดลอก "' + text + '" เรียบร้อยแล้วค่ะ! 📋✨')).catch(err => console.error("Copy failed", err));
+        }
+
+        // 📌 ฟังก์ชันคำนวณบวกค่าธรรมเนียม Wallet 2.9% อัตโนมัติ
+        function toggleWalletFee() {
+            const checkbox = document.getElementById('wallet-fee-checkbox');
+            const amountInput = document.getElementById('slip-amount');
+            const displayBox = document.getElementById('wallet-calculated-text');
+            
+            if (!amountInput || !displayBox) return;
+            const baseAmount = parseFloat(amountInput.value) || 0;
+
+            if (checkbox && checkbox.checked && baseAmount > 0) {
+                const totalWithFee = Math.ceil(baseAmount * 1.029);
+                displayBox.innerHTML = `ยอดโอนรวมค่าธรรมเนียม Wallet 2.9% คือ: <b class="text-[#be185d] text-base">${totalWithFee.toLocaleString()} บาท</b> (จากยอด ${baseAmount.toLocaleString()})`;
+                displayBox.classList.remove('hidden-page');
+            } else {
+                displayBox.classList.add('hidden-page');
+            }
         }
 
         function switchAdminTab(tabIndex) {
@@ -727,6 +744,25 @@
                     let creditLeftNum = creditTargetNum - paidNum;
                     if (creditLeftNum < 0) creditLeftNum = 0;
                     
+                    // 🚨 ตรวจสอบสถานะล็อกเครื่อง (Lock Screen)
+                    if (data.status === "ล็อกเครื่อง" || data.contractStatus === "ล็อกเครื่อง") {
+                        resultBox.innerHTML = `
+                            <div class="info-card !bg-rose-50 !border-rose-400 text-center py-6">
+                                <i class="fa-solid fa-lock text-5xl text-rose-500 mb-3 animate-bounce"></i>
+                                <h3 class="text-base font-bold text-rose-600 mb-1">บัญชีนี้ถูกระงับ / ล็อกเครื่องชั่วคราว</h3>
+                                <p class="text-xs text-rose-500 mb-4">กรุณาติดต่อแอดมินเพื่อเคลียร์ยอดค้างชำระและปลดล็อกเครื่องค่ะ</p>
+                                <a href="https://line.me" target="_blank" class="btn-main !bg-rose-500 inline-block py-2.5 px-4 rounded-xl text-sm font-bold shadow-md">
+                                    <i class="fa-brands fa-line"></i> ติดต่อแอดมินด่วน
+                                </a>
+                            </div>
+                        `;
+                        resultBox.classList.remove('hidden-page');
+                        errorBox.classList.add('hidden-page');
+                        btn.disabled = false;
+                        btn.innerHTML = '<i class="fa-solid fa-magnifying-glass"></i> ค้นหาข้อมูล';
+                        return;
+                    }
+                    
                     let progressHtml = '';
                     if (data.type && data.type.includes("ผ่อนไปใช้ไป")) {
                         let percent = creditTargetNum > 0 ? (paidNum / creditTargetNum) * 100 : 0;
@@ -758,6 +794,18 @@
                         }
                     }
 
+                    // 📌 ปุ่มดูรูปสัญญา (ดึงจากคอลัมน์ X / contractLink)
+                    let contractBtnHtml = '';
+                    if (data.contractLink && data.contractLink.trim() !== '') {
+                        contractBtnHtml = `
+                            <div class="mt-3">
+                                <a href="${data.contractLink}" target="_blank" class="btn-secondary !py-2.5 !text-sm flex items-center justify-center gap-2 shadow-sm">
+                                    <i class="fa-solid fa-file-contract text-lg"></i> ดูสัญญาเช่าซื้อของฉัน 📄
+                                </a>
+                            </div>
+                        `;
+                    }
+
                     let discountValue = data.discount ? parseFloat(String(data.discount).replace(/,/g, '')) : 0;
                     let totalValue = data.total ? parseFloat(String(data.total).replace(/,/g, '')) : 0;
                     let balanceValue = data.balance ? parseFloat(String(data.balance).replace(/,/g, '')) : 0;
@@ -782,6 +830,7 @@
                                     </div>
                                 </div>
                                 ${progressHtml}
+                                ${contractBtnHtml}
                             </div>
                         </div>
 
@@ -799,14 +848,21 @@
                                 <button onclick="copyText('${bankText}')" class="bg-white text-[#0284c7] px-3.5 py-1.5 rounded-xl text-[12px] font-bold active:scale-95 shrink-0"><i class="fa-regular fa-copy"></i> คัดลอก</button>
                             </div>
 
-                            <div class="relative bg-gradient-to-br from-[#fce7f3] to-[#fbcfe8] border border-[#f9a8d4] rounded-2xl p-4 mb-3 flex justify-between items-center shadow-sm">
-                                <div>
-                                    <div class="text-[14px] font-bold text-[#be185d] mb-1">TrueMoney Wallet 🩷</div>
-                                    <div class="text-xl font-bold text-[#0f172a]">${walletText}</div>
-                                    <div class="text-[12px] text-[#334155] font-medium mt-1">ชื่อบัญชี: กนกอร</div>
-                                    <div class="text-[11px] font-bold text-[#e11d48] mt-1 bg-white/60 inline-block px-2 py-0.5 rounded-md">*วอเล็ต บวกเพิ่ม +2.9% นะคะ*</div>
+                            <div class="relative bg-gradient-to-br from-[#fce7f3] to-[#fbcfe8] border border-[#f9a8d4] rounded-2xl p-4 mb-3 shadow-sm">
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <div class="text-[14px] font-bold text-[#be185d] mb-1">TrueMoney Wallet 🩷</div>
+                                        <div class="text-xl font-bold text-[#0f172a]">${walletText}</div>
+                                        <div class="text-[12px] text-[#334155] font-medium mt-1">ชื่อบัญชี: กนกอร</div>
+                                    </div>
+                                    <button onclick="copyText('${walletText}')" class="bg-white text-[#be185d] px-3.5 py-1.5 rounded-xl text-[12px] font-bold active:scale-95 shrink-0"><i class="fa-regular fa-copy"></i> คัดลอก</button>
                                 </div>
-                                <button onclick="copyText('${walletText}')" class="bg-white text-[#be185d] px-3.5 py-1.5 rounded-xl text-[12px] font-bold active:scale-95 shrink-0"><i class="fa-regular fa-copy"></i> คัดลอก</button>
+                                <!-- 📌 ติ๊กเปิดค่าธรรมเนียม Wallet 2.9% -->
+                                <div class="mt-3 pt-2 border-t border-rose-200 flex items-center gap-2">
+                                    <input type="checkbox" id="wallet-fee-checkbox" onchange="toggleWalletFee()" class="w-4 h-4 accent-[#ff5277] cursor-pointer">
+                                    <label for="wallet-fee-checkbox" class="text-xs font-bold text-[#be185d] cursor-pointer">บวกค่าธรรมเนียม Wallet 2.9% (คำนวณอัตโนมัติ)</label>
+                                </div>
+                                <div id="wallet-calculated-text" class="hidden-page text-xs font-medium text-[#831843] mt-1 bg-white/80 p-2 rounded-lg border border-rose-200"></div>
                             </div>
 
                             <div class="bg-[#fff0f3] border-2 border-dashed border-[#ff5277] rounded-2xl p-4 mb-3 text-center shadow-sm relative overflow-hidden">
@@ -828,7 +884,7 @@
                                 <i class="fa-solid fa-file-arrow-up watermark-icon"></i>
                                 <div class="card-content-inner flex flex-col gap-2.5">
                                     <p class="text-sm font-bold text-[#ff5277]">📤 แจ้งชำระเงิน / แนบสลิป:</p>
-                                    <input type="number" id="slip-amount" class="admin-input !mt-0 text-base" placeholder="จำนวนเงินที่โอน (เช่น 1500)">
+                                    <input type="number" id="slip-amount" oninput="toggleWalletFee()" class="admin-input !mt-0 text-base" placeholder="จำนวนเงินที่โอน (เช่น 1500)">
                                     <input type="file" id="slip-file" accept="image/*" class="admin-input !mt-0 text-xs py-2.5">
                                     <button id="btn-submit-slip" onclick="submitSlip()" class="btn-main !py-3 !text-sm mt-1">
                                         <i class="fa-solid fa-paper-plane"></i> ส่งสลิปให้แอดมิน
@@ -847,7 +903,6 @@
                     resultBox.classList.add('hidden-page');
                     errorBox.classList.remove('hidden-page');
 
-                    // 🚨 ระบบส่งแจ้งเตือนความปลอดภัยเข้า Discord
                     const now = new Date();
                     const timeString = now.toLocaleDateString('th-TH') + ' ' + now.toLocaleTimeString('th-TH', {hour: '2-digit', minute:'2-digit', second:'2-digit'}) + ' น.';
                     
@@ -981,7 +1036,6 @@
                     const now = new Date();
                     const timeString = now.toLocaleDateString('th-TH') + ' ' + now.toLocaleTimeString('th-TH', {hour: '2-digit', minute:'2-digit'}) + ' น.';
                     
-                    // 📌 แท็กชื่อแอดมินใน Discord อัตโนมัติ
                     const adminPayload = {
                         content: `✅ **อนุมัติยอดสำเร็จ!**\n🎀 **รหัสลูกค้า:** ${custId}\n💰 **ยอดเงิน:** ${amount} ฿\n👤 **ผู้ออนุมัติ:** ${adminInfo.mention} (แอดมิน **${adminId} - ${adminInfo.name}**)\n🕒 **เวลา:** ${timeString}`
                     };
@@ -1009,14 +1063,12 @@
         function checkPassword() {
             const adminIdInput = document.getElementById('admin-id-input').value.trim().toUpperCase();
 
-            // 📌 ตรวจสอบรหัสจาก adminMap
             if (!adminIdInput || !adminMap[adminIdInput]) {
                 return alert('รหัสแอดมินไม่ถูกต้องค่ะ กรุณาลองใหม่ (เช่น S01, S02, S03, S04) 🐰');
             }
             
             sessionStorage.setItem('sunstoryAdminId', adminIdInput);
             
-            // 📌 แสดงชื่อแอดมินใน UI
             const adminInfo = adminMap[adminIdInput];
             document.getElementById('admin-logged-in-label').innerText = `ผู้ใช้งานระบบ: แอดมิน ${adminIdInput} (${adminInfo.name})`;
             

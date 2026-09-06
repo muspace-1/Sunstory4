@@ -629,7 +629,6 @@
             navigator.clipboard.writeText(text).then(() => alert('คัดลอก "' + text + '" เรียบร้อยแล้วค่ะ! 📋✨')).catch(err => console.error("Copy failed", err));
         }
 
-        // 📌 ฟังก์ชันคำนวณบวกค่าธรรมเนียม Wallet 2.9% อัตโนมัติ
         function toggleWalletFee() {
             const checkbox = document.getElementById('wallet-fee-checkbox');
             const amountInput = document.getElementById('slip-amount');
@@ -744,8 +743,7 @@
                     let creditLeftNum = creditTargetNum - paidNum;
                     if (creditLeftNum < 0) creditLeftNum = 0;
                     
-                    // 🚨 ตรวจสอบสถานะล็อกเครื่อง (Lock Screen)
-                    if (data.status === "ล็อกเครื่อง" || data.contractStatus === "ล็อกเครื่อง") {
+                    if (data.contractStatus === "ล็อกเครื่อง") {
                         resultBox.innerHTML = `
                             <div class="info-card !bg-rose-50 !border-rose-400 text-center py-6">
                                 <i class="fa-solid fa-lock text-5xl text-rose-500 mb-3 animate-bounce"></i>
@@ -794,7 +792,6 @@
                         }
                     }
 
-                    // 📌 ปุ่มดูรูปสัญญา (ดึงจากคอลัมน์ X / contractLink)
                     let contractBtnHtml = '';
                     if (data.contractLink && data.contractLink.trim() !== '') {
                         contractBtnHtml = `
@@ -857,7 +854,6 @@
                                     </div>
                                     <button onclick="copyText('${walletText}')" class="bg-white text-[#be185d] px-3.5 py-1.5 rounded-xl text-[12px] font-bold active:scale-95 shrink-0"><i class="fa-regular fa-copy"></i> คัดลอก</button>
                                 </div>
-                                <!-- 📌 ติ๊กเปิดค่าธรรมเนียม Wallet 2.9% -->
                                 <div class="mt-3 pt-2 border-t border-rose-200 flex items-center gap-2">
                                     <input type="checkbox" id="wallet-fee-checkbox" onchange="toggleWalletFee()" class="w-4 h-4 accent-[#ff5277] cursor-pointer">
                                     <label for="wallet-fee-checkbox" class="text-xs font-bold text-[#be185d] cursor-pointer">บวกค่าธรรมเนียม Wallet 2.9% (คำนวณอัตโนมัติ)</label>

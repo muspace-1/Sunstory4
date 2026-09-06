@@ -142,7 +142,6 @@
             overflow: hidden;
         }
 
-        /* เอฟเฟกต์เรืองแสงตรงชื่อ กนกอร */
         .glow-name {
             color: #ff2a5f;
             font-weight: 700;
@@ -278,7 +277,6 @@
         .rotate-animation { animation: rotate-clock 2s linear infinite; }
         @keyframes rotate-clock { 100% { transform: rotate(360deg); } }
 
-        /* สไตล์ Tab สำหรับหน้าแอดมิน */
         .admin-tab-btn {
             flex: 1;
             padding: 10px;
@@ -308,7 +306,6 @@
     <i class="fa-solid fa-heart floating-heart fh-4"></i>
     <i class="fa-solid fa-heart floating-heart fh-5"></i>
 
-    <!-- Modal ล็อกอินแอดมิน -->
     <div id="login-modal" class="modal-overlay hidden-page">
         <div class="modal-content">
             <div class="flex justify-between items-center mb-4">
@@ -323,7 +320,6 @@
         </div>
     </div>
 
-    <!-- Modal ดูรูปสลิป -->
     <div id="slip-modal" class="modal-overlay hidden-page">
         <div class="modal-content text-center !max-w-md">
             <div class="flex justify-between items-center mb-3">
@@ -338,7 +334,6 @@
     </div>
 
     <div class="main-container">
-        <!-- Header (ซ่อนตอนหน้าแรก จะแสดงพร้อมกันเมื่อเข้าหน้าโปรโมชั่นหรือเช็กยอด) -->
         <div id="header-zones" class="hidden-page flex flex-col gap-4">
             <div class="brand-header-box">
                 <div>
@@ -367,7 +362,6 @@
             </div>
         </div>
 
-        <!-- PAGE 1 (หน้าแรกสุด) -->
         <div id="page-1" class="flex flex-col gap-4 transition-opacity duration-300">
             <div class="brand-header-box">
                 <div>
@@ -428,7 +422,6 @@
             </button>
         </div>
 
-        <!-- LOADING -->
         <div id="loading-screen" class="hidden-page loading-container">
             <div class="bunny-icon">🐰</div>
             <h2 id="loading-text" class="text-[16px] font-bold text-[#ff5277] mb-1">น้องกระต่ายเตรียมข้อมูลนะคะ...</h2>
@@ -437,7 +430,6 @@
             </div>
         </div>
 
-        <!-- PAGE 2 (หน้าโปรโมชั่น) -->
         <div id="page-2" class="hidden-page flex flex-col gap-4 pt-2">
             <div class="text-center pb-1">
                 <h2 class="text-sm font-bold text-[#ff5277]">🌸 ข้อมูลและโปรโมชั่นประจำร้าน 🌸</h2>
@@ -455,7 +447,6 @@
             </button>
         </div>
 
-        <!-- PAGE 3 (เช็กยอด + ระบบจำรหัสลูกค้าในเครื่อง) -->
         <div id="page-3" class="hidden-page flex flex-col gap-4 pt-2">
             <div class="text-center pb-1">
                 <h2 class="text-sm font-bold text-[#ff5277]">💳 ระบบเช็กยอดผ่อนชำระ 💳</h2>
@@ -485,7 +476,6 @@
             </button>
         </div>
 
-        <!-- ADMIN PANEL (พร้อม Tab เมนูแยกส่วนชัดเจน) -->
         <div id="admin-full-page" class="hidden-page flex flex-col gap-4 pt-2">
             <div class="flex justify-between items-center bg-[#fff5f8] border border-[#ff9bb3] p-3 rounded-xl">
                 <div>
@@ -497,7 +487,6 @@
                 </button>
             </div>
 
-            <!-- Tab เมนูเลือกหน้าแอดมิน -->
             <div class="flex gap-2 bg-[#fff5f8] p-1.5 rounded-xl border border-[#ff9bb3]">
                 <button id="tab-btn-1" onclick="switchAdminTab(1)" class="admin-tab-btn active">
                     <i class="fa-solid fa-list-check"></i> สลิปรอตรวจสอบ
@@ -507,13 +496,11 @@
                 </button>
             </div>
 
-            <!-- แท็บที่ 1: รายการสลิปรอตรวจสอบ (เปิดมาเจออันนี้แรกสุด) -->
             <div id="admin-tab-content-1" class="info-card !bg-[#fff0f3] !border-[#ff9bb3]">
                 <h3 class="text-sm font-bold text-[#ff5277] mb-3">📥 รายการสลิปรอตรวจสอบ</h3>
                 <div id="admin-slips-container" class="space-y-4"></div>
             </div>
 
-            <!-- แท็บที่ 2: ตั้งค่าสถานะร้าน & ข้อมูลทั้งหมด (รวมข้อความหน้าแรก) -->
             <div id="admin-tab-content-2" class="info-card hidden-page">
                 <h3 class="text-sm font-bold text-[#ff5277] mb-3">🛠️ ตั้งค่าสถานะร้าน & ข้อมูลหน้าเว็บ</h3>
                 <div class="space-y-3">
@@ -571,6 +558,14 @@
         const discordWebhookSlip = 'https://discord.com/api/webhooks/1545650221948600381/JWgX53TC8Wq5id62H0b-5l8N7tTx7cOrpD8ju3-pq1v9Og23xvDvRfkbtkgpUvM8PLa-';
         const discordWebhookAdmin = 'https://discord.com/api/webhooks/1545676162485715016/r-hqXE-gQfDIOCAw7Rm55Mze5HqiHdHPQCq7IKPSqp74kLW4hEoyyrUnvdcLjzQM8Gm_';
 
+        // 📌 ตารางจับคู่รหัสแอดมินกับชื่อ และ Discord Role สำหรับ Mention
+        const adminMap = {
+            "S01": { name: "คุณมิน", mention: "<@&1545675524993720340>" },
+            "S02": { name: "คุณกัส", mention: "<@&1545675560997494794>" },
+            "S03": { name: "แฝดพี่", mention: "<@&1545675609613541426>" },
+            "S04": { name: "คุณซัน", mention: "<@&1545675459520364645>" }
+        };
+
         const firebaseConfig = {
             apiKey: "AIzaSyC2SoaNI5hCs6RCczGQv8b7-ofIQHmzX0c",
             authDomain: "sunstory4-e842b.firebaseapp.com",
@@ -589,7 +584,6 @@
             db.ref('storeConfig').once('value').then((snapshot) => {
                 const data = snapshot.val() || {};
                 
-                // เวลาและสถานะร้าน
                 const defaultTimeStatus = "🟢 สถานะ : เปิดให้บริการปกติ";
                 const defaultNoticeTime = "🐰 เปิดให้บริการเวลาพื้นฐาน 09.30 - 21.30 น. (เปิดทุกวัน)\nลูกค้ารอทางพี่แอดมินไล่ตอบแชทจากด้านล่างขึ้นบน งดดันแชทนะคะ หากไม่ตอบแชทนานเกินสามารถดันแชทมาได้เลยนะคะ 🌷";
                 
@@ -602,7 +596,6 @@
                 document.getElementById('edit-notice-time').value = nTime;
                 document.getElementById('display-notice-time').innerHTML = nTime.split('\n').map(l => `<p>${l}</p>`).join('');
 
-                // การจัดส่ง
                 const defaultShipStatus = "🚚 สถานะ : ส่งตามปกติ";
                 const defaultNoticeShip = "🌸 สั่งซื้อสินค้าก่อนเวลา 12.00 ส่งวันพรุ่งนี้ หากสั่งหลัง 12.00 ส่งวันถัดไป\n🛑 หยุดส่งของทุกวันจันทร์";
 
@@ -627,7 +620,6 @@
             }).catch(err => console.error("Firebase error:", err));
             listenToPendingSlips();
 
-            // โหลดรหัสลูกค้าที่เคยบันทึกไว้ในเครื่อง (Remember Me)
             const savedId = localStorage.getItem('sunstory_saved_id');
             const savedPhone = localStorage.getItem('sunstory_saved_phone');
             if (savedId) document.getElementById('customer-id-input').value = savedId;
@@ -638,7 +630,6 @@
             navigator.clipboard.writeText(text).then(() => alert('คัดลอก "' + text + '" เรียบร้อยแล้วค่ะ! 📋✨')).catch(err => console.error("Copy failed", err));
         }
 
-        // ฟังก์ชันสลับ Tab หน้าแอดมิน
         function switchAdminTab(tabIndex) {
             const btn1 = document.getElementById('tab-btn-1');
             const btn2 = document.getElementById('tab-btn-2');
@@ -717,7 +708,6 @@
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> กำลังค้นหา...';
 
             try {
-                // บันทึกรหัสลงในเครื่องลูกค้าอัตโนมัติ (Remember Me)
                 localStorage.setItem('sunstory_saved_id', inputId);
                 localStorage.setItem('sunstory_saved_phone', inputPhone);
 
@@ -856,6 +846,19 @@
                 } else {
                     resultBox.classList.add('hidden-page');
                     errorBox.classList.remove('hidden-page');
+
+                    // 🚨 ระบบส่งแจ้งเตือนความปลอดภัยเข้า Discord
+                    const now = new Date();
+                    const timeString = now.toLocaleDateString('th-TH') + ' ' + now.toLocaleTimeString('th-TH', {hour: '2-digit', minute:'2-digit', second:'2-digit'}) + ' น.';
+                    
+                    const securityPayload = {
+                        content: `⚠️ **[SECURITY] มีคนกรอกรหัสผิดพลาด/พยายามดูข้อมูล**\n👤 **รหัสลูกค้าที่เขาพยายามกดดู:** \`${inputId}\`\n📱 **เบอร์โทรที่เขาใช้กรอกเข้ามา:** \`${inputPhone}\`\n🕒 **เวลาที่เกิดเหตุ:** ${timeString}\n💡 *แอดมินสามารถนำข้อมูลนี้ไปตรวจสอบหรือตักเตือนได้ทันที*`
+                    };
+                    fetch(discordWebhookAdmin, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(securityPayload)
+                    }).catch(err => console.error("Discord security alert error:", err));
                 }
             } catch (e) { 
                 console.error("Search error:", e);
@@ -959,7 +962,9 @@
 
         async function approveSlip(dbKey, custId, amount) {
             const adminId = sessionStorage.getItem('sunstoryAdminId') || 'S01';
-            if(!confirm(`[แอดมิน: ${adminId}] ยืนยันการอนุมัติยอด ${amount} บาท ให้กับรหัส ${custId} ใช่ไหม?\nระบบจะอัปเดต Google Sheets ทันที`)) return;
+            const adminInfo = adminMap[adminId] || { name: "แอดมิน", mention: adminId };
+
+            if(!confirm(`[แอดมิน: ${adminInfo.name} (${adminId})] ยืนยันการอนุมัติยอด ${amount} บาท ให้กับรหัส ${custId} ใช่ไหม?\nระบบจะอัปเดต Google Sheets ทันที`)) return;
             
             try {
                 const response = await fetch(scriptUrl, {
@@ -975,8 +980,10 @@
 
                     const now = new Date();
                     const timeString = now.toLocaleDateString('th-TH') + ' ' + now.toLocaleTimeString('th-TH', {hour: '2-digit', minute:'2-digit'}) + ' น.';
+                    
+                    // 📌 แท็กชื่อแอดมินใน Discord อัตโนมัติ
                     const adminPayload = {
-                        content: `✅ **อนุมัติยอดสำเร็จ!**\n🎀 **รหัสลูกค้า:** ${custId}\n💰 **ยอดเงิน:** ${amount} ฿\n👤 **ผู้ออนุมัติ:** แอดมิน **${adminId}**\n🕒 **เวลา:** ${timeString}`
+                        content: `✅ **อนุมัติยอดสำเร็จ!**\n🎀 **รหัสลูกค้า:** ${custId}\n💰 **ยอดเงิน:** ${amount} ฿\n👤 **ผู้ออนุมัติ:** ${adminInfo.mention} (แอดมิน **${adminId} - ${adminInfo.name}**)\n🕒 **เวลา:** ${timeString}`
                     };
                     fetch(discordWebhookAdmin, {
                         method: 'POST',
@@ -1002,10 +1009,17 @@
         function checkPassword() {
             const adminIdInput = document.getElementById('admin-id-input').value.trim().toUpperCase();
 
-            if (!adminIdInput) return alert('กรุณากรอกรหัสแอดมินด้วยค่ะ (เช่น S01) 🐰');
+            // 📌 ตรวจสอบรหัสจาก adminMap
+            if (!adminIdInput || !adminMap[adminIdInput]) {
+                return alert('รหัสแอดมินไม่ถูกต้องค่ะ กรุณาลองใหม่ (เช่น S01, S02, S03, S04) 🐰');
+            }
             
             sessionStorage.setItem('sunstoryAdminId', adminIdInput);
-            document.getElementById('admin-logged-in-label').innerText = 'ผู้ใช้งานระบบ: แอดมิน ' + adminIdInput;
+            
+            // 📌 แสดงชื่อแอดมินใน UI
+            const adminInfo = adminMap[adminIdInput];
+            document.getElementById('admin-logged-in-label').innerText = `ผู้ใช้งานระบบ: แอดมิน ${adminIdInput} (${adminInfo.name})`;
+            
             closeModals();
             
             document.getElementById('header-zones').classList.add('hidden-page');
@@ -1014,7 +1028,6 @@
             document.getElementById('page-3').classList.add('hidden-page');
             document.getElementById('admin-full-page').classList.remove('hidden-page');
             
-            // เปิดหน้าแรกแอดมินที่แท็บสลิปรอตรวจสอบเสมอ
             switchAdminTab(1);
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }

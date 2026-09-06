@@ -401,7 +401,7 @@
                     <div id="display-status-time" class="text-[13px] font-bold mb-2 border-b border-dashed border-[#ffccd5] pb-2" style="color: #059669;">
                         🟢 สถานะ : เปิดให้บริการปกติ
                     </div>
-                    <div class="text-[12px] text-[#5a4a5e] space-y-3 font-medium">
+                    <div id="display-notice-time" class="text-[12px] text-[#5a4a5e] space-y-3 font-medium">
                         <p>🐰 เปิดให้บริการเวลาพื้นฐาน 09.30 - 21.30 น. (เปิดทุกวัน)</p>
                         <p>ลูกค้ารอทางพี่แอดมินไล่ตอบแชทจากด้านล่างขึ้นบน งดดันแชทนะคะ หากไม่ตอบแชทนานเกินสามารถดันแชทมาได้เลยนะคะ 🌷</p>
                     </div>
@@ -413,7 +413,7 @@
                     <div id="display-status-shipping" class="text-[13px] font-bold mb-2 border-b border-dashed border-[#ffccd5] pb-2" style="color: #3b82f6;">
                         🚚 สถานะ : ส่งตามปกติ
                     </div>
-                    <div class="text-[12px] text-[#5a4a5e] space-y-3 font-medium">
+                    <div id="display-notice-shipping" class="text-[12px] text-[#5a4a5e] space-y-3 font-medium">
                         <p>🌸 สั่งซื้อสินค้าก่อนเวลา 12.00 ส่งวันพรุ่งนี้ หากสั่งหลัง 12.00 ส่งวันถัดไป</p>
                         <p>🛑 หยุดส่งของทุกวันจันทร์</p>
                     </div>
@@ -503,7 +503,7 @@
                     <i class="fa-solid fa-list-check"></i> สลิปรอตรวจสอบ
                 </button>
                 <button id="tab-btn-2" onclick="switchAdminTab(2)" class="admin-tab-btn">
-                    <i class="fa-solid fa-gears"></i> ตั้งค่าร้าน & บัญชี
+                    <i class="fa-solid fa-gears"></i> ตั้งค่าร้าน & ข้อมูลหน้าเว็บ
                 </button>
             </div>
 
@@ -513,9 +513,9 @@
                 <div id="admin-slips-container" class="space-y-4"></div>
             </div>
 
-            <!-- แท็บที่ 2: ตั้งค่าสถานะร้าน & บัญชี (ซ่อนไว้ กดสลับมาดูได้) -->
+            <!-- แท็บที่ 2: ตั้งค่าสถานะร้าน & ข้อมูลทั้งหมด (รวมข้อความหน้าแรก) -->
             <div id="admin-tab-content-2" class="info-card hidden-page">
-                <h3 class="text-sm font-bold text-[#ff5277] mb-3">🛠️ ตั้งค่าสถานะร้าน & บัญชี</h3>
+                <h3 class="text-sm font-bold text-[#ff5277] mb-3">🛠️ ตั้งค่าสถานะร้าน & ข้อมูลหน้าเว็บ</h3>
                 <div class="space-y-3">
                     <div>
                         <label class="text-xs font-bold text-[#a86b81]">สถานะร้าน:</label>
@@ -525,11 +525,19 @@
                         </div>
                     </div>
                     <div>
+                        <label class="text-xs font-bold text-[#a86b81]">รายละเอียดเวลาร้าน (รองรับขึ้นบรรทัดใหม่):</label>
+                        <textarea id="edit-notice-time" class="admin-input text-sm" rows="3"></textarea>
+                    </div>
+                    <div>
                         <label class="text-xs font-bold text-[#a86b81]">สถานะการจัดส่ง:</label>
                         <div class="flex items-center gap-2">
                             <input type="color" id="edit-color-shipping" value="#3b82f6" class="color-picker">
                             <input type="text" id="edit-status-shipping" class="admin-input !mt-0 text-sm">
                         </div>
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-[#a86b81]">รายละเอียดการจัดส่ง (รองรับขึ้นบรรทัดใหม่):</label>
+                        <textarea id="edit-notice-shipping" class="admin-input text-sm" rows="3"></textarea>
                     </div>
                     <div>
                         <label class="text-xs font-bold text-[#a86b81]">งานเซลล์ปิดสด (ใส่ # เพื่อทำตัวหนา):</label>
@@ -580,15 +588,32 @@
         window.onload = function() {
             db.ref('storeConfig').once('value').then((snapshot) => {
                 const data = snapshot.val() || {};
-                document.getElementById('display-status-time').innerText = data.statusTime || "🟢 สถานะ : เปิดให้บริการปกติ";
+                
+                // เวลาและสถานะร้าน
+                const defaultTimeStatus = "🟢 สถานะ : เปิดให้บริการปกติ";
+                const defaultNoticeTime = "🐰 เปิดให้บริการเวลาพื้นฐาน 09.30 - 21.30 น. (เปิดทุกวัน)\nลูกค้ารอทางพี่แอดมินไล่ตอบแชทจากด้านล่างขึ้นบน งดดันแชทนะคะ หากไม่ตอบแชทนานเกินสามารถดันแชทมาได้เลยนะคะ 🌷";
+                
+                document.getElementById('display-status-time').innerText = data.statusTime || defaultTimeStatus;
                 document.getElementById('display-status-time').style.color = data.colorTime || "#059669";
-                document.getElementById('edit-status-time').value = data.statusTime || "🟢 สถานะ : เปิดให้บริการปกติ";
+                document.getElementById('edit-status-time').value = data.statusTime || defaultTimeStatus;
                 document.getElementById('edit-color-time').value = data.colorTime || "#059669";
+                
+                const nTime = data.noticeTime || defaultNoticeTime;
+                document.getElementById('edit-notice-time').value = nTime;
+                document.getElementById('display-notice-time').innerHTML = nTime.split('\n').map(l => `<p>${l}</p>`).join('');
 
-                document.getElementById('display-status-shipping').innerText = data.statusShip || "🚚 สถานะ : ส่งตามปกติ";
+                // การจัดส่ง
+                const defaultShipStatus = "🚚 สถานะ : ส่งตามปกติ";
+                const defaultNoticeShip = "🌸 สั่งซื้อสินค้าก่อนเวลา 12.00 ส่งวันพรุ่งนี้ หากสั่งหลัง 12.00 ส่งวันถัดไป\n🛑 หยุดส่งของทุกวันจันทร์";
+
+                document.getElementById('display-status-shipping').innerText = data.statusShip || defaultShipStatus;
                 document.getElementById('display-status-shipping').style.color = data.colorShip || "#3b82f6";
-                document.getElementById('edit-status-shipping').value = data.statusShip || "🚚 สถานะ : ส่งตามปกติ";
+                document.getElementById('edit-status-shipping').value = data.statusShip || defaultShipStatus;
                 document.getElementById('edit-color-shipping').value = data.colorShip || "#3b82f6";
+
+                const nShip = data.noticeShip || defaultNoticeShip;
+                document.getElementById('edit-notice-shipping').value = nShip;
+                document.getElementById('display-notice-shipping').innerHTML = nShip.split('\n').map(l => `<p>${l}</p>`).join('');
 
                 document.getElementById('edit-bank-info').value = data.bankInfo || "111-2-33333-4";
                 document.getElementById('edit-wallet-info').value = data.walletInfo || "099-999-9999";
@@ -1005,8 +1030,10 @@
             db.ref('storeConfig').set({
                 statusTime: document.getElementById('edit-status-time').value,
                 colorTime: document.getElementById('edit-color-time').value,
+                noticeTime: document.getElementById('edit-notice-time').value,
                 statusShip: document.getElementById('edit-status-shipping').value,
                 colorShip: document.getElementById('edit-color-shipping').value,
+                noticeShip: document.getElementById('edit-notice-shipping').value,
                 promo1: document.getElementById('edit-promo-1').value,
                 promo2: document.getElementById('edit-promo-2').value,
                 bankInfo: document.getElementById('edit-bank-info').value,

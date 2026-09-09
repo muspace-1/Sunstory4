@@ -730,6 +730,9 @@
                     const data = resData.data;
                     const paidNum = parseFloat(String(data.paid).replace(/,/g, '')) || 0;
                     const creditTargetNum = parseFloat(String(data.creditTarget).replace(/,/g, '')) || 0;
+                    const installmentAmt = parseFloat(String(data.installmentAmt).replace(/,/g, '')) || 0;
+                    const balanceNum = parseFloat(String(data.balance).replace(/,/g, '')) || 0;
+                    const totalNum = parseFloat(String(data.total).replace(/,/g, '')) || 0;
                     
                     let creditLeftNum = creditTargetNum - paidNum;
                     if (creditLeftNum < 0) creditLeftNum = 0;
@@ -754,7 +757,10 @@
                     }
                     
                     let progressHtml = '';
-                    if (data.type && data.type.includes("ผ่อนไปใช้ไป")) {
+                    const customerType = data.type ? data.type.trim() : "";
+
+                    if (customerType.includes("ผ่อนไปใช้ไป")) {
+                        // 🎯 หลอดสำหรับ ผ่อนไปใช้ไป (เก็บเป้าเครดิต)
                         let percent = creditTargetNum > 0 ? (paidNum / creditTargetNum) * 100 : 0;
                         if (percent > 100) percent = 100;
 
@@ -782,6 +788,32 @@
                                     </div>
                                 </div>`;
                         }
+                    } else if (customerType.includes("วางดาวน์")) {
+                        // 📊 หลอดสำหรับ วางดาวน์ (แสดงจำนวนงวดที่ผ่อนไปแล้ว และงวดที่เหลือ)
+                        let totalPeriods = installmentAmt > 0 ? Math.ceil(totalNum / installmentAmt) : 0;
+                        let paidPeriods = installmentAmt > 0 ? Math.floor(paidNum / installmentAmt) : 0;
+                        if (paidPeriods > totalPeriods && totalPeriods > 0) paidPeriods = totalPeriods;
+                        let remainPeriods = totalPeriods - paidPeriods;
+                        if (remainPeriods < 0) remainPeriods = 0;
+
+                        let periodPercent = totalPeriods > 0 ? (paidPeriods / totalPeriods) * 100 : 0;
+                        if (periodPercent > 100) periodPercent = 100;
+
+                        progressHtml = `
+                            <div class="mt-4 bg-[#fdf2f8] border-2 border-[#f472b6] rounded-xl p-3.5 shadow-sm">
+                                <div class="flex justify-between items-end mb-1">
+                                    <div class="text-[13px] font-bold text-[#db2777]">📊 สถานะงวดการผ่อนชำระ (วางดาวน์)</div>
+                                    <div class="text-[11px] font-bold text-[#be185d] bg-white px-2.5 py-0.5 rounded-md border border-[#f472b6]">${Math.floor(periodPercent)}%</div>
+                                </div>
+                                <div class="w-full h-3 bg-[#fce7f3] rounded-full overflow-hidden my-2 border border-[#f472b6]">
+                                    <div class="h-full bg-gradient-to-r from-[#ec4899] to-[#be185d] rounded-full transition-all duration-1000" style="width: ${periodPercent}%;"></div>
+                                </div>
+                                <div class="text-[12px] text-[#831843] space-y-1 mt-2 font-medium bg-white p-2.5 rounded-lg border border-[#fbcfe8]">
+                                    <div class="flex justify-between"><span>✅ ส่งไปแล้ว:</span> <b>${paidPeriods} งวด</b></div>
+                                    <div class="flex justify-between"><span>⏳ ค้างอีก:</span> <b class="text-rose-600">${remainPeriods} งวด</b> (จากทั้งหมด ${totalPeriods} งวด)</div>
+                                    <div class="flex justify-between pt-1 border-t border-dashed border-pink-200"><span>💰 ยอดคงเหลือสุทธิ:</span> <b class="text-rose-600">${balanceNum.toLocaleString()} ฿</b></div>
+                                </div>
+                            </div>`;
                     }
 
                     // 📌 ส่วนแสดงผลเพิ่มเติม: สี (G) และ รายละเอียด (H)
@@ -793,9 +825,9 @@
                         extraProductInfo += `<p>📝 <b>รายละเอียดเครื่อง:</b> ${data.details}</p>`;
                     }
 
-                    // 📌 หลอดนับถอยหลัง Cooldown Bar (จากวันตัดยอด J)
+                    // 📌 หลอดวันตัดยอด (กำหนดชำระ)
                     let cooldownHtml = '';
-                    if (data.dueDate) {
+                    if (data.dueDate && data.dueDate.trim() !== "" && data.dueDate !== "-") {
                         const parts = data.dueDate.split('-');
                         if (parts.length === 3) {
                             const due = new Date(parts[0], parts[1] - 1, parts[2]);
@@ -819,7 +851,7 @@
                             }
 
                             cooldownHtml = `
-                                <div class="mt-4 bg-[#fff9fa] border border-[#ffb6c1] rounded-xl p-3 shadow-sm">
+                                <div class="mt-3 bg-[#fff9fa] border border-[#ffb6c1] rounded-xl p-3 shadow-sm">
                                     <div class="text-[12px] font-bold text-[#ff5277] mb-1">📅 วันตัดยอด (กำหนดชำระ): ${parts[2]}/${parts[1]}/${parts[0]}</div>
                                     <div class="w-full h-3 bg-[#ffe5ed] rounded-full overflow-hidden my-1.5 border border-[#ffb6c1]">
                                         <div class="h-full bg-gradient-to-r ${barColor} rounded-full transition-all duration-1000" style="width: ${widthPct};"></div>

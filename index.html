@@ -284,17 +284,20 @@
             box-shadow: none !important;
         }
         
-        /* 👈 ส่วนที่แก้ไข: ลบเงาและปรับกรอบช่องกรอกข้อมูลให้เป็นสีขาว */
+        /* 👈 ลบเงาและปรับกรอบช่องกรอกข้อมูลให้เป็นสีขาว 100% สำหรับทุกหน้าจอ/เบราว์เซอร์ */
         .admin-input {
             width: 100%; padding: 12px; border: 1px solid #ffffff !important; border-radius: 0.75rem;
             font-family: 'Kanit', sans-serif; font-size: 1rem; margin-top: 6px;
             outline: none; color: #5a4a5e; background-color: #fff9fa;
             box-shadow: none !important;
-            text-shadow: none !important; /* ลบเงาตัวหนังสือที่พิมพ์ลงไป */
+            text-shadow: none !important;
+            -webkit-text-shadow: none !important;
         }
-        .admin-input::placeholder {
-            text-shadow: none !important; /* ลบเงาตัวหนังสือ Placeholder (เช่น SUN01) */
-        }
+        .admin-input::placeholder { text-shadow: none !important; -webkit-text-shadow: none !important; }
+        .admin-input::-webkit-input-placeholder { text-shadow: none !important; -webkit-text-shadow: none !important; }
+        .admin-input::-moz-placeholder { text-shadow: none !important; }
+        .admin-input:-ms-input-placeholder { text-shadow: none !important; }
+        .admin-input::-ms-input-placeholder { text-shadow: none !important; }
         .admin-input:focus { border-color: #ff5277 !important; box-shadow: none !important; }
         
         .color-picker {

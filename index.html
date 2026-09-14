@@ -293,11 +293,6 @@
             text-shadow: none !important;
             -webkit-text-shadow: none !important;
         }
-        .admin-input::placeholder { text-shadow: none !important; -webkit-text-shadow: none !important; }
-        .admin-input::-webkit-input-placeholder { text-shadow: none !important; -webkit-text-shadow: none !important; }
-        .admin-input::-moz-placeholder { text-shadow: none !important; }
-        .admin-input:-ms-input-placeholder { text-shadow: none !important; }
-        .admin-input::-ms-input-placeholder { text-shadow: none !important; }
         .admin-input:focus { border-color: #ff5277 !important; box-shadow: none !important; }
         
         .color-picker {
@@ -347,7 +342,7 @@
             </div>
             <div class="mb-4">
                 <label class="text-xs font-bold text-[#a86b81]">กรอกรหัสแอดมิน :</label>
-                <input type="text" id="admin-id-input" class="admin-input uppercase text-center font-bold text-lg" placeholder="SUN01">
+                <input type="text" id="admin-id-input" class="admin-input uppercase text-center font-bold text-lg">
             </div>
             <button id="btn-login" onclick="checkPassword()" class="btn-main py-2">เข้าสู่ระบบ</button>
         </div>
@@ -494,11 +489,11 @@
                 <div class="card-content-inner flex flex-col gap-3">
                     <div>
                         <label class="text-sm font-bold text-[#a86b81]">รหัสลูกค้า:</label>
-                        <input type="text" id="customer-id-input" class="admin-input uppercase !mt-1 text-center text-lg font-bold" placeholder="เช่น SF001">
+                        <input type="text" id="customer-id-input" class="admin-input uppercase !mt-1 text-center text-lg font-bold">
                     </div>
                     <div>
                         <label class="text-sm font-bold text-[#a86b81]">เบอร์โทรศัพท์ (4 ตัวท้าย):</label>
-                        <input type="text" id="customer-phone-input" maxlength="4" class="admin-input !mt-1 text-center text-lg font-bold" placeholder="เช่น 5678">
+                        <input type="text" id="customer-phone-input" maxlength="4" class="admin-input !mt-1 text-center text-lg font-bold">
                     </div>
                     <button id="btn-search" onclick="searchCustomer()" class="btn-main !py-3 !text-base mt-1">
                         <i class="fa-solid fa-magnifying-glass"></i> ค้นหาข้อมูล
@@ -575,11 +570,11 @@
                     </div>
                     <div>
                         <label class="text-xs font-bold text-[#a86b81]">เลขบัญชีธนาคารร้าน:</label>
-                        <input type="text" id="edit-bank-info" class="admin-input !mt-0 text-sm" placeholder="เช่น 111-2-33333-4">
+                        <input type="text" id="edit-bank-info" class="admin-input !mt-0 text-sm">
                     </div>
                     <div>
                         <label class="text-xs font-bold text-[#a86b81]">TrueMoney Wallet:</label>
-                        <input type="text" id="edit-wallet-info" class="admin-input !mt-0 text-sm" placeholder="เช่น 099-999-9999">
+                        <input type="text" id="edit-wallet-info" class="admin-input !mt-0 text-sm">
                     </div>
                     <button onclick="saveAdminData()" class="btn-main py-2 !text-sm mt-2">บันทึกข้อมูลเข้าระบบ</button>
                 </div>
@@ -993,7 +988,7 @@
                                 <i class="fa-solid fa-file-arrow-up watermark-icon"></i>
                                 <div class="card-content-inner flex flex-col gap-2.5">
                                     <p class="text-sm font-bold text-[#ff5277]">📤 แจ้งชำระเงิน / แนบสลิป:</p>
-                                    <input type="number" id="slip-amount" class="admin-input !mt-0 text-base" placeholder="จำนวนเงินที่โอน (เช่น 1500)">
+                                    <input type="number" id="slip-amount" class="admin-input !mt-0 text-base">
                                     <input type="file" id="slip-file" accept="image/*" class="admin-input !mt-0 text-xs py-2.5">
                                     <button id="btn-submit-slip" onclick="submitSlip()" class="btn-main !py-3 !text-sm mt-1">
                                         <i class="fa-solid fa-paper-plane"></i> ส่งสลิปให้แอดมิน

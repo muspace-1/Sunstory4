@@ -48,7 +48,7 @@
             max-width: 480px;
             background: #ffffff;
             border-radius: 2rem;
-            border: 2px solid #ffb6c1;
+            border: 2px solid #ffffff !important;
             padding: 24px;
             display: flex;
             flex-direction: column;
@@ -83,7 +83,7 @@
 
         .brand-header-box {
             background: linear-gradient(135deg, #fff5f8, #ffe6ed);
-            border: 2px solid #ff9bb3;
+            border: 2px solid #ffffff !important;
             border-radius: 1.25rem;
             padding: 16px;
             display: flex;
@@ -137,7 +137,7 @@
             height: 75px;
             border-radius: 1rem;
             overflow: hidden;
-            border: 2px solid #ff5277;
+            border: 2px solid #ffffff !important;
             flex-shrink: 0;
             background-color: #fff;
             cursor: pointer;
@@ -147,7 +147,7 @@
 
         .account-alert-box {
             background: #fff0f3;
-            border: 2px dashed #ff5277;
+            border: 2px dashed #ffffff !important;
             border-radius: 1.25rem;
             padding: 16px;
             text-align: center;
@@ -171,7 +171,7 @@
             background: #ffffff;
             border-radius: 1.25rem;
             padding: 16px;
-            border: 2px solid #ffccd5;
+            border: 2px solid #ffffff !important;
             line-height: 1.7;
             position: relative;
             overflow: hidden;
@@ -280,7 +280,7 @@
         }
         .modal-content {
             background: white; border-radius: 1.5rem; width: 100%; max-width: 400px;
-            padding: 24px; border: 2px solid #ff5277;
+            padding: 24px; border: 2px solid #ffffff !important;
             box-shadow: none !important;
         }
         .admin-input {
@@ -351,7 +351,7 @@
                 <h2 class="text-base font-bold text-[#ff5277]">🖼️ ตรวจสอบรูปสลิปโอนเงิน</h2>
                 <button onclick="closeSlipModal()" class="text-[#a86b81] text-xl"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div class="bg-[#fff9fa] p-2 rounded-xl border border-[#ffb6c1] mb-3">
+            <div class="bg-[#fff9fa] p-2 rounded-xl border border-[#ffffff] mb-3">
                 <img id="slip-img-preview" src="" alt="Slip" class="w-full rounded-lg max-h-[70vh] object-contain mx-auto">
             </div>
             <button onclick="closeSlipModal()" class="btn-main !py-2 !text-sm">ปิดหน้าต่าง</button>
@@ -462,11 +462,11 @@
             <div class="text-center pb-1">
                 <h2 class="text-sm font-bold text-[#ff5277]">🌸 ข้อมูลและโปรโมชั่นประจำร้าน 🌸</h2>
             </div>
-            <div id="promo-1-box" class="info-card !bg-[#fff0f3] !border-[#ff9bb3]">
+            <div id="promo-1-box" class="info-card !bg-[#fff0f3] !border-[#ffffff]">
                 <i class="fa-solid fa-gifts watermark-icon"></i>
                 <div id="promo-1-content" class="card-content-inner text-[12px] text-[#5a4a5e] space-y-2 font-medium"></div>
             </div>
-            <div id="promo-2-box" class="info-card !bg-[#fffcf5] !border-[#ffccd5]">
+            <div id="promo-2-box" class="info-card !bg-[#fffcf5] !border-[#ffffff]">
                 <i class="fa-solid fa-percent watermark-icon"></i>
                 <div id="promo-2-content" class="card-content-inner text-[12px] text-[#5a4a5e] space-y-2 font-medium"></div>
             </div>
@@ -480,7 +480,7 @@
             <div class="text-center pb-1">
                 <h2 class="text-sm font-bold text-[#ff5277]">💳 ระบบเช็กยอดผ่อนชำระ 💳</h2>
             </div>
-            <div class="info-card flex flex-col gap-3">
+            <div class="info-card flex flex-col gap-3 !border-[#ffffff]">
                 <i class="fa-solid fa-address-card watermark-icon"></i>
                 <div class="card-content-inner flex flex-col gap-3">
                     <div>
@@ -496,7 +496,7 @@
                     </button>
                 </div>
             </div>
-            <div id="installment-error" class="hidden-page text-center text-[13px] text-[#ff5277] font-bold mt-2 bg-[#fff0f3] p-3 rounded-xl border border-[#ff9bb3]">
+            <div id="installment-error" class="hidden-page text-center text-[13px] text-[#ff5277] font-bold mt-2 bg-[#fff0f3] p-3 rounded-xl border border-[#ffffff]">
                 ไม่พบรหัสลูกค้าหรือเบอร์โทรไม่ถูกต้องค่ะ 🥺
             </div>
             <div id="installment-result" class="hidden-page flex flex-col gap-3"></div>
@@ -507,7 +507,7 @@
 
         <!-- แผงควบคุมแอดมิน (Admin Page) -->
         <div id="admin-full-page" class="hidden-page flex flex-col gap-4 pt-2">
-            <div class="flex justify-between items-center bg-[#fff5f8] border border-[#ff9bb3] p-3 rounded-xl">
+            <div class="flex justify-between items-center bg-[#fff5f8] border border-[#ffffff] p-3 rounded-xl">
                 <div>
                     <h2 class="text-sm font-bold text-[#ff5277]">⚙️ แผงควบคุมแอดมิน</h2>
                     <p id="admin-logged-in-label" class="text-[11px] text-[#a86b81] font-bold mt-0.5">ผู้ใช้งาน: -</p>
@@ -517,7 +517,7 @@
                 </button>
             </div>
 
-            <div class="flex gap-2 bg-[#fff5f8] p-1.5 rounded-xl border border-[#ff9bb3]">
+            <div class="flex gap-2 bg-[#fff5f8] p-1.5 rounded-xl border border-[#ffffff]">
                 <button id="tab-btn-1" onclick="switchAdminTab(1)" class="admin-tab-btn active">
                     <i class="fa-solid fa-list-check"></i> สลิปรอตรวจสอบ
                 </button>
@@ -526,12 +526,12 @@
                 </button>
             </div>
 
-            <div id="admin-tab-content-1" class="info-card !bg-[#fff0f3] !border-[#ff9bb3]">
+            <div id="admin-tab-content-1" class="info-card !bg-[#fff0f3] !border-[#ffffff]">
                 <h3 class="text-sm font-bold text-[#ff5277] mb-3">📥 รายการสลิปรอตรวจสอบ</h3>
                 <div id="admin-slips-container" class="space-y-4"></div>
             </div>
 
-            <div id="admin-tab-content-2" class="info-card hidden-page">
+            <div id="admin-tab-content-2" class="info-card hidden-page !border-[#ffffff]">
                 <h3 class="text-sm font-bold text-[#ff5277] mb-3">🛠️ ตั้งค่าสถานะร้าน & ข้อมูลหน้าเว็บ</h3>
                 <div class="space-y-3">
                     <div>
@@ -761,7 +761,7 @@
                     
                     if (data.contractStatus === "ล็อกเครื่อง") {
                         resultBox.innerHTML = `
-                            <div class="info-card !bg-rose-50 !border-rose-400 text-center py-6">
+                            <div class="info-card !bg-rose-50 !border-[#ffffff] text-center py-6">
                                 <i class="fa-solid fa-lock text-5xl text-rose-500 mb-3 animate-bounce"></i>
                                 <h3 class="text-base font-bold text-rose-600 mb-1">บัญชีนี้ถูกระงับ / ล็อกเครื่องชั่วคราว</h3>
                                 <p class="text-xs text-rose-500 mb-4">กรุณาติดต่อแอดมินเพื่อเคลียร์ยอดค้างชำระและปลดล็อกเครื่องค่ะ</p>
@@ -786,21 +786,21 @@
 
                         if (creditTargetNum > 0 && creditLeftNum <= 0 && paidNum >= creditTargetNum) {
                             progressHtml = `
-                                <div class="mt-4 bg-[#f0fdf4] border-2 border-[#bbf7d0] rounded-xl p-3 text-center">
+                                <div class="mt-4 bg-[#f0fdf4] border-2 border-[#ffffff] rounded-xl p-3 text-center">
                                     <div class="text-[14px] font-bold text-[#166534] mb-1">🎉 ยินดีด้วย! เครดิตผ่านแล้ว 🎉</div>
                                     <div class="text-[12px] font-medium text-[#15803d]">ทักหาแอดมินเพื่อรับเครื่องไปใช้ได้เลยค่า 💖</div>
-                                    <div class="w-full h-3 bg-[#dcfce7] rounded-full mt-2 overflow-hidden border border-[#bbf7d0]">
+                                    <div class="w-full h-3 bg-[#dcfce7] rounded-full mt-2 overflow-hidden border border-[#ffffff]">
                                         <div class="h-full bg-gradient-to-r from-[#4ade80] to-[#22c55e] w-full rounded-full"></div>
                                     </div>
                                 </div>`;
                         } else {
                             progressHtml = `
-                                <div class="mt-4 bg-[#fff5f8] border-2 border-[#ffb6c1] rounded-xl p-3">
+                                <div class="mt-4 bg-[#fff5f8] border-2 border-[#ffffff] rounded-xl p-3">
                                     <div class="flex justify-between items-end mb-1">
                                         <div class="text-[13px] font-bold text-[#ff5277]">🎯 ภารกิจดันยอดรับเครื่อง!</div>
-                                        <div class="text-[11px] font-bold text-[#c75b80] bg-white px-2 rounded-md border border-[#ffb6c1]">${Math.floor(percent)}%</div>
+                                        <div class="text-[11px] font-bold text-[#c75b80] bg-white px-2 rounded-md border border-[#ffffff]">${Math.floor(percent)}%</div>
                                     </div>
-                                    <div class="w-full h-3 bg-[#ffe5ed] rounded-full overflow-hidden my-2 border border-[#ffb6c1]">
+                                    <div class="w-full h-3 bg-[#ffe5ed] rounded-full overflow-hidden my-2 border border-[#ffffff]">
                                         <div class="h-full bg-gradient-to-r from-[#ff5277] to-[#d87093] rounded-full transition-all duration-1000" style="width: ${percent}%;"></div>
                                     </div>
                                     <div class="text-[12px] text-[#c75b80] text-center font-medium">
@@ -819,12 +819,12 @@
                         if (periodPercent > 100) periodPercent = 100;
 
                         progressHtml = `
-                            <div class="mt-4 bg-[#fdf2f8] border-2 border-[#f472b6] rounded-xl p-3.5">
+                            <div class="mt-4 bg-[#fdf2f8] border-2 border-[#ffffff] rounded-xl p-3.5">
                                 <div class="flex justify-between items-end mb-1">
                                     <div class="text-[13px] font-bold text-[#db2777]">📊 สถานะงวดการผ่อนชำระ (วางดาวน์)</div>
-                                    <div class="text-[11px] font-bold text-[#be185d] bg-white px-2.5 py-0.5 rounded-md border border-[#f472b6]">${Math.floor(periodPercent)}%</div>
+                                    <div class="text-[11px] font-bold text-[#be185d] bg-white px-2.5 py-0.5 rounded-md border border-[#ffffff]">${Math.floor(periodPercent)}%</div>
                                 </div>
-                                <div class="w-full h-3 bg-[#fce7f3] rounded-full overflow-hidden my-2 border border-[#f472b6]">
+                                <div class="w-full h-3 bg-[#fce7f3] rounded-full overflow-hidden my-2 border border-[#ffffff]">
                                     <div class="h-full bg-gradient-to-r from-[#ec4899] to-[#be185d] rounded-full transition-all duration-1000" style="width: ${periodPercent}%;"></div>
                                 </div>
                                 <div class="text-[12px] text-[#831843] space-y-1 mt-2 font-medium bg-white p-2.5 rounded-lg border border-[#fbcfe8]">
@@ -889,9 +889,9 @@
                             }
 
                             cooldownHtml = `
-                                <div class="mt-3 bg-[#fff9fa] border border-[#ffb6c1] rounded-xl p-3">
+                                <div class="mt-3 bg-[#fff9fa] border border-[#ffffff] rounded-xl p-3">
                                     <div class="text-[12px] font-bold text-[#ff5277] mb-1">📅 วันตัดยอด (กำหนดชำระ): ${day}/${month + 1}/${year}</div>
-                                    <div class="w-full h-3 bg-[#ffe5ed] rounded-full overflow-hidden my-1.5 border border-[#ffb6c1]">
+                                    <div class="w-full h-3 bg-[#ffe5ed] rounded-full overflow-hidden my-1.5 border border-[#ffffff]">
                                         <div class="h-full bg-gradient-to-r ${barColor} rounded-full transition-all duration-1000" style="width: ${widthPct};"></div>
                                     </div>
                                     <div class="text-[11px] font-bold text-[#c75b80] text-right">${statusText}</div>
@@ -904,7 +904,7 @@
                     if (data.contractLink && data.contractLink.trim() !== '' && data.contractLink !== '-') {
                         contractBtnHtml = `
                             <div class="mt-3">
-                                <a href="${data.contractLink}" target="_blank" class="btn-secondary !py-2.5 !text-sm flex items-center justify-center gap-2">
+                                <a href="${data.contractLink}" target="_blank" class="btn-secondary !border-[#ffffff] !py-2.5 !text-sm flex items-center justify-center gap-2">
                                     <i class="fa-solid fa-file-contract text-lg"></i> ดูสัญญาเช่าซื้อของฉัน 📄
                                 </a>
                             </div>
@@ -916,7 +916,7 @@
                     let balanceValue = data.balance ? parseFloat(String(data.balance).replace(/,/g, '')) : 0;
 
                     resultBox.innerHTML = `
-                        <div class="info-card !bg-[#fffcf5] !border-[#ffccd5]">
+                        <div class="info-card !bg-[#fffcf5] !border-[#ffffff]">
                             <i class="fa-solid fa-receipt watermark-icon"></i>
                             <div class="card-content-inner">
                                 <div class="text-sm font-bold text-[#c75b80] mb-3 border-b border-dashed border-[#ffccd5] pb-2 flex justify-between items-center">
@@ -965,7 +965,7 @@
                                 <button onclick="copyText('${walletText}')" class="bg-white text-[#be185d] px-3.5 py-1.5 rounded-xl text-[12px] font-bold active:scale-95 shrink-0"><i class="fa-regular fa-copy"></i> คัดลอก</button>
                             </div>
 
-                            <div class="bg-[#fff0f3] border-2 border-dashed border-[#ff5277] rounded-2xl p-4 mb-3 text-center relative overflow-hidden">
+                            <div class="bg-[#fff0f3] border-2 border-dashed border-[#ffffff] rounded-2xl p-4 mb-3 text-center relative overflow-hidden">
                                 <i class="fa-solid fa-note-sticky watermark-icon"></i>
                                 <div class="card-content-inner">
                                     <div class="text-xs font-bold text-[#ff5277] mb-1 flex items-center justify-center gap-1">
@@ -974,7 +974,7 @@
                                     <p class="text-sm font-bold text-[#5a4a5e] my-1">
                                         พิมพ์ตรงบันทึกช่วยจำว่า : <span class="text-[#ff5277] underline">ซื้อขายกับซันบายโฟน</span>
                                     </p>
-                                    <button onclick="copyText('ซื้อขายกับซันบายโฟน')" class="bg-white text-[#ff5277] border border-[#ffb6c1] px-3 py-1 rounded-xl text-xs font-bold mt-1 active:scale-95">
+                                    <button onclick="copyText('ซื้อขายกับซันบายโฟน')" class="bg-white text-[#ff5277] border border-[#ffffff] px-3 py-1 rounded-xl text-xs font-bold mt-1 active:scale-95">
                                         <i class="fa-regular fa-copy"></i> คัดลอกข้อความโน้ต
                                     </button>
                                 </div>
@@ -991,7 +991,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div id="slip-status" class="hidden-page mt-1 bg-[#fff0f3] border border-[#ffb6c1] rounded-xl p-3 text-center">
+                            <div id="slip-status" class="hidden-page mt-1 bg-[#fff0f3] border border-[#ffffff] rounded-xl p-3 text-center">
                                 <div class="text-[14px] font-bold text-[#ff5277]"><i class="fa-solid fa-hourglass-half rotate-animation inline-block mr-1"></i> สถานะ: รอตรวจสอบสลิป</div>
                                 <div class="text-[12px] text-[#a86b81] mt-1 font-medium">แอดมินได้รับสลิปแล้วค่ะ 🌸</div>
                             </div>
@@ -1086,7 +1086,7 @@
                 Object.keys(slips).forEach(key => {
                     const s = slips[key];
                     const slipHtml = `
-                        <div class="bg-white p-3.5 rounded-xl border border-[#ffb6c1] space-y-2 text-sm font-medium" id="slip-${key}">
+                        <div class="bg-white p-3.5 rounded-xl border border-[#ffffff] space-y-2 text-sm font-medium" id="slip-${key}">
                             <div class="flex justify-between items-center text-base font-bold text-[#c75b80] border-b border-dashed border-[#ffb6c1] pb-1.5">
                                 <span>รหัส: ${s.id}</span>
                                 <span class="text-[11px] bg-[#fff0f3] px-2 py-1 rounded-full border border-[#ff9bb3]">รอตรวจสอบ</span>

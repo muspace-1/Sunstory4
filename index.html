@@ -271,9 +271,13 @@
         }
         .admin-input:focus { border-color: #ff5277; box-shadow: 0 0 0 3px rgba(255, 82, 119, 0.15); }
         
-        /* 🎨 ลบเงาเฉพาะช่องกรอกรหัสลูกค้าและรหัสแอดมินตามสั่ง */
-        #customer-id-input, #admin-id-input {
+        /* 🎨 ตัดเงาออกเกลี้ยง 100% ทั้งช่องปกติและตอนกดพิมพ์ (Focus) */
+        #customer-id-input, #admin-id-input, input.admin-input {
             box-shadow: none !important;
+        }
+        #customer-id-input:focus, #admin-id-input:focus, input.admin-input:focus {
+            box-shadow: none !important;
+            border-color: #ff5277 !important;
         }
 
         .color-picker {

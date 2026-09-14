@@ -220,7 +220,7 @@
             border-radius: 1.25rem;
             font-weight: 600;
             font-size: 1rem;
-            border: 2px solid #ff9bb3;
+            border: 2px solid #ffffff !important;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -239,7 +239,7 @@
             border-radius: 1.25rem;
             font-weight: 600;
             font-size: 0.9rem;
-            border: 1px solid #ffb6c1;
+            border: 1px solid #ffffff !important;
             cursor: pointer;
             display: flex; align-items: center; justify-content: center; gap: 6px;
             margin-top: 10px;
@@ -264,7 +264,7 @@
         
         .progress-bar-bg {
             width: 90%; height: 14px; background-color: #ffe5ed; border-radius: 20px;
-            overflow: hidden; margin-top: 25px; border: 1px solid #ffb6c1;
+            overflow: hidden; margin-top: 25px; border: 1px solid #ffffff !important;
             box-shadow: none !important;
         }
         .progress-bar-fill {
@@ -283,16 +283,22 @@
             padding: 24px; border: 2px solid #ffffff !important;
             box-shadow: none !important;
         }
+        
+        /* 👈 ส่วนที่แก้ไข: ลบเงาและปรับกรอบช่องกรอกข้อมูลให้เป็นสีขาว */
         .admin-input {
-            width: 100%; padding: 12px; border: 1px solid #ffb6c1; border-radius: 0.75rem;
+            width: 100%; padding: 12px; border: 1px solid #ffffff !important; border-radius: 0.75rem;
             font-family: 'Kanit', sans-serif; font-size: 1rem; margin-top: 6px;
             outline: none; color: #5a4a5e; background-color: #fff9fa;
             box-shadow: none !important;
+            text-shadow: none !important; /* ลบเงาตัวหนังสือที่พิมพ์ลงไป */
         }
-        .admin-input:focus { border-color: #ff5277; box-shadow: none !important; }
+        .admin-input::placeholder {
+            text-shadow: none !important; /* ลบเงาตัวหนังสือ Placeholder (เช่น SUN01) */
+        }
+        .admin-input:focus { border-color: #ff5277 !important; box-shadow: none !important; }
         
         .color-picker {
-            width: 42px; height: 42px; padding: 0; border: 2px solid #ffb6c1; 
+            width: 42px; height: 42px; padding: 0; border: 2px solid #ffffff !important; 
             border-radius: 0.5rem; cursor: pointer; flex-shrink: 0; margin-top: 6px;
             box-shadow: none !important;
         }
@@ -308,7 +314,7 @@
             border-radius: 0.75rem;
             background: #ffe5ed;
             color: #a86b81;
-            border: 1px solid #ffb6c1;
+            border: 1px solid #ffffff !important;
             cursor: pointer;
             transition: all 0.2s;
             box-shadow: none !important;
@@ -316,7 +322,7 @@
         .admin-tab-btn.active {
             background: linear-gradient(135deg, #ff5277, #d87093);
             color: white;
-            border-color: #ff5277;
+            border-color: #ffffff !important;
             box-shadow: none !important;
         }
     </style>

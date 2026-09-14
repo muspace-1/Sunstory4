@@ -270,6 +270,12 @@
             outline: none; color: #5a4a5e; background-color: #fff9fa;
         }
         .admin-input:focus { border-color: #ff5277; box-shadow: 0 0 0 3px rgba(255, 82, 119, 0.15); }
+        
+        /* 🎨 ลบเงาเฉพาะช่องกรอกรหัสลูกค้าและรหัสแอดมินตามสั่ง */
+        #customer-id-input, #admin-id-input {
+            box-shadow: none !important;
+        }
+
         .color-picker {
             width: 42px; height: 42px; padding: 0; border: 2px solid #ffb6c1; 
             border-radius: 0.5rem; cursor: pointer; flex-shrink: 0; margin-top: 6px;
@@ -315,7 +321,7 @@
             </div>
             <div class="mb-4">
                 <label class="text-xs font-bold text-[#a86b81]">กรอกรหัสแอดมิน :</label>
-                <input type="text" id="admin-id-input" class="admin-input uppercase text-center font-bold text-lg" placeholder="S01">
+                <input type="text" id="admin-id-input" class="admin-input uppercase text-center font-bold text-lg" placeholder="SUN01">
             </div>
             <button id="btn-login" onclick="checkPassword()" class="btn-main py-2">เข้าสู่ระบบ</button>
         </div>
@@ -560,17 +566,17 @@
     </div>
 
     <script>
-        // 🔗 เชื่อมโยง URL ล่าสุดเรียบร้อย
         const scriptUrl = 'https://script.google.com/macros/s/AKfycbymCwqpjWfFTj5kMSfSS65Jm3LpGcF5kV7VxIB82Lh884zT5WyrRLF6vOoxfifnIb9R/exec';
         
         const discordWebhookSlip = 'https://discord.com/api/webhooks/1545650221948600381/JWgX53TC8Wq5id62H0b-5l8N7tTx7cOrpD8ju3-pq1v9Og23xvDvRfkbtkgpUvM8PLa-';
         const discordWebhookAdmin = 'https://discord.com/api/webhooks/1545676162485715016/r-hqXE-gQfDIOCAw7Rm55Mze5HqiHdHPQCq7IKPSqp74kLW4hEoyyrUnvdcLjzQM8Gm_';
 
+        // 🔐 อัปเดตรหัสแอดมินใหม่ 4 คน พร้อม Discord Role ID ที่ถูกต้อง
         const adminMap = {
-            "S01": { name: "คุณมิน", mention: "<@&1545675524993720340>" },
-            "S02": { name: "คุณกัส", mention: "<@&1545675560997494794>" },
-            "S03": { name: "แฝดพี่", mention: "<@&1545675609613541426>" },
-            "S04": { name: "คุณซัน", mention: "<@&1545675459520364645>" }
+            "SUN01": { name: "คุณซัน", mention: "<@&1545675459520364645>" },
+            "MIN02": { name: "คุณมิน", mention: "<@&1545675524993720340>" },
+            "GUS03": { name: "คุณกัส", mention: "<@&1545675560997494794>" },
+            "FADPI04": { name: "แฝดพี่", mention: "<@&1545675609613541426>" }
         };
 
         const firebaseConfig = {
@@ -737,7 +743,6 @@
                     let creditLeftNum = creditTargetNum - paidNum;
                     if (creditLeftNum < 0) creditLeftNum = 0;
                     
-                    // 🚨 ตรวจสอบสถานะล็อกเครื่อง (Lock Screen)
                     if (data.contractStatus === "ล็อกเครื่อง") {
                         resultBox.innerHTML = `
                             <div class="info-card !bg-rose-50 !border-rose-400 text-center py-6">
@@ -760,7 +765,6 @@
                     const customerType = data.type ? data.type.trim() : "";
 
                     if (customerType.includes("ผ่อนไปใช้ไป")) {
-                        // 🎯 หลอดสำหรับ ผ่อนไปใช้ไป (เก็บเป้าเครดิต)
                         let percent = creditTargetNum > 0 ? (paidNum / creditTargetNum) * 100 : 0;
                         if (percent > 100) percent = 100;
 
@@ -789,7 +793,6 @@
                                 </div>`;
                         }
                     } else if (customerType.includes("วางดาวน์")) {
-                        // 📊 หลอดสำหรับ วางดาวน์ (แสดงจำนวนงวดที่ผ่อนไปแล้ว และงวดที่เหลือ)
                         let totalPeriods = installmentAmt > 0 ? Math.ceil(totalNum / installmentAmt) : 0;
                         let paidPeriods = installmentAmt > 0 ? Math.floor(paidNum / installmentAmt) : 0;
                         if (paidPeriods > totalPeriods && totalPeriods > 0) paidPeriods = totalPeriods;
@@ -816,7 +819,6 @@
                             </div>`;
                     }
 
-                    // 📌 ส่วนแสดงผลเพิ่มเติม: สี (G) และ รายละเอียด (H)
                     let extraProductInfo = '';
                     if (data.color && data.color !== "-") {
                         extraProductInfo += `<p>🎨 <b>สี:</b> ${data.color}</p>`;
@@ -825,7 +827,6 @@
                         extraProductInfo += `<p>📝 <b>รายละเอียดเครื่อง:</b> ${data.details}</p>`;
                     }
 
-                    // 📌 หลอดวันตัดยอด (กำหนดชำระ)
                     let cooldownHtml = '';
                     if (data.dueDate && data.dueDate.trim() !== "" && data.dueDate !== "-") {
                         const parts = data.dueDate.split('-');
@@ -862,7 +863,6 @@
                         }
                     }
 
-                    // 📌 ปุ่มดูรูปสัญญา (ดึงจากคอลัมน์ X)
                     let contractBtnHtml = '';
                     if (data.contractLink && data.contractLink.trim() !== '' && data.contractLink !== '-') {
                         contractBtnHtml = `
@@ -1034,7 +1034,6 @@
             }
         }
 
-        // 📌 ฟังชั่นแสดงรายการสลิปฝั่งแอดมิน (ปรับปุ่ม Wallet เป็นหักค่าธรรมเนียม 2.9%)
         function listenToPendingSlips() {
             db.ref('pendingSlips').on('value', (snapshot) => {
                 const container = document.getElementById('admin-slips-container');
@@ -1058,7 +1057,6 @@
                             <p class="text-[13px] text-[#4682b4]">⏱️ <b>เวลาส่ง:</b> ${s.time}</p>
                             <p class="text-[13px] text-[#059669]">💰 <b>ยอดโอนที่ลูกค้าแจ้ง:</b> <span id="display-amt-${key}">${s.amount}</span> ฿</p>
                             
-                            <!-- 📌 ติ๊กหักค่าธรรมเนียม Wallet 2.9% เฉพาะฝั่งแอดมิน -->
                             <div class="bg-pink-50 p-2.5 rounded-lg border border-pink-200 my-2">
                                 <label class="flex items-center gap-2 cursor-pointer text-xs font-bold text-[#be185d]">
                                     <input type="checkbox" id="admin-fee-chk-${key}" onchange="calculateAdminFee('${key}', ${s.amount})" class="w-4 h-4 accent-[#ff5277]">
@@ -1109,7 +1107,7 @@
             const chk = document.getElementById(`admin-fee-chk-${dbKey}`);
             const finalAmount = chk && chk.checked ? parseFloat((baseAmount - (baseAmount * 0.029)).toFixed(2)) : baseAmount;
 
-            const adminId = sessionStorage.getItem('sunstoryAdminId') || 'S01';
+            const adminId = sessionStorage.getItem('sunstoryAdminId') || 'SUN01';
             const adminInfo = adminMap[adminId] || { name: "แอดมิน", mention: adminId };
 
             if(!confirm(`[แอดมิน: ${adminInfo.name} (${adminId})] ยืนยันการอนุมัติยอด ${finalAmount} บาท ให้กับรหัส ${custId} ใช่ไหม?\nระบบจะอัปเดต Google Sheets ทันที`)) return;
@@ -1157,7 +1155,7 @@
             const adminIdInput = document.getElementById('admin-id-input').value.trim().toUpperCase();
 
             if (!adminIdInput || !adminMap[adminIdInput]) {
-                return alert('รหัสแอดมินไม่ถูกต้องค่ะ กรุณาลองใหม่ (เช่น S01, S02, S03, S04) 🐰');
+                return alert('รหัสแอดมินไม่ถูกต้องค่ะ กรุณาลองใหม่ (เช่น SUN01, MIN02, GUS03, FADPI04) 🐰');
             }
             
             sessionStorage.setItem('sunstoryAdminId', adminIdInput);

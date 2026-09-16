@@ -13,7 +13,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
     
     <style>
-        /* 🌟 บล็อกและล้างเงาแบบเด็ดขาด 100% ทุกส่วนของหน้าเว็บและ Tailwind */
+        /* 🌟 บล็อกและล้างเงาแบบเด็ดขาด 100% */
         *, ::before, ::after {
             box-shadow: none !important;
             -webkit-box-shadow: none !important;
@@ -37,7 +37,7 @@
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            padding: 16px 12px;
+            padding: 20px 16px; 
             position: relative; 
             overflow-x: hidden;
         }
@@ -46,12 +46,12 @@
             width: 100%;
             max-width: 480px;
             background: #ffffff;
-            border-radius: 1.5rem;
+            border-radius: 2rem;
             border: 2px solid #ffffff !important;
-            padding: 20px 16px;
+            padding: 24px; 
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 16px;
             position: relative;
             overflow: hidden;
             z-index: 10;
@@ -83,17 +83,17 @@
             background: linear-gradient(135deg, #fff5f8, #ffe6ed);
             border: 2px solid #ffffff !important;
             border-radius: 1.25rem;
-            padding: 14px;
+            padding: 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 10px;
+            gap: 12px;
         }
 
         .sunstory-title {
-            font-size: 1.5rem;
+            font-size: 1.7rem;
             font-weight: 700;
-            line-height: 1.2;
+            line-height: 1.3;
             display: flex;
             align-items: center;
         }
@@ -108,30 +108,24 @@
         .d-0 { animation-delay: 0.0s; } .d-1 { animation-delay: 0.1s; } .d-2 { animation-delay: 0.2s; }
         .d-3 { animation-delay: 0.3s; } .d-4 { animation-delay: 0.4s; } .d-5 { animation-delay: 0.5s; }
         .d-6 { animation-delay: 0.6s; } .d-7 { animation-delay: 0.7s; } .d-8 { animation-delay: 0.8s; }
-        .d-9 { animation-delay: 0.9s; margin-left: 4px; font-size: 1.1rem; }
+        .d-9 { animation-delay: 0.9s; margin-left: 5px; font-size: 1.3rem; }
 
         @keyframes bounce-up-down {
             0%, 100% { top: 0px; }
-            40% { top: -5px; }
+            40% { top: -6px; }
         }
 
-        .sunstory-slogan {
-            font-size: 0.7rem;
-            color: #a86b81;
-            margin-top: 4px;
-            font-weight: 500;
-        }
+        .sunstory-slogan { font-size: 0.75rem; color: #a86b81; margin-top: 6px; font-weight: 500; line-height: 1.4; }
 
         .brand-image-frame {
-            width: 65px; height: 65px; border-radius: 1rem; overflow: hidden;
-            border: 2px solid #ffffff !important; flex-shrink: 0; background-color: #fff;
-            cursor: pointer;
+            width: 75px; height: 75px; border-radius: 1rem; overflow: hidden;
+            border: 2px solid #ffffff !important; flex-shrink: 0; background-color: #fff; cursor: pointer;
         }
         .brand-image-frame img { width: 100%; height: 100%; object-fit: cover; }
 
         .account-alert-box {
             background: #fff0f3; border: 2px dashed #ffffff !important;
-            border-radius: 1rem; padding: 12px; text-align: center;
+            border-radius: 1.25rem; padding: 16px; text-align: center;
             position: relative; overflow: hidden;
         }
 
@@ -146,50 +140,49 @@
         }
 
         .info-card {
-            background: #ffffff; border-radius: 1rem; padding: 14px;
-            border: 2px solid #ffffff !important; line-height: 1.6;
+            background: #ffffff; border-radius: 1.25rem; padding: 16px;
+            border: 2px solid #ffffff !important; line-height: 1.7;
             position: relative; overflow: hidden;
         }
 
         .watermark-icon {
-            position: absolute; bottom: -5px; right: 5px; font-size: 3.5rem;
-            color: rgba(255, 82, 119, 0.05); pointer-events: none; z-index: 0;
+            position: absolute; bottom: 5px; right: 10px; font-size: 4rem;
+            color: rgba(255, 82, 119, 0.06); pointer-events: none; z-index: 0;
         }
         .card-content-inner { position: relative; z-index: 1; }
 
         .btn-main {
             background: linear-gradient(135deg, #ff5277, #d87093); color: white;
-            width: 100%; padding: 14px; border-radius: 1rem; font-weight: 600; font-size: 0.95rem;
-            border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+            width: 100%; padding: 16px; border-radius: 1.25rem; font-weight: 600; font-size: 1rem;
+            border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
             transition: transform 0.2s;
         }
-        .btn-main:active { transform: scale(0.97); }
+        .btn-main:active { transform: scale(0.98); }
 
         .btn-secondary {
             background: linear-gradient(135deg, #ffe5ed, #ffccd5); color: #d87093;
-            width: 100%; padding: 14px; border-radius: 1rem; font-weight: 600; font-size: 0.95rem;
-            border: 2px solid #ffffff !important; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+            width: 100%; padding: 16px; border-radius: 1.25rem; font-weight: 600; font-size: 1rem;
+            border: 2px solid #ffffff !important; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
             transition: transform 0.2s;
         }
-        .btn-secondary:active { transform: scale(0.97); }
+        .btn-secondary:active { transform: scale(0.98); }
 
         .btn-back {
-            background: #ffe5ed; color: #c75b80; width: 100%; padding: 10px; border-radius: 1rem;
-            font-weight: 600; font-size: 0.85rem; border: 1px solid #ffffff !important;
-            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
-            margin-top: 8px;
+            background: #ffe5ed; color: #c75b80; width: 100%; padding: 12px; border-radius: 1.25rem;
+            font-weight: 600; font-size: 0.9rem; border: 1px solid #ffffff !important;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 10px;
         }
 
         .hidden-page { display: none !important; }
         
         .loading-container {
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            padding: 50px 10px; text-align: center; min-height: 40vh;
+            padding: 60px 10px; text-align: center; min-height: 50vh;
         }
-        .bunny-icon { font-size: 3.5rem; animation: bunny-bounce 1s infinite alternate ease-in-out; margin-bottom: 10px; }
-        @keyframes bunny-bounce { from { transform: translateY(0) scale(1); } to { transform: translateY(-8px) scale(1.05); } }
+        .bunny-icon { font-size: 4rem; animation: bunny-bounce 1s infinite alternate ease-in-out; margin-bottom: 10px; }
+        @keyframes bunny-bounce { from { transform: translateY(0) scale(1); } to { transform: translateY(-10px) scale(1.05); } }
         
-        .progress-bar-bg { width: 85%; height: 12px; background-color: #ffe5ed; border-radius: 20px; overflow: hidden; margin-top: 20px; border: 1px solid #ffffff !important; }
+        .progress-bar-bg { width: 90%; height: 14px; background-color: #ffe5ed; border-radius: 20px; overflow: hidden; margin-top: 25px; border: 1px solid #ffffff !important; }
         .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #ff5277, #d87093); width: 0%; border-radius: 20px; transition: width 1.8s cubic-bezier(0.4, 0, 0.2, 1); }
 
         .modal-overlay {
@@ -197,61 +190,51 @@
             background: rgba(90, 74, 94, 0.6); display: flex; justify-content: center; align-items: center;
             z-index: 100; padding: 16px; backdrop-filter: blur(3px);
         }
-        .modal-content { background: white; border-radius: 1.5rem; width: 100%; max-width: 360px; padding: 20px; border: 2px solid #ffffff !important; }
+        .modal-content { background: white; border-radius: 1.5rem; width: 100%; max-width: 400px; padding: 24px; border: 2px solid #ffffff !important; }
         
         .admin-input {
-            width: 100%; padding: 10px; border: 1px solid #ffffff !important; border-radius: 0.75rem;
-            font-family: 'Kanit', sans-serif; font-size: 0.9rem; margin-top: 4px;
+            width: 100%; padding: 12px; border: 1px solid #ffffff !important; border-radius: 0.75rem;
+            font-family: 'Kanit', sans-serif; font-size: 1rem; margin-top: 6px;
             outline: none; color: #5a4a5e; background-color: #fff9fa;
         }
         .admin-input:focus { border-color: #ff5277 !important; }
         
-        .color-picker { width: 38px; height: 38px; padding: 0; border: 2px solid #ffffff !important; border-radius: 0.5rem; cursor: pointer; flex-shrink: 0; margin-top: 4px; }
+        .color-picker { width: 42px; height: 42px; padding: 0; border: 2px solid #ffffff !important; border-radius: 0.5rem; cursor: pointer; flex-shrink: 0; margin-top: 6px; }
         .rotate-animation { animation: rotate-clock 2s linear infinite; }
         @keyframes rotate-clock { 100% { transform: rotate(360deg); } }
 
         .admin-tab-btn {
-            flex: 1; padding: 8px; text-align: center; font-weight: 600; font-size: 0.8rem;
+            flex: 1; padding: 10px; text-align: center; font-weight: 600; font-size: 0.85rem;
             border-radius: 0.75rem; background: #ffe5ed; color: #a86b81; border: 1px solid #ffffff !important;
             cursor: pointer; transition: all 0.2s;
         }
         .admin-tab-btn.active { background: linear-gradient(135deg, #ff5277, #d87093); color: white; border-color: #ffffff !important; }
 
-        /* 🚨 CSS สำหรับเอฟเฟกต์ 15 วันเรืองแสง 🚨 */
+        /* 🚨 CSS เอฟเฟกต์ 15 วันเรืองแสง */
         .glow-red-text { color: #ef4444; text-shadow: 0 0 8px rgba(239, 68, 68, 0.8), 0 0 15px rgba(220, 38, 38, 0.6); animation: textPulse 1.5s infinite alternate; }
-        .glow-red-bar { box-shadow: 0 0 10px rgba(239, 68, 68, 0.8) !important; animation: barPulse 1s infinite alternate; }
-        @keyframes textPulse { from { opacity: 0.8; } to { opacity: 1; text-shadow: 0 0 10px #ef4444, 0 0 20px #dc2626; } }
-        @keyframes barPulse { from { box-shadow: 0 0 8px rgba(239,68,68,0.5) !important; } to { box-shadow: 0 0 15px rgba(239,68,68,1) !important; } }
+        .glow-red-bar { box-shadow: 0 0 15px rgba(239, 68, 68, 0.8) !important; animation: barPulse 1s infinite alternate; }
+        @keyframes textPulse { from { opacity: 0.8; } to { opacity: 1; text-shadow: 0 0 15px #ef4444, 0 0 25px #dc2626; } }
+        @keyframes barPulse { from { box-shadow: 0 0 10px rgba(239,68,68,0.5) !important; } to { box-shadow: 0 0 20px rgba(239,68,68,1) !important; } }
 
-        /* 💬 CSS สำหรับปุ่มติดต่อแอดมิน (Floating Menu) */
-        .fab-container { position: fixed; bottom: 20px; right: 16px; z-index: 99; display: flex; flex-direction: column-reverse; align-items: center; gap: 10px; }
-        .fab-main { width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #ff5277, #d87093); color: white; display: flex; justify-content: center; align-items: center; font-size: 22px; cursor: pointer; transition: transform 0.3s; border: 2px solid white; }
-        .fab-main:active { transform: scale(0.9); }
-        .fab-sub { width: 44px; height: 44px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 18px; color: white; cursor: pointer; opacity: 0; transform: translateY(15px) scale(0.5); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); pointer-events: none; border: 2px solid white; text-decoration: none; position: relative; }
-        .fab-sub.fb { background: #1877F2; } .fab-sub.line-ask { background: #00B900; } .fab-sub.line-pay { background: #06C755; }
-        .fab-container.open .fab-sub { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
-        .fab-container.open .fab-main { transform: rotate(45deg); background: #5a4a5e; }
-        .fab-label { position: absolute; right: 54px; background: white; color: #5a4a5e; padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: bold; opacity: 0; pointer-events: none; transition: 0.3s; white-space: nowrap; border: 1px solid #ffccd5; }
-        .fab-container.open .fab-sub:hover .fab-label, .fab-container.open .fab-sub:active .fab-label { opacity: 1; }
-
-        /* 🔽 CSS Smooth Accordion สำหรับมือถือ */
-        .details-content {
-            display: grid;
-            grid-template-rows: 0fr;
-            transition: grid-template-rows 0.4s ease-out;
+        /* 💬 ปุ่มติดต่อแอดมินลอยตัว */
+        .fab-main {
+            position: fixed; bottom: 20px; right: 20px; z-index: 99;
+            width: 56px; height: 56px; border-radius: 50%;
+            background: linear-gradient(135deg, #ff5277, #d87093); color: white;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 24px; cursor: pointer; transition: transform 0.3s;
+            border: 2px solid white; box-shadow: 0 4px 10px rgba(255, 82, 119, 0.3) !important;
         }
-        .details-wrapper { overflow: hidden; }
-        .is-open .details-content { grid-template-rows: 1fr; }
-        .is-open .toggle-icon { transform: rotate(180deg); }
+        .fab-main:active { transform: scale(0.9); }
     </style>
 </head>
 <body class="shadow-none">
 
-    <!-- 💬 ลิงก์ติดต่อแอดมิน (เปลี่ยนเป็นลิงก์จริงได้เลยครับ) -->
+    <!-- 📌 ลิงก์ติดต่อ เปลี่ยนตรงนี้ได้เลยครับ -->
     <script>
-        const linkLinePay = "https://line.me/ti/p/~YOUR_LINE_PAY"; // 📌 ลิงก์ไลน์ส่งยอด
-        const linkLineAsk = "https://line.me/ti/p/~YOUR_LINE_ASK"; // 📌 ลิงก์ไลน์สอบถาม
-        const linkFacebook = "https://www.facebook.com/YOUR_PAGE"; // 📌 ลิงก์เฟสบุ๊ค
+        const linkLinePay = "https://line.me/ti/p/~YOUR_LINE_PAY"; // ไลน์ส่งยอด
+        const linkLineAsk = "https://line.me/ti/p/~YOUR_LINE_ASK"; // ไลน์สอบถาม
+        const linkFacebook = "https://www.facebook.com/YOUR_PAGE"; // เฟสบุ๊คร้าน
     </script>
 
     <i class="fa-solid fa-heart floating-heart fh-1"></i>
@@ -260,81 +243,88 @@
     <i class="fa-solid fa-heart floating-heart fh-4"></i>
     <i class="fa-solid fa-heart floating-heart fh-5"></i>
 
-    <!-- 💬 เมนูลอยตัวติดต่อแอดมิน (Floating Menu) -->
-    <div id="fab-container" class="fab-container">
-        <div class="fab-main" onclick="toggleFab()">
-            <i class="fa-regular fa-comment-dots" id="fab-icon"></i>
+    <!-- 💬 ปุ่มติดต่อแอดมิน มุมขวาล่าง -->
+    <div class="fab-main" onclick="openContactModal()">
+        <i class="fa-solid fa-headset"></i>
+    </div>
+
+    <!-- 💬 Modal เลือกช่องทางติดต่อ -->
+    <div id="contact-modal" class="modal-overlay hidden-page">
+        <div class="modal-content text-center !max-w-sm">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-bold text-[#ff5277]">🎧 ช่องทางติดต่อแอดมิน</h2>
+                <button onclick="closeContactModal()" class="text-[#a86b81] text-xl"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="flex flex-col gap-3">
+                <a href="#" onclick="this.href=linkLinePay" target="_blank" class="bg-[#06C755] text-white w-full py-4 rounded-xl text-base font-bold flex items-center justify-center gap-3">
+                    <i class="fa-brands fa-line text-2xl"></i> ไลน์สำหรับ "ส่งยอด" 💸
+                </a>
+                <a href="#" onclick="this.href=linkLineAsk" target="_blank" class="bg-[#00B900] text-white w-full py-4 rounded-xl text-base font-bold flex items-center justify-center gap-3">
+                    <i class="fa-brands fa-line text-2xl"></i> ไลน์สำหรับ "สอบถาม" 💬
+                </a>
+                <a href="#" onclick="this.href=linkFacebook" target="_blank" class="bg-[#1877F2] text-white w-full py-4 rounded-xl text-base font-bold flex items-center justify-center gap-3">
+                    <i class="fa-brands fa-facebook-f text-2xl"></i> ติดต่อทาง "เฟสบุ๊คร้าน" 📘
+                </a>
+            </div>
         </div>
-        <a href="#" onclick="this.href=linkLinePay" target="_blank" class="fab-sub line-pay">
-            <i class="fa-brands fa-line"></i>
-            <span class="fab-label">ไลน์ส่งยอด 💸</span>
-        </a>
-        <a href="#" onclick="this.href=linkLineAsk" target="_blank" class="fab-sub line-ask">
-            <i class="fa-brands fa-line"></i>
-            <span class="fab-label">ไลน์สอบถาม 💬</span>
-        </a>
-        <a href="#" onclick="this.href=linkFacebook" target="_blank" class="fab-sub fb">
-            <i class="fa-brands fa-facebook-f"></i>
-            <span class="fab-label">เฟสบุ๊คร้าน 📘</span>
-        </a>
     </div>
 
     <!-- 🐰 Modal เข้าสู่ระบบแอดมิน -->
     <div id="login-modal" class="modal-overlay hidden-page">
         <div class="modal-content">
-            <div class="flex justify-between items-center mb-3">
-                <h2 class="text-base font-bold text-[#ff5277]">🐰 แอดมินเข้าสู่ระบบ</h2>
-                <button onclick="closeModals()" class="text-[#a86b81] text-lg"><i class="fa-solid fa-xmark"></i></button>
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-bold text-[#ff5277]">🐰 แอดมินเข้าสู่ระบบ</h2>
+                <button onclick="closeModals()" class="text-[#a86b81] text-xl"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div class="mb-3">
-                <label class="text-[11px] font-bold text-[#a86b81]">กรอกรหัสแอดมิน :</label>
-                <input type="text" id="admin-id-input" class="admin-input uppercase text-center font-bold text-base">
+            <div class="mb-4">
+                <label class="text-xs font-bold text-[#a86b81]">กรอกรหัสแอดมิน :</label>
+                <input type="text" id="admin-id-input" class="admin-input uppercase text-center font-bold text-lg">
             </div>
-            <button id="btn-login" onclick="checkPassword()" class="btn-main py-2 text-sm">เข้าสู่ระบบ</button>
+            <button id="btn-login" onclick="checkPassword()" class="btn-main py-2">เข้าสู่ระบบ</button>
         </div>
     </div>
 
     <!-- 🖼️ Modal ดูรูปสลิป -->
     <div id="slip-modal" class="modal-overlay hidden-page">
-        <div class="modal-content text-center">
-            <div class="flex justify-between items-center mb-2">
-                <h2 class="text-sm font-bold text-[#ff5277]">🖼️ ตรวจสอบรูปสลิป</h2>
-                <button onclick="closeSlipModal()" class="text-[#a86b81] text-lg"><i class="fa-solid fa-xmark"></i></button>
+        <div class="modal-content text-center !max-w-md">
+            <div class="flex justify-between items-center mb-3">
+                <h2 class="text-base font-bold text-[#ff5277]">🖼️ ตรวจสอบรูปสลิปโอนเงิน</h2>
+                <button onclick="closeSlipModal()" class="text-[#a86b81] text-xl"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div class="bg-[#fff9fa] p-1.5 rounded-xl border border-[#ffffff] mb-2">
-                <img id="slip-img-preview" src="" alt="Slip" class="w-full rounded-lg max-h-[65vh] object-contain mx-auto">
+            <div class="bg-[#fff9fa] p-2 rounded-xl border border-[#ffffff] mb-3">
+                <img id="slip-img-preview" src="" alt="Slip" class="w-full rounded-lg max-h-[70vh] object-contain mx-auto">
             </div>
-            <button onclick="closeSlipModal()" class="btn-main !py-1.5 !text-[13px]">ปิดหน้าต่าง</button>
+            <button onclick="closeSlipModal()" class="btn-main !py-2 !text-sm">ปิดหน้าต่าง</button>
         </div>
     </div>
 
     <!-- 📄 Modal ใบจดทะเบียนบริษัท -->
     <div id="cert-modal" class="modal-overlay hidden-page">
-        <div class="modal-content text-center">
-            <div class="flex justify-between items-center mb-2">
-                <h2 class="text-sm font-bold text-[#ff5277]">📄 ใบรับรองจดทะเบียนบริษัท</h2>
-                <button onclick="closeCertModal()" class="text-[#a86b81] text-lg"><i class="fa-solid fa-xmark"></i></button>
+        <div class="modal-content text-center !max-w-md">
+            <div class="flex justify-between items-center mb-3">
+                <h2 class="text-base font-bold text-[#ff5277]">📄 ใบรับรองจดทะเบียนบริษัท</h2>
+                <button onclick="closeCertModal()" class="text-[#a86b81] text-xl"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div class="bg-[#fff9fa] p-1.5 rounded-xl border border-[#ffffff] mb-2">
-                <!-- 💡 นำลิงก์รูปใบจดทะเบียนจาก GitHub มาใส่แทนที่ลิงก์นี้นะครับ -->
-                <img src="https://via.placeholder.com/400x550/ffe5ed/ff5277?text=Company+Certificate" alt="Certificate" class="w-full rounded-lg max-h-[65vh] object-contain mx-auto">
+            <div class="bg-[#fff9fa] p-2 rounded-xl border border-[#ffffff] mb-3">
+                <!-- 💡 นำลิงก์รูปใบจดทะเบียนจาก GitHub มาใส่แทนตรงนี้นะครับ -->
+                <img src="https://via.placeholder.com/400x550/ffe5ed/ff5277?text=Company+Certificate" alt="Certificate" class="w-full rounded-lg max-h-[70vh] object-contain mx-auto">
             </div>
-            <button onclick="closeCertModal()" class="btn-main !py-1.5 !text-[13px]">ปิดหน้าต่าง</button>
+            <button onclick="closeCertModal()" class="btn-main !py-2 !text-sm">ปิดหน้าต่าง</button>
         </div>
     </div>
 
     <div class="main-container">
         
-        <div id="header-zones" class="hidden-page flex flex-col gap-3">
+        <div id="header-zones" class="hidden-page flex flex-col gap-4">
             <div class="brand-header-box">
                 <div>
                     <h1 class="sunstory-title">
                         <span class="jump-letter d-0">S</span><span class="jump-letter d-1">u</span><span class="jump-letter d-2">n</span><span class="jump-letter d-3">s</span><span class="jump-letter d-4">t</span><span class="jump-letter d-5">o</span><span class="jump-letter d-6">r</span><span class="jump-letter d-7">y</span><span class="jump-letter d-8">4</span>
                         <i class="fa-solid fa-heart jump-letter d-9"></i>
                     </h1>
-                    <p class="sunstory-slogan">"ผ่อน วางดาวน์ ปิดสด ต้องซันสตอรี่โฟร์ 🌸"</p>
+                    <p class="sunstory-slogan">"ผ่อน วางดาวน์ ปิดสด ต้องซันสตอรี่โฟร์ เท่านั้น 🌸"</p>
                 </div>
-                <div class="brand-image-frame" onclick="openLoginModal()">
+                <div class="brand-image-frame" onclick="openLoginModal()" title="คลิกเข้าหลังบ้านแอดมิน">
                     <img src="Sun.JPG" alt="Logo" onerror="this.src='https://via.placeholder.com/150/ffb6c1/ffffff?text=Sun'">
                 </div>
             </div>
@@ -342,37 +332,35 @@
             <div class="account-alert-box">
                 <i class="fa-solid fa-shield-cat watermark-icon"></i>
                 <div class="card-content-inner">
-                    <div class="text-[11px] font-bold text-[#ff5277] mb-1 flex items-center justify-center gap-1">
+                    <div class="text-xs font-bold text-[#ff5277] mb-1.5 flex items-center justify-center gap-1">
                         <i class="fa-solid fa-triangle-exclamation"></i> แจ้งเพื่อทราบ / ป้องกันมิจฉาชีพ
                     </div>
-                    <p class="text-[13px] font-medium text-[#5a4a5e]">
-                        ชื่อบัญชีโอนเงิน : <span class="glow-name text-[14px]">บริษัท ซันสตอรี่ โฟร์ จำกัด</span> เท่านั้น!
+                    <!-- 💡 อัปเดต: แยก 2 บรรทัดและเปลี่ยนชื่อเป็น บจก ซันสตอรี่โฟร์ -->
+                    <p class="text-[13px] font-medium text-[#5a4a5e] leading-relaxed">
+                        ชื่อบัญชีโอนเงิน : <br>
+                        <span class="glow-name text-[15px]">บจก ซันสตอรี่โฟร์</span> เท่านั้น!
                     </p>
-                    <p class="text-[10px] text-[#a86b81] mt-1">นอกเหนือจากชื่อนี้ ห้ามโอนเด็ดขาดนะคะ ⚠️</p>
+                    <p class="text-[10px] text-[#a86b81] mt-1.5">นอกเหนือจากชื่อนี้ ห้ามโอนเด็ดขาดนะคะ ⚠️</p>
                 </div>
             </div>
 
-            <!-- 📢 โซนป้ายประกาศ (ซ่อนอัตโนมัติถ้าแอดมินไม่ได้พิมพ์) -->
-            <div id="announcement-banner" class="hidden-page bg-amber-50 border border-amber-200 rounded-xl p-2.5 flex items-start gap-2.5">
-                <i class="fa-solid fa-bullhorn text-amber-500 text-[14px] mt-0.5"></i>
-                <div>
-                    <h3 class="text-[11px] font-bold text-amber-600">ประกาศจากทางร้าน</h3>
-                    <p id="announcement-text" class="text-[11px] text-amber-700 mt-0.5 leading-snug whitespace-pre-line"></p>
-                </div>
+            <div id="announcement-banner" class="hidden-page bg-[#fffbeb] border border-[#fde68a] rounded-xl p-3 flex flex-col items-center text-center">
+                <div class="text-sm font-bold text-[#d97706] mb-1"><i class="fa-solid fa-bullhorn"></i> ประกาศจากทางร้าน</div>
+                <p id="announcement-text" class="text-xs text-[#b45309] font-medium whitespace-pre-line"></p>
             </div>
         </div>
 
         <!-- หน้าแรก (Page 1) -->
-        <div id="page-1" class="flex flex-col gap-3 transition-opacity duration-300">
+        <div id="page-1" class="flex flex-col gap-4 transition-opacity duration-300">
             <div class="brand-header-box">
                 <div>
                     <h1 class="sunstory-title">
                         <span class="jump-letter d-0">S</span><span class="jump-letter d-1">u</span><span class="jump-letter d-2">n</span><span class="jump-letter d-3">s</span><span class="jump-letter d-4">t</span><span class="jump-letter d-5">o</span><span class="jump-letter d-6">r</span><span class="jump-letter d-7">y</span><span class="jump-letter d-8">4</span>
                         <i class="fa-solid fa-heart jump-letter d-9"></i>
                     </h1>
-                    <p class="sunstory-slogan">"ผ่อน วางดาวน์ ปิดสด ต้องซันสตอรี่โฟร์ 🌸"</p>
+                    <p class="sunstory-slogan">"ผ่อน วางดาวน์ ปิดสด ต้องซันสตอรี่โฟร์ เท่านั้น 🌸"</p>
                 </div>
-                <div class="brand-image-frame" onclick="openLoginModal()">
+                <div class="brand-image-frame" onclick="openLoginModal()" title="คลิกเข้าหลังบ้านแอดมิน">
                     <img src="Sun.JPG" alt="Logo" onerror="this.src='https://via.placeholder.com/150/ffb6c1/ffffff?text=Sun'">
                 </div>
             </div>
@@ -380,83 +368,81 @@
             <div class="account-alert-box">
                 <i class="fa-solid fa-shield-cat watermark-icon"></i>
                 <div class="card-content-inner">
-                    <div class="text-[11px] font-bold text-[#ff5277] mb-1 flex items-center justify-center gap-1">
+                    <div class="text-xs font-bold text-[#ff5277] mb-1.5 flex items-center justify-center gap-1">
                         <i class="fa-solid fa-triangle-exclamation"></i> แจ้งเพื่อทราบ / ป้องกันมิจฉาชีพ
                     </div>
-                    <p class="text-[13px] font-medium text-[#5a4a5e]">
-                        ชื่อบัญชีโอนเงิน : <span class="glow-name text-[14px]">บริษัท ซันสตอรี่ โฟร์ จำกัด</span> เท่านั้น!
+                    <!-- 💡 อัปเดต: แยก 2 บรรทัดและเปลี่ยนชื่อเป็น บจก ซันสตอรี่โฟร์ -->
+                    <p class="text-[13px] font-medium text-[#5a4a5e] leading-relaxed">
+                        ชื่อบัญชีโอนเงิน : <br>
+                        <span class="glow-name text-[15px]">บจก ซันสตอรี่โฟร์</span> เท่านั้น!
                     </p>
-                    <p class="text-[10px] text-[#a86b81] mt-1">นอกเหนือจากชื่อนี้ ห้ามโอนเด็ดขาดนะคะ ⚠️</p>
+                    <p class="text-[10px] text-[#a86b81] mt-1.5">นอกเหนือจากชื่อนี้ ห้ามโอนเด็ดขาดนะคะ ⚠️</p>
                 </div>
             </div>
 
-            <!-- 📢 สำเนาป้ายประกาศ สำหรับหน้า 1 -->
-            <div id="announcement-banner-p1" class="hidden-page bg-amber-50 border border-amber-200 rounded-xl p-2.5 flex items-start gap-2.5">
-                <i class="fa-solid fa-bullhorn text-amber-500 text-[14px] mt-0.5"></i>
-                <div>
-                    <h3 class="text-[11px] font-bold text-amber-600">ประกาศจากทางร้าน</h3>
-                    <p id="announcement-text-p1" class="text-[11px] text-amber-700 mt-0.5 leading-snug whitespace-pre-line"></p>
-                </div>
+            <div id="announcement-banner-p1" class="hidden-page bg-[#fffbeb] border border-[#fde68a] rounded-xl p-3 flex flex-col items-center text-center">
+                <div class="text-sm font-bold text-[#d97706] mb-1"><i class="fa-solid fa-bullhorn"></i> ประกาศจากทางร้าน</div>
+                <p id="announcement-text-p1" class="text-xs text-[#b45309] font-medium whitespace-pre-line"></p>
             </div>
 
-            <div class="info-card !p-3">
+            <div class="info-card">
                 <i class="fa-solid fa-store watermark-icon"></i>
                 <div class="card-content-inner">
-                    <div id="display-status-time" class="text-[12px] font-bold mb-1.5 border-b border-dashed border-[#ffccd5] pb-1.5" style="color: #059669;">
+                    <div id="display-status-time" class="text-[13px] font-bold mb-2 border-b border-dashed border-[#ffccd5] pb-2" style="color: #059669;">
                         🟢 สถานะ : เปิดให้บริการปกติ
                     </div>
-                    <div id="display-notice-time" class="text-[11px] text-[#5a4a5e] space-y-2 font-medium">
-                        <p>🐰 เปิดให้บริการ 09.30 - 21.30 น.</p>
+                    <div id="display-notice-time" class="text-[12px] text-[#5a4a5e] space-y-3 font-medium">
+                        <p>🐰 เปิดให้บริการเวลาพื้นฐาน 09.30 - 21.30 น. (เปิดทุกวัน)</p>
+                        <p>ลูกค้ารอทางพี่แอดมินไล่ตอบแชทจากด้านล่างขึ้นบน งดดันแชทนะคะ หากไม่ตอบแชทนานเกินสามารถดันแชทมาได้เลยนะคะ 🌷</p>
                     </div>
                 </div>
             </div>
-            <div class="info-card !p-3">
+            <div class="info-card">
                 <i class="fa-solid fa-truck-fast watermark-icon"></i>
                 <div class="card-content-inner">
-                    <div id="display-status-shipping" class="text-[12px] font-bold mb-1.5 border-b border-dashed border-[#ffccd5] pb-1.5" style="color: #3b82f6;">
+                    <div id="display-status-shipping" class="text-[13px] font-bold mb-2 border-b border-dashed border-[#ffccd5] pb-2" style="color: #3b82f6;">
                         🚚 สถานะ : ส่งตามปกติ
                     </div>
-                    <div id="display-notice-shipping" class="text-[11px] text-[#5a4a5e] space-y-2 font-medium">
-                        <p>🌸 สั่งก่อน 12.00 ส่งพรุ่งนี้ หยุดวันจันทร์</p>
+                    <div id="display-notice-shipping" class="text-[12px] text-[#5a4a5e] space-y-3 font-medium">
+                        <p>🌸 สั่งซื้อสินค้าก่อนเวลา 12.00 ส่งวันพรุ่งนี้ หากสั่งหลัง 12.00 ส่งวันถัดไป</p>
+                        <p>🛑 หยุดส่งของทุกวันจันทร์</p>
                     </div>
                 </div>
             </div>
-            <button id="btn-enter" onclick="enterStore()" class="btn-main mt-1 !py-3">
+            <button id="btn-enter" onclick="enterStore()" class="btn-main mt-2">
                 <span>เข้าสู่ร้าน Sunstory4</span>
+                <i class="fa-solid fa-mobile-screen"></i>
             </button>
-            <button onclick="openPage3()" class="btn-secondary !py-3">
+            <button onclick="openPage3()" class="btn-secondary">
                 <span>🔍 เช็กยอดผ่อนชำระ</span>
             </button>
             
-            <!-- 📄 ปุ่มใบรับรองบริษัท (ดีไซน์คลีนๆ กระทัดรัด) -->
-            <div class="text-center mt-1">
-                <button onclick="openCertModal()" class="bg-white border border-[#ffccd5] text-[#a86b81] px-4 py-1.5 rounded-full text-[11px] font-bold shadow-sm active:scale-95 transition-transform inline-flex items-center gap-1.5">
-                    <i class="fa-solid fa-file-signature text-[#ff5277]"></i> ใบรับรองจดทะเบียนบริษัท
-                </button>
-            </div>
+            <button onclick="openCertModal()" class="bg-white border border-[#ffccd5] text-[#c75b80] w-full py-3 rounded-xl text-sm font-bold shadow-sm active:scale-95 transition-transform mt-2">
+                <i class="fa-solid fa-file-signature text-[#ff5277]"></i> ดูใบรับรองจดทะเบียนบริษัท
+            </button>
         </div>
 
         <!-- หน้าโหลด (Loading) -->
         <div id="loading-screen" class="hidden-page loading-container">
             <div class="bunny-icon">🐰</div>
-            <h2 id="loading-text" class="text-[14px] font-bold text-[#ff5277] mb-1">เตรียมข้อมูลแป๊บนึงนะคะ...</h2>
+            <h2 id="loading-text" class="text-[16px] font-bold text-[#ff5277] mb-1">น้องกระต่ายเตรียมข้อมูลนะคะ...</h2>
             <div class="progress-bar-bg">
                 <div id="progress-bar" class="progress-bar-fill"></div>
             </div>
         </div>
 
         <!-- หน้ารายละเอียดโปรโมชั่น (Page 2) -->
-        <div id="page-2" class="hidden-page flex flex-col gap-3 pt-1">
-            <div class="text-center pb-0.5">
-                <h2 class="text-xs font-bold text-[#ff5277]">🌸 ข้อมูลและโปรโมชั่น 🌸</h2>
+        <div id="page-2" class="hidden-page flex flex-col gap-4 pt-2">
+            <div class="text-center pb-1">
+                <h2 class="text-sm font-bold text-[#ff5277]">🌸 ข้อมูลและโปรโมชั่นประจำร้าน 🌸</h2>
             </div>
-            <div id="promo-1-box" class="info-card !p-3 !bg-[#fff0f3] !border-[#ffffff]">
+            <div id="promo-1-box" class="info-card !bg-[#fff0f3] !border-[#ffffff]">
                 <i class="fa-solid fa-gifts watermark-icon"></i>
-                <div id="promo-1-content" class="card-content-inner text-[11px] text-[#5a4a5e] space-y-1.5 font-medium"></div>
+                <div id="promo-1-content" class="card-content-inner text-[12px] text-[#5a4a5e] space-y-2 font-medium"></div>
             </div>
-            <div id="promo-2-box" class="info-card !p-3 !bg-[#fffcf5] !border-[#ffffff]">
+            <div id="promo-2-box" class="info-card !bg-[#fffcf5] !border-[#ffffff]">
                 <i class="fa-solid fa-percent watermark-icon"></i>
-                <div id="promo-2-content" class="card-content-inner text-[11px] text-[#5a4a5e] space-y-1.5 font-medium"></div>
+                <div id="promo-2-content" class="card-content-inner text-[12px] text-[#5a4a5e] space-y-2 font-medium"></div>
             </div>
             <button onclick="goBackToPage1('page-2')" class="btn-back">
                 <i class="fa-solid fa-arrow-left"></i> กลับไปหน้าร้าน
@@ -464,27 +450,27 @@
         </div>
 
         <!-- หน้าเช็กยอด (Page 3) -->
-        <div id="page-3" class="hidden-page flex flex-col gap-3 pt-1">
-            <div class="text-center pb-0.5">
-                <h2 class="text-xs font-bold text-[#ff5277]">💳 เช็กยอดผ่อนชำระ 💳</h2>
+        <div id="page-3" class="hidden-page flex flex-col gap-4 pt-2">
+            <div class="text-center pb-1">
+                <h2 class="text-sm font-bold text-[#ff5277]">💳 ระบบเช็กยอดผ่อนชำระ 💳</h2>
             </div>
-            <div class="info-card flex flex-col gap-2.5 !border-[#ffffff] !p-3.5">
+            <div class="info-card flex flex-col gap-3 !border-[#ffffff]">
                 <i class="fa-solid fa-address-card watermark-icon"></i>
-                <div class="card-content-inner flex flex-col gap-2.5">
+                <div class="card-content-inner flex flex-col gap-3">
                     <div>
-                        <label class="text-[11px] font-bold text-[#a86b81]">รหัสลูกค้า:</label>
-                        <input type="text" id="customer-id-input" class="admin-input uppercase !mt-0.5 text-center text-base font-bold">
+                        <label class="text-sm font-bold text-[#a86b81]">รหัสลูกค้า:</label>
+                        <input type="text" id="customer-id-input" class="admin-input uppercase !mt-1 text-center text-lg font-bold">
                     </div>
                     <div>
-                        <label class="text-[11px] font-bold text-[#a86b81]">เบอร์โทรศัพท์ (4 ตัวท้าย):</label>
-                        <input type="text" id="customer-phone-input" maxlength="4" class="admin-input !mt-0.5 text-center text-base font-bold">
+                        <label class="text-sm font-bold text-[#a86b81]">เบอร์โทรศัพท์ (4 ตัวท้าย):</label>
+                        <input type="text" id="customer-phone-input" maxlength="4" class="admin-input !mt-1 text-center text-lg font-bold">
                     </div>
-                    <button id="btn-search" onclick="searchCustomer()" class="btn-main !py-2.5 !text-[13px] mt-1">
+                    <button id="btn-search" onclick="searchCustomer()" class="btn-main !py-3 !text-base mt-1">
                         <i class="fa-solid fa-magnifying-glass"></i> ค้นหาข้อมูล
                     </button>
                 </div>
             </div>
-            <div id="installment-error" class="hidden-page text-center text-[12px] text-[#ff5277] font-bold mt-1 bg-[#fff0f3] p-2.5 rounded-xl border border-[#ffffff]">
+            <div id="installment-error" class="hidden-page text-center text-[13px] text-[#ff5277] font-bold mt-2 bg-[#fff0f3] p-3 rounded-xl border border-[#ffffff]">
                 ไม่พบรหัสลูกค้าหรือเบอร์โทรไม่ถูกต้องค่ะ 🥺
             </div>
             <div id="installment-result" class="hidden-page flex flex-col gap-3"></div>
@@ -494,96 +480,96 @@
         </div>
 
         <!-- แผงควบคุมแอดมิน (Admin Page) -->
-        <div id="admin-full-page" class="hidden-page flex flex-col gap-3 pt-1">
-            <div class="flex justify-between items-center bg-[#fff5f8] border border-[#ffffff] p-2.5 rounded-xl">
+        <div id="admin-full-page" class="hidden-page flex flex-col gap-4 pt-2">
+            <div class="flex justify-between items-center bg-[#fff5f8] border border-[#ffffff] p-3 rounded-xl">
                 <div>
-                    <h2 class="text-[13px] font-bold text-[#ff5277]">⚙️ แผงควบคุมแอดมิน</h2>
-                    <p id="admin-logged-in-label" class="text-[10px] text-[#a86b81] font-bold mt-0.5">ผู้ใช้งาน: -</p>
+                    <h2 class="text-sm font-bold text-[#ff5277]">⚙️ แผงควบคุมแอดมิน</h2>
+                    <p id="admin-logged-in-label" class="text-[11px] text-[#a86b81] font-bold mt-0.5">ผู้ใช้งาน: -</p>
                 </div>
-                <button onclick="backToMainFromAdmin()" class="text-[11px] bg-[#ffe5ed] text-[#5a4a5e] px-2.5 py-1.5 rounded-lg font-bold">
-                    ออก
+                <button onclick="backToMainFromAdmin()" class="text-xs bg-[#ffe5ed] text-[#5a4a5e] px-3 py-1.5 rounded-lg font-bold">
+                    <i class="fa-solid fa-arrow-left"></i> ออกจากระบบ
                 </button>
             </div>
 
             <div class="flex gap-2 bg-[#fff5f8] p-1.5 rounded-xl border border-[#ffffff]">
                 <button id="tab-btn-1" onclick="switchAdminTab(1)" class="admin-tab-btn active">
-                    <i class="fa-solid fa-list-check"></i> สลิปรอตรวจ
+                    <i class="fa-solid fa-list-check"></i> สลิปรอตรวจสอบ
                 </button>
                 <button id="tab-btn-2" onclick="switchAdminTab(2)" class="admin-tab-btn">
-                    <i class="fa-solid fa-gears"></i> ตั้งค่าข้อมูลเว็บ
+                    <i class="fa-solid fa-gears"></i> ตั้งค่าร้าน & ข้อมูลหน้าเว็บ
                 </button>
             </div>
 
-            <div id="admin-tab-content-1" class="info-card !p-3 !bg-[#fff0f3] !border-[#ffffff]">
-                <h3 class="text-xs font-bold text-[#ff5277] mb-2.5">📥 รายการสลิปรอตรวจสอบ</h3>
-                <div id="admin-slips-container" class="space-y-3"></div>
+            <div id="admin-tab-content-1" class="info-card !bg-[#fff0f3] !border-[#ffffff]">
+                <h3 class="text-sm font-bold text-[#ff5277] mb-3">📥 รายการสลิปรอตรวจสอบ</h3>
+                <div id="admin-slips-container" class="space-y-4"></div>
             </div>
 
-            <div id="admin-tab-content-2" class="info-card !p-3 hidden-page !border-[#ffffff]">
-                <h3 class="text-xs font-bold text-[#ff5277] mb-2.5">🛠️ ตั้งค่าข้อมูลหน้าเว็บ</h3>
-                <div class="space-y-2.5">
+            <div id="admin-tab-content-2" class="info-card hidden-page !border-[#ffffff]">
+                <h3 class="text-sm font-bold text-[#ff5277] mb-3">🛠️ ตั้งค่าสถานะร้าน & ข้อมูลหน้าเว็บ</h3>
+                <div class="space-y-3">
                     <div>
-                        <label class="text-[11px] font-bold text-[#a86b81]">📢 ประกาศสำคัญหน้าเว็บ (เว้นว่างเพื่อซ่อน):</label>
-                        <textarea id="edit-announcement" class="admin-input text-[12px]" rows="2"></textarea>
+                        <label class="text-xs font-bold text-[#a86b81]">📢 ประกาศสำคัญหน้าเว็บ (เว้นว่างเพื่อซ่อน):</label>
+                        <textarea id="edit-announcement" class="admin-input text-sm" rows="3"></textarea>
                     </div>
-                    <div class="border-t border-dashed border-gray-200 my-1"></div>
+                    <div class="border-t border-dashed border-[#ffccd5] my-2"></div>
                     <div>
-                        <label class="text-[11px] font-bold text-[#a86b81]">สถานะร้าน:</label>
+                        <label class="text-xs font-bold text-[#a86b81]">สถานะร้าน:</label>
                         <div class="flex items-center gap-2">
-                            <input type="color" id="edit-color-time" value="#059669" class="color-picker !w-[30px] !h-[30px]">
-                            <input type="text" id="edit-status-time" class="admin-input !mt-0 text-[12px]">
+                            <input type="color" id="edit-color-time" value="#059669" class="color-picker">
+                            <input type="text" id="edit-status-time" class="admin-input !mt-0 text-sm">
                         </div>
                     </div>
                     <div>
-                        <label class="text-[11px] font-bold text-[#a86b81]">รายละเอียดเวลาร้าน:</label>
-                        <textarea id="edit-notice-time" class="admin-input text-[12px]" rows="2"></textarea>
+                        <label class="text-xs font-bold text-[#a86b81]">รายละเอียดเวลาร้าน (รองรับขึ้นบรรทัดใหม่):</label>
+                        <textarea id="edit-notice-time" class="admin-input text-sm" rows="3"></textarea>
                     </div>
-                    <div class="border-t border-dashed border-gray-200 my-1"></div>
+                    <div class="border-t border-dashed border-[#ffccd5] my-2"></div>
                     <div>
-                        <label class="text-[11px] font-bold text-[#a86b81]">สถานะการจัดส่ง:</label>
+                        <label class="text-xs font-bold text-[#a86b81]">สถานะการจัดส่ง:</label>
                         <div class="flex items-center gap-2">
-                            <input type="color" id="edit-color-shipping" value="#3b82f6" class="color-picker !w-[30px] !h-[30px]">
-                            <input type="text" id="edit-status-shipping" class="admin-input !mt-0 text-[12px]">
+                            <input type="color" id="edit-color-shipping" value="#3b82f6" class="color-picker">
+                            <input type="text" id="edit-status-shipping" class="admin-input !mt-0 text-sm">
                         </div>
                     </div>
                     <div>
-                        <label class="text-[11px] font-bold text-[#a86b81]">รายละเอียดการจัดส่ง:</label>
-                        <textarea id="edit-notice-shipping" class="admin-input text-[12px]" rows="2"></textarea>
+                        <label class="text-xs font-bold text-[#a86b81]">รายละเอียดการจัดส่ง (รองรับขึ้นบรรทัดใหม่):</label>
+                        <textarea id="edit-notice-shipping" class="admin-input text-sm" rows="3"></textarea>
                     </div>
-                    <div class="border-t border-dashed border-gray-200 my-1"></div>
+                    <div class="border-t border-dashed border-[#ffccd5] my-2"></div>
                     <div>
-                        <label class="text-[11px] font-bold text-[#a86b81]">งานเซลล์ปิดสด (ใส่ # เพื่อทำตัวหนา):</label>
-                        <textarea id="edit-promo-1" class="admin-input text-[12px]" rows="2"></textarea>
-                    </div>
-                    <div>
-                        <label class="text-[11px] font-bold text-[#a86b81]">โปรเปิดบิล (ใส่ # เพื่อทำตัวหนา):</label>
-                        <textarea id="edit-promo-2" class="admin-input text-[12px]" rows="2"></textarea>
-                    </div>
-                    <div class="border-t border-dashed border-gray-200 my-1"></div>
-                    <div>
-                        <label class="text-[11px] font-bold text-[#a86b81]">เลขบัญชีธนาคารร้าน:</label>
-                        <input type="text" id="edit-bank-info" class="admin-input !mt-0 text-[12px]">
+                        <label class="text-xs font-bold text-[#a86b81]">งานเซลล์ปิดสด (ใส่ # เพื่อทำตัวหนา):</label>
+                        <textarea id="edit-promo-1" class="admin-input text-sm" rows="3"></textarea>
                     </div>
                     <div>
-                        <label class="text-[11px] font-bold text-[#a86b81]">TrueMoney Wallet:</label>
-                        <input type="text" id="edit-wallet-info" class="admin-input !mt-0 text-[12px]">
+                        <label class="text-xs font-bold text-[#a86b81]">โปรเปิดบิล (ใส่ # เพื่อทำตัวหนา):</label>
+                        <textarea id="edit-promo-2" class="admin-input text-sm" rows="3"></textarea>
                     </div>
-                    <button onclick="saveAdminData()" class="btn-main py-2 !text-[13px] mt-2">บันทึกข้อมูล</button>
+                    <div class="border-t border-dashed border-[#ffccd5] my-2"></div>
+                    <div>
+                        <label class="text-xs font-bold text-[#a86b81]">เลขบัญชีธนาคารร้าน:</label>
+                        <input type="text" id="edit-bank-info" class="admin-input !mt-0 text-sm">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-[#a86b81]">TrueMoney Wallet:</label>
+                        <input type="text" id="edit-wallet-info" class="admin-input !mt-0 text-sm">
+                    </div>
+                    <button onclick="saveAdminData()" class="btn-main py-2 !text-sm mt-2">บันทึกข้อมูลเข้าระบบ</button>
                 </div>
             </div>
         </div>
 
-        <div class="text-center text-[9px] text-[#a86b81] pt-1">
-            © Sunstory4 Official. 🌸🐰💖
+        <div class="text-center text-[10px] text-[#a86b81] pt-2 pb-1">
+            © Sunstory4 Official. All rights reserved. 🌸🐰💖
         </div>
     </div>
 
     <script>
-        // 🔒 ตัวแปรระบบป้องกันสแปม (Cooldown แบบ 1 ครั้งโดนเลย)
         let searchOnCooldown = false;
         let cooldownTimer = null;
-        
+
         const scriptUrl = 'https://script.google.com/macros/s/AKfycbzEr4UTaMHcfO4tJnvyKXvwBlz_9HZ_o-rgJVBlz6yYPTEVwonD6xecPf1c3oPFZOZ_/exec';
+        
         const discordWebhookSlip = 'https://discord.com/api/webhooks/1545650221948600381/JWgX53TC8Wq5id62H0b-5l8N7tTx7cOrpD8ju3-pq1v9Og23xvDvRfkbtkgpUvM8PLa-';
         const discordWebhookAdmin = 'https://discord.com/api/webhooks/1545676162485715016/r-hqXE-gQfDIOCAw7Rm55Mze5HqiHdHPQCq7IKPSqp74kLW4hEoyyrUnvdcLjzQM8Gm_';
 
@@ -612,7 +598,6 @@
             db.ref('storeConfig').once('value').then((snapshot) => {
                 const data = snapshot.val() || {};
                 
-                // 📢 จัดการป้ายประกาศ
                 const annText = data.announcementText || "";
                 document.getElementById('edit-announcement').value = annText;
                 if(annText.trim() !== "") {
@@ -621,9 +606,10 @@
                     document.getElementById('announcement-banner-p1').classList.remove('hidden-page');
                     document.getElementById('announcement-text-p1').innerText = annText;
                 }
-
+                
                 const defaultTimeStatus = "🟢 สถานะ : เปิดให้บริการปกติ";
-                const defaultNoticeTime = "🐰 เปิดให้บริการ 09.30 - 21.30 น.";
+                const defaultNoticeTime = "🐰 เปิดให้บริการเวลาพื้นฐาน 09.30 - 21.30 น. (เปิดทุกวัน)\nลูกค้ารอทางพี่แอดมินไล่ตอบแชทจากด้านล่างขึ้นบน งดดันแชทนะคะ หากไม่ตอบแชทนานเกินสามารถดันแชทมาได้เลยนะคะ 🌷";
+                
                 document.getElementById('display-status-time').innerText = data.statusTime || defaultTimeStatus;
                 document.getElementById('display-status-time').style.color = data.colorTime || "#059669";
                 document.getElementById('edit-status-time').value = data.statusTime || defaultTimeStatus;
@@ -634,7 +620,8 @@
                 document.getElementById('display-notice-time').innerHTML = nTime.split('\n').map(l => `<p>${l}</p>`).join('');
 
                 const defaultShipStatus = "🚚 สถานะ : ส่งตามปกติ";
-                const defaultNoticeShip = "🌸 สั่งก่อน 12.00 ส่งพรุ่งนี้ หยุดวันจันทร์";
+                const defaultNoticeShip = "🌸 สั่งซื้อสินค้าก่อนเวลา 12.00 ส่งวันพรุ่งนี้ หากสั่งหลัง 12.00 ส่งวันถัดไป\n🛑 หยุดส่งของทุกวันจันทร์";
+
                 document.getElementById('display-status-shipping').innerText = data.statusShip || defaultShipStatus;
                 document.getElementById('display-status-shipping').style.color = data.colorShip || "#3b82f6";
                 document.getElementById('edit-status-shipping').value = data.statusShip || defaultShipStatus;
@@ -644,8 +631,9 @@
                 document.getElementById('edit-notice-shipping').value = nShip;
                 document.getElementById('display-notice-shipping').innerHTML = nShip.split('\n').map(l => `<p>${l}</p>`).join('');
 
-                document.getElementById('edit-bank-info').value = data.bankInfo || "111-2-33333-4";
-                document.getElementById('edit-wallet-info').value = data.walletInfo || "099-999-9999";
+                // 💡 อัปเดต: เลขบัญชีตั้งต้น (ถ้าแอดมินไม่ได้เซฟทับ) ให้ตรงกับรูป
+                document.getElementById('edit-bank-info').value = data.bankInfo || "238-8-73540-9";
+                document.getElementById('edit-wallet-info').value = data.walletInfo || "093-146-0754";
 
                 let p1 = data.promo1 || '';
                 let p2 = data.promo2 || '';
@@ -662,23 +650,13 @@
             if (savedPhone) document.getElementById('customer-phone-input').value = savedPhone;
         };
 
-        // 🔽 ฟังก์ชันย่อ/ขยาย แบบสไลด์สมูท
-        function toggleDetails(element) {
-            const container = element.closest('.info-card');
-            container.classList.toggle('is-open');
+        function toggleDetailsBox(id) {
+            const box = document.getElementById('more-details-box-' + id);
+            box.classList.toggle('hidden-page');
         }
 
-        // 💬 ฟังก์ชันเมนูลอยตัวติดต่อแอดมิน
-        function toggleFab() {
-            const fab = document.getElementById('fab-container');
-            const icon = document.getElementById('fab-icon');
-            fab.classList.toggle('open');
-            if (fab.classList.contains('open')) {
-                icon.classList.replace('fa-comment-dots', 'fa-xmark');
-            } else {
-                icon.classList.replace('fa-xmark', 'fa-comment-dots');
-            }
-        }
+        function openContactModal() { document.getElementById('contact-modal').classList.remove('hidden-page'); }
+        function closeContactModal() { document.getElementById('contact-modal').classList.add('hidden-page'); }
 
         function copyText(text) {
             navigator.clipboard.writeText(text).then(() => alert('คัดลอก "' + text + '" เรียบร้อยแล้วค่ะ! 📋✨')).catch(err => console.error("Copy failed", err));
@@ -691,11 +669,15 @@
             const content2 = document.getElementById('admin-tab-content-2');
 
             if (tabIndex === 1) {
-                btn1.classList.add('active'); btn2.classList.remove('active');
-                content1.classList.remove('hidden-page'); content2.classList.add('hidden-page');
+                btn1.classList.add('active');
+                btn2.classList.remove('active');
+                content1.classList.remove('hidden-page');
+                content2.classList.add('hidden-page');
             } else {
-                btn2.classList.add('active'); btn1.classList.remove('active');
-                content2.classList.remove('hidden-page'); content1.classList.add('hidden-page');
+                btn2.classList.add('active');
+                btn1.classList.remove('active');
+                content2.classList.remove('hidden-page');
+                content1.classList.add('hidden-page');
             }
         }
 
@@ -706,11 +688,14 @@
         function closeSlipModal() { document.getElementById('slip-modal').classList.add('hidden-page'); }
         function openCertModal() { document.getElementById('cert-modal').classList.remove('hidden-page'); }
         function closeCertModal() { document.getElementById('cert-modal').classList.add('hidden-page'); }
+        
         function openLoginModal() {
             document.getElementById('login-modal').classList.remove('hidden-page');
             document.getElementById('admin-id-input').value = '';
         }
-        function closeModals() { document.getElementById('login-modal').classList.add('hidden-page'); }
+        function closeModals() {
+            document.getElementById('login-modal').classList.add('hidden-page');
+        }
 
         function enterStore() { 
             document.getElementById('page-1').classList.add('hidden-page');
@@ -721,7 +706,7 @@
                 document.getElementById('header-zones').classList.remove('hidden-page');
                 document.getElementById('page-2').classList.remove('hidden-page');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-            }, 1200);
+            }, 1500);
         }
 
         function goBackToPage1(fromPage) {
@@ -744,7 +729,6 @@
             document.getElementById('installment-error').classList.add('hidden-page');
         }
 
-        // ⏱️ ระบบ Cooldown โหดขึ้น (ผิด 1 ครั้ง โดนเลย 120 วินาที)
         function startCooldown(seconds) {
             searchOnCooldown = true;
             const btn = document.getElementById('btn-search');
@@ -768,7 +752,7 @@
         }
 
         async function searchCustomer() {
-            if (searchOnCooldown) return alert('ระบบกำลังป้องกันสแปม กรุณารอสักครู่นะคะ 🐰');
+            if (searchOnCooldown) return alert('ระบบกำลังป้องกันการค้นหารัวๆ กรุณารอสักครู่นะคะ 🐰');
 
             const btn = document.getElementById('btn-search');
             const inputId = document.getElementById('customer-id-input').value.trim().toUpperCase();
@@ -785,8 +769,10 @@
                 localStorage.setItem('sunstory_saved_phone', inputPhone);
 
                 const configData = (await db.ref('storeConfig').once('value')).val() || {};
-                const bankText = configData.bankInfo || "111-2-33333-4";
-                const walletText = configData.walletInfo || "099-999-9999";
+                
+                // 💡 อัปเดต: เลขบัญชีตั้งต้นให้ตรงกับในรูป
+                const bankText = configData.bankInfo || "238-8-73540-9";
+                const walletText = configData.walletInfo || "093-146-0754";
 
                 const response = await fetch(`${scriptUrl}?id=${inputId}&phone=${inputPhone}`);
                 const resData = await response.json();
@@ -804,14 +790,13 @@
                     let creditLeftNum = creditTargetNum - paidNum;
                     if (creditLeftNum < 0) creditLeftNum = 0;
                     
-                    // 🚨 โดนล็อกเครื่อง ให้ลิงก์ไปส่งยอดทันที
                     if (data.contractStatus === "ล็อกเครื่อง") {
                         resultBox.innerHTML = `
-                            <div class="info-card !bg-rose-50 !border-[#ffffff] text-center !py-5">
-                                <i class="fa-solid fa-lock text-4xl text-rose-500 mb-2 animate-bounce"></i>
-                                <h3 class="text-[14px] font-bold text-rose-600 mb-1">บัญชีถูกระงับ / ล็อกเครื่องชั่วคราว</h3>
-                                <p class="text-[11px] text-rose-500 mb-3">กรุณาติดต่อแอดมินเพื่อเคลียร์ยอดค้างและปลดล็อก</p>
-                                <a href="${linkLinePay}" target="_blank" class="bg-rose-500 text-white inline-block py-2 px-4 rounded-xl text-xs font-bold shadow-sm active:scale-95">
+                            <div class="info-card !bg-rose-50 !border-[#ffffff] text-center py-6">
+                                <i class="fa-solid fa-lock text-5xl text-rose-500 mb-3 animate-bounce"></i>
+                                <h3 class="text-base font-bold text-rose-600 mb-1">บัญชีนี้ถูกระงับ / ล็อกเครื่องชั่วคราว</h3>
+                                <p class="text-xs text-rose-500 mb-4">กรุณาติดต่อแอดมินเพื่อเคลียร์ยอดค้างชำระและปลดล็อกเครื่องค่ะ</p>
+                                <a href="${linkLinePay}" target="_blank" class="btn-main !bg-rose-500 inline-block py-2.5 px-4 rounded-xl text-sm font-bold shadow-md">
                                     <i class="fa-brands fa-line"></i> ติดต่อแอดมินส่งยอด
                                 </a>
                             </div>
@@ -823,59 +808,72 @@
                         return;
                     }
                     
-                    // 📊 ย่อขนาดหลอดผ่อนชำระ
                     let progressHtml = '';
                     const customerType = data.type ? data.type.trim() : "";
 
                     if (customerType.includes("ผ่อนไปใช้ไป")) {
                         let percent = creditTargetNum > 0 ? (paidNum / creditTargetNum) * 100 : 0;
                         if (percent > 100) percent = 100;
+
                         if (creditTargetNum > 0 && creditLeftNum <= 0 && paidNum >= creditTargetNum) {
                             progressHtml = `
-                                <div class="mt-2.5 bg-[#f0fdf4] rounded-xl p-2.5 text-center">
-                                    <div class="text-[12px] font-bold text-[#166534] mb-0.5">🎉 ยินดีด้วย! เครดิตผ่านแล้ว 🎉</div>
-                                    <div class="text-[10px] font-medium text-[#15803d]">ทักแอดมินรับเครื่องได้เลยค่า 💖</div>
-                                    <div class="w-full h-2 bg-[#dcfce7] rounded-full mt-1.5 overflow-hidden"><div class="h-full bg-gradient-to-r from-[#4ade80] to-[#22c55e] w-full"></div></div>
+                                <div class="mt-4 bg-[#f0fdf4] border-2 border-[#ffffff] rounded-xl p-3 text-center">
+                                    <div class="text-[14px] font-bold text-[#166534] mb-1">🎉 ยินดีด้วย! เครดิตผ่านแล้ว 🎉</div>
+                                    <div class="text-[12px] font-medium text-[#15803d]">ทักหาแอดมินเพื่อรับเครื่องไปใช้ได้เลยค่า 💖</div>
+                                    <div class="w-full h-3 bg-[#dcfce7] rounded-full mt-2 overflow-hidden border border-[#ffffff]">
+                                        <div class="h-full bg-gradient-to-r from-[#4ade80] to-[#22c55e] w-full rounded-full"></div>
+                                    </div>
                                 </div>`;
                         } else {
                             progressHtml = `
-                                <div class="mt-2.5 bg-[#fff5f8] rounded-xl p-2.5">
+                                <div class="mt-4 bg-[#fff5f8] border-2 border-[#ffffff] rounded-xl p-3">
                                     <div class="flex justify-between items-end mb-1">
-                                        <div class="text-[11px] font-bold text-[#ff5277]">🎯 ดันยอดรับเครื่อง!</div>
-                                        <div class="text-[9px] font-bold text-[#c75b80] bg-white px-1.5 py-0.5 rounded-md">${Math.floor(percent)}%</div>
+                                        <div class="text-[13px] font-bold text-[#ff5277]">🎯 ภารกิจดันยอดรับเครื่อง!</div>
+                                        <div class="text-[11px] font-bold text-[#c75b80] bg-white px-2 rounded-md border border-[#ffffff]">${Math.floor(percent)}%</div>
                                     </div>
-                                    <div class="w-full h-2 bg-[#ffe5ed] rounded-full overflow-hidden my-1.5"><div class="h-full bg-gradient-to-r from-[#ff5277] to-[#d87093] transition-all duration-1000" style="width: ${percent}%;"></div></div>
-                                    <div class="text-[10px] text-[#c75b80] text-center font-medium">🔥 อีกแค่ <b class="text-[12px]">${creditLeftNum.toLocaleString()}</b> บาท!</div>
+                                    <div class="w-full h-3 bg-[#ffe5ed] rounded-full overflow-hidden my-2 border border-[#ffffff]">
+                                        <div class="h-full bg-gradient-to-r from-[#ff5277] to-[#d87093] rounded-full transition-all duration-1000" style="width: ${percent}%;"></div>
+                                    </div>
+                                    <div class="text-[12px] text-[#c75b80] text-center font-medium">
+                                        🔥 ฮึบๆ อีกแค่ <b class="text-[14px]">${creditLeftNum.toLocaleString()}</b> บาท เท่านั้น!
+                                    </div>
                                 </div>`;
                         }
                     } else if (customerType.includes("วางดาวน์")) {
                         let totalPeriods = installmentAmt > 0 ? Math.ceil(totalNum / installmentAmt) : 0;
                         let paidPeriods = installmentAmt > 0 ? Math.floor(paidNum / installmentAmt) : 0;
                         if (paidPeriods > totalPeriods && totalPeriods > 0) paidPeriods = totalPeriods;
-                        let remainPeriods = totalPeriods - paidPeriods; if (remainPeriods < 0) remainPeriods = 0;
-                        let periodPercent = totalPeriods > 0 ? (paidPeriods / totalPeriods) * 100 : 0; if (periodPercent > 100) periodPercent = 100;
+                        let remainPeriods = totalPeriods - paidPeriods;
+                        if (remainPeriods < 0) remainPeriods = 0;
+
+                        let periodPercent = totalPeriods > 0 ? (paidPeriods / totalPeriods) * 100 : 0;
+                        if (periodPercent > 100) periodPercent = 100;
+
                         progressHtml = `
-                            <div class="mt-2.5 bg-[#fdf2f8] rounded-xl p-2.5">
+                            <div class="mt-4 bg-[#fdf2f8] border-2 border-[#ffffff] rounded-xl p-3.5">
                                 <div class="flex justify-between items-end mb-1">
-                                    <div class="text-[11px] font-bold text-[#db2777]">📊 สถานะงวดการผ่อน (วางดาวน์)</div>
-                                    <div class="text-[9px] font-bold text-[#be185d] bg-white px-1.5 py-0.5 rounded-md">${Math.floor(periodPercent)}%</div>
+                                    <div class="text-[13px] font-bold text-[#db2777]">📊 สถานะงวดการผ่อนชำระ (วางดาวน์)</div>
+                                    <div class="text-[11px] font-bold text-[#be185d] bg-white px-2.5 py-0.5 rounded-md border border-[#ffffff]">${Math.floor(periodPercent)}%</div>
                                 </div>
-                                <div class="w-full h-2 bg-[#fce7f3] rounded-full overflow-hidden my-1.5"><div class="h-full bg-gradient-to-r from-[#ec4899] to-[#be185d] transition-all duration-1000" style="width: ${periodPercent}%;"></div></div>
-                                <div class="text-[10px] text-[#831843] flex justify-between mt-1 font-medium bg-white p-1.5 rounded-lg border border-[#fbcfe8]">
-                                    <span>✅ ส่ง: <b>${paidPeriods}</b> งวด</span> <span>⏳ ค้าง: <b class="text-rose-600">${remainPeriods}</b> งวด</span>
+                                <div class="w-full h-3 bg-[#fce7f3] rounded-full overflow-hidden my-2 border border-[#ffffff]">
+                                    <div class="h-full bg-gradient-to-r from-[#ec4899] to-[#be185d] rounded-full transition-all duration-1000" style="width: ${periodPercent}%;"></div>
+                                </div>
+                                <div class="text-[12px] text-[#831843] space-y-1 mt-2 font-medium bg-white p-2.5 rounded-lg border border-[#fbcfe8]">
+                                    <div class="flex justify-between"><span>✅ ส่งไปแล้ว:</span> <b>${paidPeriods} งวด</b></div>
+                                    <div class="flex justify-between"><span>⏳ ค้างอีก:</span> <b class="text-rose-600">${remainPeriods} งวด</b> (จากทั้งหมด ${totalPeriods} งวด)</div>
                                 </div>
                             </div>`;
                     }
 
-                    // 🚨 ระบบตัดยอดเอง (15 วัน) (ย่อขนาด)
                     let cooldownHtml = '';
                     if (data.dueDate && String(data.dueDate).trim() !== "" && data.dueDate !== "-") {
                         let rawDateStr = String(data.dueDate);
                         let cleanDateStr = rawDateStr.split('T')[0]; 
+                        
                         let day = 0, month = 0, year = 0;
                         if (cleanDateStr.includes('-')) {
                             let parts = cleanDateStr.split('-');
-                            if (parts[0].length === 4) { year = parseInt(parts[0]); month = parseInt(parts[1]) - 1; day = parseInt(parts[2]); }
+                            if (parts[0].length === 4) { year = parseInt(parts[0]); month = parseInt(parts[1]) - 1; day = parseInt(parts[2]); } 
                             else { day = parseInt(parts[0]); month = parseInt(parts[1]) - 1; year = parseInt(parts[2]); }
                         } else if (cleanDateStr.includes('/')) {
                             let parts = cleanDateStr.split('/');
@@ -883,9 +881,16 @@
                         }
 
                         if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
-                            const due = new Date(year, month, day); const today = new Date(); today.setHours(0,0,0,0);
+                            const due = new Date(year, month, day);
+                            const today = new Date();
+                            today.setHours(0,0,0,0);
+                            
                             const diffDays = Math.ceil((due - today) / (1000 * 60 * 60 * 24));
-                            let barColor = "from-[#4ade80] to-[#22c55e]"; let statusText = `เหลือเวลาอีก ${diffDays} วัน`; let widthPct = "100%"; let barClass = "";
+
+                            let barColor = "from-[#4ade80] to-[#22c55e]";
+                            let statusText = `เหลือเวลาอีก ${diffDays} วัน`;
+                            let widthPct = "100%";
+                            let barClass = "";
 
                             if (diffDays > 7) { barColor = "from-[#4ade80] to-[#22c55e]"; statusText = `เหลือเวลาอีก ${diffDays} วัน`; widthPct = "100%"; } 
                             else if (diffDays <= 7 && diffDays >= 0) { barColor = "from-[#bef264] to-[#eab308]"; statusText = "แจ้งเตือน 🚨ลูกค้ากำลังจะถูกตัดยอดโปรดส่งยอดก่อนถึงวันที่ตัดยอดนะคะ"; widthPct = "75%"; } 
@@ -893,127 +898,136 @@
                             else if (diffDays < -7 && diffDays >= -14) { barColor = "from-[#fb923c] to-[#ef4444]"; statusText = "แจ้งเตือน🚨ท่านถูกตัดยอดแล้ว โปรดต่อบัญชีจำนวน 100 บาท ( ไม่นับเป็นค่าส่งยอด ) ภายใน 7 วันหลังจากนี้"; widthPct = "25%"; } 
                             else if (diffDays < -14) {
                                 barColor = "from-[#ef4444] to-[#b91c1c]";
-                                statusText = `<div class='glow-red-text mb-1'>แจ้งเตือน🚨บัญชีท่านถูกตัดยอดโดยสมบูรณ์โปรดเปิดบิลบัญชีใหม่</div><a href='${linkLinePay}' target='_blank' class='inline-block bg-rose-600 text-white px-3 py-1 rounded-full text-[10px] mt-1 shadow-sm'><i class='fa-brands fa-line'></i> ติดต่อแอดมินส่งยอด</a>`;
-                                widthPct = "10%"; barClass = "glow-red-bar";
+                                statusText = `<div class='glow-red-text mb-2'>แจ้งเตือน🚨บัญชีท่านถูกตัดยอดโดยสมบูรณ์โปรดเปิดบิลบัญชีใหม่</div><a href='${linkLinePay}' target='_blank' class='inline-block bg-rose-600 text-white px-4 py-2 rounded-xl text-[12px] mt-1 shadow-sm font-bold'><i class='fa-brands fa-line'></i> ติดต่อแอดมินส่งยอด</a>`;
+                                widthPct = "10%";
+                                barClass = "glow-red-bar"; 
                             }
+
                             cooldownHtml = `
-                                <div class="mt-2.5 bg-[#fff9fa] border border-[#ffccd5] rounded-xl p-2.5 text-center">
-                                    <div class="text-[10px] font-bold text-[#ff5277] mb-1">📅 วันตัดยอด: ${day}/${month + 1}/${year}</div>
-                                    <div class="w-full h-2 bg-[#ffe5ed] rounded-full my-1 relative">
+                                <div class="mt-3 bg-[#fff9fa] border border-[#ffffff] rounded-xl p-3">
+                                    <div class="text-[12px] font-bold text-[#ff5277] mb-1">📅 วันตัดยอด (กำหนดชำระ): ${day}/${month + 1}/${year}</div>
+                                    <div class="w-full h-3 bg-[#ffe5ed] rounded-full overflow-visible my-1.5 border border-[#ffffff]">
                                         <div class="h-full bg-gradient-to-r ${barColor} rounded-full transition-all duration-1000 ${barClass}" style="width: ${widthPct};"></div>
                                     </div>
-                                    <div class="text-[10px] font-bold text-[#c75b80] mt-1 leading-snug">${statusText}</div>
-                                </div>`;
+                                    <div class="text-[11px] font-bold text-[#c75b80] mt-2 leading-snug">${statusText}</div>
+                                </div>
+                            `;
                         }
                     }
 
-                    // 🔽 โครงสร้าง Accordion ข้อมูล (แบบสมูท ไม่รก)
+                    let contractBtnHtml = '';
+                    if (data.contractLink && data.contractLink.trim() !== '' && data.contractLink !== '-') {
+                        contractBtnHtml = `
+                            <div class="mt-3">
+                                <a href="${data.contractLink}" target="_blank" class="btn-secondary !border-[#ffffff] !py-2.5 !text-sm flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-file-contract text-lg"></i> ดูสัญญาเช่าซื้อของฉัน 📄
+                                </a>
+                            </div>
+                        `;
+                    }
+
                     resultBox.innerHTML = `
-                        <div class="info-card !bg-[#fffcf5] !border-[#ffffff] !p-3.5 is-open" id="detail-card-${inputId}">
+                        <div class="info-card !bg-[#fffcf5] !border-[#ffffff]">
                             <i class="fa-solid fa-receipt watermark-icon"></i>
                             <div class="card-content-inner">
-                                <div class="flex justify-between items-center border-b border-dashed border-[#ffccd5] pb-2 mb-2">
-                                    <span class="text-[13px] font-bold text-[#c75b80]">🎀 รหัส: ${inputId}</span>
-                                    <span class="text-[10px] bg-white px-2 py-0.5 rounded-full text-[#5a4a5e] border border-[#ffccd5]">อายุ ${data.age || '-'} ปี</span>
+                                <div class="text-sm font-bold text-[#c75b80] mb-3 border-b border-dashed border-[#ffccd5] pb-2 flex justify-between items-center">
+                                    <span class="text-base">🎀 รหัสลูกค้า: ${inputId}</span>
+                                    <span class="text-xs bg-white px-2.5 py-1 rounded-full text-[#5a4a5e] border border-[#ffccd5]">อายุ ${data.age || '-'} ปี</span>
                                 </div>
-                                <div class="text-[11px] text-[#5a4a5e] font-medium mb-1">
-                                    <span class="mr-2">👤 ${data.name || '-'}</span> <span>🏷️ <span class="text-[#ff5277]">${data.type || '-'}</span></span>
+                                <div class="text-sm text-[#5a4a5e] space-y-2 font-medium mb-3">
+                                    <p>👤 <b>ชื่อลูกค้า:</b> ${data.name || '-'}</p>
+                                    <p>🏷️ <b>ประเภท:</b> <span class="text-[#ff5277]">${data.type || '-'}</span></p>
+                                    <p>📱 <b>รุ่นที่ผ่อน:</b> ${data.model || '-'}</p>
                                 </div>
-                                <div class="text-[11px] text-[#5a4a5e] font-medium mb-2">📱 รุ่น: ${data.model || '-'}</div>
                                 
-                                <!-- ป้ายกดดูเพิ่มเติม สไลด์สมูท -->
-                                <div class="bg-[#ffe5ed] rounded-lg px-2.5 py-1.5 flex justify-between items-center cursor-pointer mb-2" onclick="toggleDetails(this)">
-                                    <span class="text-[10px] font-bold text-[#c75b80]"><i class="fa-solid fa-list-ul"></i> ดูรายละเอียด & ยอดทั้งหมด</span>
-                                    <i class="fa-solid fa-chevron-down text-[#c75b80] text-[10px] transition-transform duration-300 toggle-icon"></i>
-                                </div>
-                                <div class="details-wrapper">
-                                    <div class="details-content">
-                                        <div class="text-[11px] text-[#5a4a5e] font-medium bg-[#fff0f3] rounded-lg p-2.5 space-y-1.5 mb-2 overflow-hidden">
-                                            <p>🎨 สี: ${data.color || '-'}</p>
-                                            <p>📝 เพิ่มเติม: ${data.details || '-'}</p>
-                                            <div class="border-t border-dashed border-[#ffccd5] my-1 pt-1">
-                                                <p>💰 ยอดเครื่องรวม: ${totalNum.toLocaleString()} ฿</p>
-                                                <p class="text-emerald-600 font-bold">🎁 ส่วนลด: ${discountValue.toLocaleString()} ฿</p>
-                                                <p>💸 ยอดที่ส่งแล้ว: ${paidNum.toLocaleString()} ฿</p>
-                                            </div>
-                                        </div>
+                                <button onclick="toggleDetailsBox('${inputId}')" class="bg-[#ffe5ed] text-[#c75b80] w-full py-2.5 rounded-xl text-[13px] font-bold flex justify-between items-center px-4 mb-3 border border-[#ffccd5]">
+                                    <span><i class="fa-solid fa-list-ul"></i> ดูรายละเอียด & ยอดทั้งหมด</span>
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                </button>
+                                
+                                <div id="more-details-box-${inputId}" class="hidden-page bg-white p-3.5 rounded-xl mb-3 text-sm text-[#5a4a5e] space-y-2 border border-[#ffccd5] shadow-sm">
+                                    <p>🎨 <b>สี:</b> ${data.color || '-'}</p>
+                                    <p>📝 <b>เพิ่มเติม:</b> ${data.details || '-'}</p>
+                                    <div class="border-t border-dashed border-[#ffccd5] my-2 pt-2">
+                                        <p>💰 <b>ยอดเครื่องรวม:</b> ${totalNum.toLocaleString()} ฿</p>
+                                        <p class="text-emerald-600 font-bold">🎁 <b>ส่วนลด:</b> ${discountValue.toLocaleString()} ฿</p>
+                                        <p>💸 <b>ยอดที่ส่งแล้ว:</b> ${paidNum.toLocaleString()} ฿</p>
                                     </div>
                                 </div>
                                 
-                                <!-- โชว์ยอดคงเหลือเด่นๆ ด้านล่างสุดเสมอ -->
-                                <div class="text-center bg-white border border-[#ffccd5] rounded-xl py-2 mt-1 shadow-sm">
-                                    <span class="text-[11px] text-[#5a4a5e] font-medium">🎯 ยอดคงเหลือ</span><br>
-                                    <span class="text-base font-bold text-[#ff5277]">${balanceNum.toLocaleString()} ฿</span>
+                                <div class="text-center bg-white border border-[#ffccd5] rounded-xl py-3 shadow-sm mb-3">
+                                    <span class="text-[13px] text-[#5a4a5e] font-medium">🎯 ยอดคงเหลือสุทธิ</span><br>
+                                    <span class="text-xl font-bold text-[#ff5277]">${balanceNum.toLocaleString()} ฿</span>
                                 </div>
 
                                 ${progressHtml}
                                 ${cooldownHtml}
+                                ${contractBtnHtml}
                             </div>
                         </div>
 
-                        <!-- 💸 โซนชำระเงินไซส์มินิมอล -->
-                        <div class="mt-3 payment-section relative">
-                            <div class="text-center font-bold text-[#ff5277] mb-2.5 text-[12px] flex items-center justify-center gap-1">
+                        <div class="mt-4 payment-section relative">
+                            <div class="text-center font-bold text-[#ff5277] mb-4 text-sm flex items-center justify-center gap-1">
                                 <i class="fa-solid fa-wallet"></i> ช่องทางชำระเงินของร้าน 🎀
                             </div>
                             
-                            <!-- 💚 กสิกรไทย -->
-                            <div class="relative bg-gradient-to-br from-[#dcfce7] to-[#bbf7d0] border border-[#86efac] rounded-xl p-3 mb-2.5 flex justify-between items-center">
+                            <!-- 💡 อัปเดต: 💚 กสิกรไทย (เปลี่ยนชื่อบัญชีเป็น บจก ซันสตอรี่โฟร์) -->
+                            <div class="relative bg-gradient-to-br from-[#dcfce7] to-[#bbf7d0] border border-[#86efac] rounded-2xl p-4 mb-3 flex justify-between items-center">
                                 <div>
-                                    <div class="text-[11px] font-bold text-[#16a34a] mb-0.5">กสิกรไทย (KBank) 💚</div>
-                                    <div class="text-[15px] font-bold text-[#0f172a] tracking-wide">${bankText}</div>
-                                    <div class="text-[10px] text-[#334155] font-medium">บจก. ซันสตอรี่ โฟร์</div>
+                                    <div class="text-[14px] font-bold text-[#16a34a] mb-1">กสิกรไทย (KBank) 💚</div>
+                                    <div class="text-xl font-bold text-[#0f172a]">${bankText}</div>
+                                    <div class="text-[12px] text-[#334155] font-medium mt-1">ชื่อบัญชี: บจก ซันสตอรี่โฟร์</div>
                                 </div>
-                                <button onclick="copyText('${bankText}')" class="bg-white text-[#16a34a] px-2.5 py-1.5 rounded-lg text-[10px] font-bold shadow-sm active:scale-95"><i class="fa-regular fa-copy"></i> ก๊อปปี้</button>
+                                <button onclick="copyText('${bankText}')" class="bg-white text-[#16a34a] px-3.5 py-1.5 rounded-xl text-[12px] font-bold active:scale-95 shrink-0"><i class="fa-regular fa-copy"></i> คัดลอก</button>
                             </div>
 
-                            <!-- 🩷 TrueMoney Wallet -->
-                            <div class="relative bg-gradient-to-br from-[#fce7f3] to-[#fbcfe8] border border-[#f9a8d4] rounded-xl p-3 mb-2.5 flex justify-between items-center">
+                            <!-- 💡 อัปเดต: 🩷 TrueMoney Wallet (คืนชื่อบัญชีเป็น กนกอร) -->
+                            <div class="relative bg-gradient-to-br from-[#fce7f3] to-[#fbcfe8] border border-[#f9a8d4] rounded-2xl p-4 mb-3 flex justify-between items-center">
                                 <div>
-                                    <div class="text-[11px] font-bold text-[#be185d] mb-0.5">TrueMoney Wallet 🩷</div>
-                                    <div class="text-[15px] font-bold text-[#0f172a] tracking-wide">${walletText}</div>
-                                    <div class="text-[10px] text-[#334155] font-medium">บจก. ซันสตอรี่ โฟร์</div>
-                                    <div class="text-[9px] font-bold text-[#e11d48] mt-0.5">*วอเล็ตหัก 2.9%*</div>
+                                    <div class="text-[14px] font-bold text-[#be185d] mb-1">TrueMoney Wallet 🩷</div>
+                                    <div class="text-xl font-bold text-[#0f172a]">${walletText}</div>
+                                    <div class="text-[12px] text-[#334155] font-medium mt-1">ชื่อบัญชี: กนกอร</div>
+                                    <div class="text-[11px] font-bold text-[#e11d48] mt-1">*วอเล็ตหักค่าธรรมเนียม 2.9%*</div>
                                 </div>
-                                <button onclick="copyText('${walletText}')" class="bg-white text-[#be185d] px-2.5 py-1.5 rounded-lg text-[10px] font-bold shadow-sm active:scale-95"><i class="fa-regular fa-copy"></i> ก๊อปปี้</button>
+                                <button onclick="copyText('${walletText}')" class="bg-white text-[#be185d] px-3.5 py-1.5 rounded-xl text-[12px] font-bold active:scale-95 shrink-0"><i class="fa-regular fa-copy"></i> คัดลอก</button>
                             </div>
 
-                            <!-- 📝 บันทึกช่วยจำ -->
-                            <div class="bg-[#fff0f3] border border-[#ffccd5] rounded-xl p-3 mb-2.5 flex justify-between items-center">
-                                <div>
-                                    <div class="text-[10px] font-bold text-[#ff5277] mb-0.5"><i class="fa-solid fa-pen-nib"></i> บันทึกช่วยจำ (โน้ตสลิป)</div>
-                                    <div class="text-[11px] font-bold text-[#5a4a5e] underline decoration-[#ff5277]">ซื้อขายกับร้านซันสตอรี่โฟร์</div>
+                            <div class="bg-[#fff0f3] border-2 border-dashed border-[#ffffff] rounded-2xl p-4 mb-3 text-center relative overflow-hidden">
+                                <i class="fa-solid fa-note-sticky watermark-icon"></i>
+                                <div class="card-content-inner">
+                                    <div class="text-xs font-bold text-[#ff5277] mb-1 flex items-center justify-center gap-1">
+                                        <i class="fa-solid fa-pen-nib"></i> บันทึกช่วยจำ / โน้ตสลิปโอนเงิน
+                                    </div>
+                                    <!-- 💡 อัปเดต: ข้อความบันทึกช่วยจำ -->
+                                    <p class="text-sm font-bold text-[#5a4a5e] my-1">
+                                        พิมพ์ตรงบันทึกช่วยจำว่า : <span class="text-[#ff5277] underline">ซื้อขายกับร้านซันสตอรี่โฟร์</span>
+                                    </p>
+                                    <button onclick="copyText('ซื้อขายกับร้านซันสตอรี่โฟร์')" class="bg-white text-[#ff5277] border border-[#ffffff] px-3 py-1 rounded-xl text-xs font-bold mt-1 active:scale-95">
+                                        <i class="fa-regular fa-copy"></i> คัดลอกข้อความโน้ต
+                                    </button>
                                 </div>
-                                <button onclick="copyText('ซื้อขายกับร้านซันสตอรี่โฟร์')" class="bg-white text-[#ff5277] border border-[#ffccd5] px-2.5 py-1.5 rounded-lg text-[10px] font-bold shadow-sm active:scale-95"><i class="fa-regular fa-copy"></i> ก๊อปปี้</button>
                             </div>
 
-                            <div id="upload-zone" class="info-card flex flex-col gap-2 !bg-white !p-3.5">
+                            <div id="upload-zone" class="info-card flex flex-col gap-2.5 !bg-white">
                                 <i class="fa-solid fa-file-arrow-up watermark-icon"></i>
-                                <div class="card-content-inner flex flex-col gap-2">
-                                    <p class="text-[12px] font-bold text-[#ff5277]">📤 แจ้งโอน / แนบสลิป:</p>
-                                    <input type="number" id="slip-amount" class="admin-input !mt-0 text-[13px]" placeholder="ระบุจำนวนเงินที่โอน">
-                                    <input type="file" id="slip-file" accept="image/*" class="admin-input !mt-0 text-[11px] py-2">
-                                    <button id="btn-submit-slip" onclick="submitSlip()" class="btn-main !py-2.5 !text-[12px] mt-0.5">
+                                <div class="card-content-inner flex flex-col gap-2.5">
+                                    <p class="text-sm font-bold text-[#ff5277]">📤 แจ้งชำระเงิน / แนบสลิป:</p>
+                                    <input type="number" id="slip-amount" class="admin-input !mt-0 text-base" placeholder="จำนวนเงิน">
+                                    <input type="file" id="slip-file" accept="image/*" class="admin-input !mt-0 text-xs py-2.5">
+                                    <button id="btn-submit-slip" onclick="submitSlip()" class="btn-main !py-3 !text-sm mt-1">
                                         <i class="fa-solid fa-paper-plane"></i> ส่งสลิปให้แอดมิน
                                     </button>
                                 </div>
                             </div>
-                            <div id="slip-status" class="hidden-page mt-1 bg-[#fff0f3] border border-[#ffffff] rounded-xl p-2.5 text-center">
-                                <div class="text-[12px] font-bold text-[#ff5277]"><i class="fa-solid fa-hourglass-half rotate-animation inline-block mr-1"></i> สถานะ: รอตรวจสลิป</div>
+                            <div id="slip-status" class="hidden-page mt-1 bg-[#fff0f3] border border-[#ffffff] rounded-xl p-3 text-center">
+                                <div class="text-[14px] font-bold text-[#ff5277]"><i class="fa-solid fa-hourglass-half rotate-animation inline-block mr-1"></i> สถานะ: รอตรวจสอบสลิป</div>
+                                <div class="text-[12px] text-[#a86b81] mt-1 font-medium">แอดมินได้รับสลิปแล้วค่ะ 🌸</div>
                             </div>
                         </div>
                     `;
-                    
-                    // หน่วงเวลาปิด Accordion เริ่มต้นให้สไลด์สวยงาม
-                    setTimeout(() => {
-                        const acc = document.getElementById(`detail-card-${inputId}`);
-                        if(acc) acc.classList.remove('is-open');
-                    }, 50);
-
                     resultBox.classList.remove('hidden-page');
                     errorBox.classList.add('hidden-page');
                 } else {
-                    // ❌ กรอกผิด 1 ครั้ง โดนล็อกทันที 120 วิ
                     resultBox.classList.add('hidden-page');
                     errorBox.classList.remove('hidden-page');
                     
@@ -1021,8 +1035,15 @@
 
                     const now = new Date();
                     const timeString = now.toLocaleDateString('th-TH') + ' ' + now.toLocaleTimeString('th-TH', {hour: '2-digit', minute:'2-digit', second:'2-digit'}) + ' น.';
-                    const securityPayload = { content: `⚠️ **[SECURITY] มีคนค้นหาผิดพลาด/โดนแบน 120 วิ**\n👤 **รหัสลูกค้า:** \`${inputId}\`\n📱 **เบอร์โทร:** \`${inputPhone}\`\n🕒 **เวลา:** ${timeString}` };
-                    fetch(discordWebhookAdmin, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(securityPayload) }).catch(e => console.error(e));
+                    
+                    const securityPayload = {
+                        content: `⚠️ **[SECURITY] โดนแบน 120 วิ! มีคนกรอกรหัสผิดพลาด**\n👤 **รหัสลูกค้า:** \`${inputId}\`\n📱 **เบอร์โทร:** \`${inputPhone}\`\n🕒 **เวลาที่เกิดเหตุ:** ${timeString}`
+                    };
+                    fetch(discordWebhookAdmin, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(securityPayload)
+                    }).catch(err => console.error("Discord security alert error:", err));
                 }
             } catch (e) { 
                 console.error("Search error:", e);
@@ -1043,7 +1064,7 @@
             if(!amount || !fileInput.files[0]) return alert('กรุณาระบุจำนวนเงินและแนบรูปสลิปให้ครบนะคะ 🥺');
             
             btn.disabled = true;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> กำลังส่ง...';
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> กำลังส่งข้อมูล...';
 
             try {
                 const file = fileInput.files[0];
@@ -1054,9 +1075,22 @@
                     const now = new Date();
                     const timeString = now.toLocaleDateString('th-TH') + ' ' + now.toLocaleTimeString('th-TH', {hour: '2-digit', minute:'2-digit'}) + ' น.';
 
-                    await db.ref('pendingSlips').push({ id: currentCustomerId, amount: amount, imageUrl: base64Image, time: timeString, timestamp: firebase.database.ServerValue.TIMESTAMP });
-                    const payload = { content: `🚨 **มีลูกค้าส่งสลิปใหม่!**\n🎀 **รหัส:** ${currentCustomerId}\n💰 **ยอดโอน:** ${amount} ฿\n🕒 **เวลา:** ${timeString}\n👉 *โปรดเช็กหลังบ้าน*` };
-                    fetch(discordWebhookSlip, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }).catch(e => console.error(e));
+                    await db.ref('pendingSlips').push({
+                        id: currentCustomerId,
+                        amount: amount,
+                        imageUrl: base64Image,
+                        time: timeString,
+                        timestamp: firebase.database.ServerValue.TIMESTAMP
+                    });
+
+                    const payload = {
+                        content: `🚨 **มีลูกค้าส่งสลิปใหม่!**\n🎀 **รหัสลูกค้า:** ${currentCustomerId}\n💰 **ยอดโอนที่แจ้ง:** ${amount} บาท\n🕒 **เวลาส่ง:** ${timeString}\n👉 *เข้าเว็บแอดมินเพื่อตรวจสอบรูปสลิปและกดอนุมัติยอดครับ*`
+                    };
+                    fetch(discordWebhookSlip, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    }).catch(err => console.error("Discord error:", err));
 
                     document.getElementById('upload-zone').classList.add('hidden-page');
                     document.getElementById('slip-status').classList.remove('hidden-page');
@@ -1064,7 +1098,8 @@
             } catch (error) {
                 console.error("Upload error:", error);
                 alert('อัปโหลดล้มเหลว กรุณาลองใหม่ค่ะ');
-                btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> ส่งสลิปให้แอดมิน';
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> ส่งสลิปให้แอดมิน';
             }
         }
 
@@ -1074,81 +1109,139 @@
                 if(!container) return;
                 container.innerHTML = '';
                 const slips = snapshot.val();
-                if(!slips) return container.innerHTML = '<p class="text-center text-[11px] text-[#a86b81] py-3">ไม่มีสลิปรอตรวจสอบค่ะ 🌸</p>';
+                
+                if(!slips) {
+                    container.innerHTML = '<p class="text-center text-sm text-[#a86b81] py-4">ยังไม่มีสลิปรอตรวจสอบค่ะ 🌸</p>';
+                    return;
+                }
 
                 Object.keys(slips).forEach(key => {
                     const s = slips[key];
-                    container.innerHTML += `
-                        <div class="bg-white p-3 rounded-xl border border-[#ffffff] space-y-1.5 text-[11px] font-medium" id="slip-${key}">
-                            <div class="flex justify-between items-center text-[13px] font-bold text-[#c75b80] border-b border-dashed border-[#ffb6c1] pb-1">
+                    const slipHtml = `
+                        <div class="bg-white p-3.5 rounded-xl border border-[#ffffff] space-y-2 text-sm font-medium" id="slip-${key}">
+                            <div class="flex justify-between items-center text-base font-bold text-[#c75b80] border-b border-dashed border-[#ffb6c1] pb-1.5">
                                 <span>รหัส: ${s.id}</span>
-                                <span class="text-[9px] bg-[#fff0f3] px-1.5 py-0.5 rounded border border-[#ff9bb3]">รอตรวจ</span>
+                                <span class="text-[11px] bg-[#fff0f3] px-2 py-1 rounded-full border border-[#ff9bb3]">รอตรวจสอบ</span>
                             </div>
-                            <p class="text-[#4682b4]">⏱️ เวลา: ${s.time}</p>
-                            <p class="text-[#059669]">💰 ยอดโอน: <span id="display-amt-${key}">${s.amount}</span> ฿</p>
-                            <div class="bg-pink-50 p-2 rounded-lg border border-pink-200 my-1.5">
-                                <label class="flex items-center gap-1.5 cursor-pointer text-[10px] font-bold text-[#be185d]">
-                                    <input type="checkbox" id="admin-fee-chk-${key}" onchange="calculateAdminFee('${key}', ${s.amount})" class="w-3.5 h-3.5 accent-[#ff5277]"> หักวอเล็ต (2.9%)
+                            <p class="text-[13px] text-[#4682b4]">⏱️ <b>เวลาส่ง:</b> ${s.time}</p>
+                            <p class="text-[13px] text-[#059669]">💰 <b>ยอดโอนที่ลูกค้าแจ้ง:</b> <span id="display-amt-${key}">${s.amount}</span> ฿</p>
+                            
+                            <div class="bg-pink-50 p-2.5 rounded-lg border border-pink-200 my-2">
+                                <label class="flex items-center gap-2 cursor-pointer text-xs font-bold text-[#be185d]">
+                                    <input type="checkbox" id="admin-fee-chk-${key}" onchange="calculateAdminFee('${key}', ${s.amount})" class="w-4 h-4 accent-[#ff5277]">
+                                    ลูกค้าโอนผ่าน Wallet (หักค่าธรรมเนียม 2.9%)
                                 </label>
-                                <div id="admin-calc-box-${key}" class="hidden-page text-[9px] text-rose-700 font-bold mt-1"></div>
+                                <div id="admin-calc-box-${key}" class="hidden-page text-[11px] text-rose-700 font-bold mt-1"></div>
                             </div>
-                            <div class="flex flex-col gap-1.5 pt-2 border-t border-dashed border-[#ffb6c1]">
-                                <button onclick="openSlipModal('${s.imageUrl}')" class="bg-[#ffe5ed] text-[#5a4a5e] py-1.5 rounded-lg font-bold w-full"><i class="fa-solid fa-magnifying-glass"></i> ดูรูปสลิป</button>
-                                <div class="flex gap-1.5">
-                                    <button onclick="approveSlipWithFee('${key}', '${s.id}', ${s.amount})" class="bg-emerald-500 text-white py-1.5 rounded-lg font-bold flex-1">✅ อนุมัติ</button>
-                                    <button onclick="rejectSlip('${key}')" class="bg-rose-400 text-white py-1.5 rounded-lg font-bold flex-1">❌ ลบทิ้ง</button>
+
+                            <div class="flex flex-col gap-2 pt-3 border-t border-dashed border-[#ffb6c1]">
+                                <button onclick="openSlipModal('${s.imageUrl}')" class="bg-[#ffe5ed] text-[#5a4a5e] px-3 py-2 rounded-xl text-[12px] font-bold hover:bg-[#ffb6c1] active:scale-95 transition-transform w-full">
+                                    <i class="fa-solid fa-magnifying-glass"></i> ดูรูปสลิป
+                                </button>
+                                <div class="flex gap-2">
+                                    <button onclick="approveSlipWithFee('${key}', '${s.id}', ${s.amount})" class="bg-emerald-500 text-white px-3 py-2.5 rounded-xl text-[12px] font-bold active:scale-95 flex-1">
+                                        ✅ อนุมัติยอด
+                                    </button>
+                                    <button onclick="rejectSlip('${key}')" class="bg-rose-400 text-white px-3 py-2.5 rounded-xl text-[12px] font-bold active:scale-95 flex-1">
+                                        ❌ ไม่อนุมัติ/ลบทิ้ง
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     `;
+                    container.innerHTML += slipHtml;
                 });
-            }, (error) => console.error("Firebase listen error:", error));
+            }, (error) => {
+                console.error("Firebase listen error:", error);
+            });
         }
 
         function calculateAdminFee(key, baseAmount) {
             const chk = document.getElementById(`admin-fee-chk-${key}`);
             const displayAmt = document.getElementById(`display-amt-${key}`);
             const calcBox = document.getElementById(`admin-calc-box-${key}`);
+            
             if (chk.checked) {
                 const finalWithDeduct = (baseAmount - (baseAmount * 0.029)).toFixed(2);
-                displayAmt.innerHTML = `<span class="text-rose-600 line-through">${baseAmount}</span> ➔ <b>${finalWithDeduct}</b>`;
-                calcBox.innerText = `อนุมัติเข้าระบบ: ${finalWithDeduct} ฿`;
+                displayAmt.innerHTML = `<span class="text-rose-600 line-through">${baseAmount}</span> ➔ <b>${finalWithDeduct}</b> (หัก 2.9%)`;
+                calcBox.innerText = `ยอดที่จะใช้ออนุมัติเข้าระบบคือ: ${finalWithDeduct} บาท`;
                 calcBox.classList.remove('hidden-page');
-            } else { displayAmt.innerHTML = baseAmount; calcBox.classList.add('hidden-page'); }
+            } else {
+                displayAmt.innerHTML = baseAmount;
+                calcBox.classList.add('hidden-page');
+            }
         }
 
         async function approveSlipWithFee(dbKey, custId, baseAmount) {
             const chk = document.getElementById(`admin-fee-chk-${dbKey}`);
             const finalAmount = chk && chk.checked ? parseFloat((baseAmount - (baseAmount * 0.029)).toFixed(2)) : baseAmount;
+
             const adminId = sessionStorage.getItem('sunstoryAdminId') || 'SUN01';
             const adminInfo = adminMap[adminId] || { name: "แอดมิน", mention: adminId };
 
-            if(!confirm(`ยืนยันอนุมัติ ${finalAmount} ฿ ให้รหัส ${custId}?`)) return;
+            if(!confirm(`[แอดมิน: ${adminInfo.name} (${adminId})] ยืนยันการอนุมัติยอด ${finalAmount} บาท ให้กับรหัส ${custId} ใช่ไหม?\nระบบจะอัปเดต Google Sheets ทันที`)) return;
+            
             try {
-                const res = await (await fetch(scriptUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action: 'approveSlip', id: custId, amount: finalAmount, adminId: adminId }) })).json();
+                const response = await fetch(scriptUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'approveSlip', id: custId, amount: finalAmount, adminId: adminId })
+                });
+                const res = await response.json();
+                
                 if(res && res.success) {
-                    alert('✅ อนุมัติสำเร็จ!');
+                    alert('✅ อนุมัติสำเร็จ ยอดใน Google Sheets ถูกอัปเดตแล้ว!');
                     db.ref('pendingSlips/' + dbKey).remove();
-                    const timeString = new Date().toLocaleDateString('th-TH') + ' ' + new Date().toLocaleTimeString('th-TH', {hour: '2-digit', minute:'2-digit'}) + ' น.';
-                    fetch(discordWebhookAdmin, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ content: `✅ **อนุมัติยอด!**\n🎀 รหัส: ${custId}\n💰 ยอด: ${finalAmount} ฿\n👤 โดย: ${adminInfo.mention}\n🕒 เวลา: ${timeString}` }) }).catch(e => console.error(e));
-                } else alert('ข้อผิดพลาด: ' + (res ? res.error : 'ไม่ทราบสาเหตุ'));
-            } catch(e) { alert('ระบบขัดข้อง'); }
+
+                    const now = new Date();
+                    const timeString = now.toLocaleDateString('th-TH') + ' ' + now.toLocaleTimeString('th-TH', {hour: '2-digit', minute:'2-digit'}) + ' น.';
+                    
+                    const adminPayload = {
+                        content: `✅ **อนุมัติยอดสำเร็จ!**\n🎀 **รหัสลูกค้า:** ${custId}\n💰 **ยอดเงิน:** ${finalAmount} ฿\n👤 **ผู้ออนุมัติ:** ${adminInfo.mention} (แอดมิน **${adminId} - ${adminInfo.name}**)\n🕒 **เวลา:** ${timeString}`
+                    };
+                    fetch(discordWebhookAdmin, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(adminPayload)
+                    }).catch(err => console.error("Discord error:", err));
+
+                } else {
+                    alert('เกิดข้อผิดพลาด: ' + (res ? res.error : 'ไม่ทราบสาเหตุ'));
+                }
+            } catch(e) { 
+                console.error("Approve error:", e);
+                alert('ระบบขัดข้อง กรุณาลองใหม่'); 
+            }
         }
 
-        function rejectSlip(dbKey) { if(confirm('ลบสลิปนี้ทิ้ง?')) db.ref('pendingSlips/' + dbKey).remove(); }
+        function rejectSlip(dbKey) {
+            if(confirm('คุณต้องการลบสลิปนี้ทิ้ง (ไม่อนุมัติ) ใช่ไหม?')) {
+                db.ref('pendingSlips/' + dbKey).remove().catch(err => console.error("Reject error:", err));
+            }
+        }
 
         function checkPassword() {
             const adminIdInput = document.getElementById('admin-id-input').value.trim().toUpperCase();
-            if (!adminIdInput || !adminMap[adminIdInput]) return alert('รหัสแอดมินไม่ถูกต้อง 🐰');
+
+            if (!adminIdInput || !adminMap[adminIdInput]) {
+                return alert('รหัสแอดมินไม่ถูกต้องค่ะ กรุณาลองใหม่ (เช่น SUN01, MIN02, GUS03, FADPI04) 🐰');
+            }
+            
             sessionStorage.setItem('sunstoryAdminId', adminIdInput);
-            document.getElementById('admin-logged-in-label').innerText = `ใช้งาน: ${adminIdInput}`;
+            
+            const adminInfo = adminMap[adminIdInput];
+            document.getElementById('admin-logged-in-label').innerText = `ผู้ใช้งานระบบ: แอดมิน ${adminIdInput} (${adminInfo.name})`;
+            
             closeModals();
+            
             document.getElementById('header-zones').classList.add('hidden-page');
             document.getElementById('page-1').classList.add('hidden-page');
             document.getElementById('page-2').classList.add('hidden-page');
             document.getElementById('page-3').classList.add('hidden-page');
             document.getElementById('admin-full-page').classList.remove('hidden-page');
-            switchAdminTab(1); window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            switchAdminTab(1);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function backToMainFromAdmin() {
@@ -1160,7 +1253,7 @@
 
         function saveAdminData() {
             db.ref('storeConfig').set({
-                announcementText: document.getElementById('edit-announcement').value, // 📢 บันทึกประกาศ
+                announcementText: document.getElementById('edit-announcement').value, 
                 statusTime: document.getElementById('edit-status-time').value,
                 colorTime: document.getElementById('edit-color-time').value,
                 noticeTime: document.getElementById('edit-notice-time').value,
@@ -1172,8 +1265,11 @@
                 bankInfo: document.getElementById('edit-bank-info').value,
                 walletInfo: document.getElementById('edit-wallet-info').value
             }, (error) => {
-                if (error) alert('บันทึกไม่สำเร็จ 🥺');
-                else { alert('บันทึกข้อมูลเรียบร้อย 🐰✨'); location.reload(); }
+                if (error) alert('บันทึกไม่สำเร็จ ลองใหม่อีกครั้งนะคะ 🥺');
+                else {
+                    alert('บันทึกข้อมูลเข้าระบบเรียบร้อยแล้วค่ะ 🐰✨');
+                    location.reload();
+                }
             });
         }
 
@@ -1183,7 +1279,11 @@
             box.classList.remove('hidden-page');
             document.getElementById(containerId).innerHTML = text.split('\n').map(line => {
                 let t = line.trim();
-                return t.startsWith('#') ? `<div class="text-[12px] font-bold text-[#ff5277] mb-1.5 mt-1.5">${t.replace(/^#\s*/, '')}</div>` : `<div>${t}</div>`;
+                if (t.startsWith('#')) {
+                    return `<div class="text-[13px] font-bold text-[#ff5277] mb-2 mt-2">${t.replace(/^#\s*/, '')}</div>`;
+                } else {
+                    return `<div>${t}</div>`;
+                }
             }).join('');
         }
     </script>

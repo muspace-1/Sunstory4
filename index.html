@@ -284,7 +284,6 @@
             box-shadow: none !important;
         }
         
-        /* 👈 ลบเงาและปรับกรอบช่องกรอกข้อมูลให้เป็นสีขาว 100% สำหรับทุกหน้าจอ/เบราว์เซอร์ */
         .admin-input {
             width: 100%; padding: 12px; border: 1px solid #ffffff !important; border-radius: 0.75rem;
             font-family: 'Kanit', sans-serif; font-size: 1rem; margin-top: 6px;
@@ -323,6 +322,32 @@
             border-color: #ffffff !important;
             box-shadow: none !important;
         }
+
+        /* 🚨 CSS สำหรับเอฟเฟกต์ 15 วันเรืองแสง 🚨 */
+        .glow-red-text {
+            color: #ef4444;
+            text-shadow: 0 0 10px rgba(239, 68, 68, 0.8), 0 0 20px rgba(220, 38, 38, 0.6);
+            animation: textPulse 1.5s infinite alternate;
+        }
+        .glow-red-bar {
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.8) !important;
+            animation: barPulse 1s infinite alternate;
+        }
+        @keyframes textPulse { from { opacity: 0.8; } to { opacity: 1; text-shadow: 0 0 15px #ef4444, 0 0 25px #dc2626; } }
+        @keyframes barPulse { from { box-shadow: 0 0 10px rgba(239,68,68,0.5) !important; } to { box-shadow: 0 0 20px rgba(239,68,68,1) !important; } }
+
+        /* 💬 CSS สำหรับปุ่มติดต่อแอดมิน 3 ทาง (Floating Menu) */
+        .fab-container { position: fixed; bottom: 20px; right: 20px; z-index: 99; display: flex; flex-direction: column-reverse; align-items: center; gap: 10px; }
+        .fab-main { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #ff5277, #d87093); color: white; display: flex; justify-content: center; align-items: center; font-size: 24px; box-shadow: 0 4px 10px rgba(255, 82, 119, 0.3) !important; cursor: pointer; transition: transform 0.3s; border: 2px solid white; }
+        .fab-main:active { transform: scale(0.9); }
+        .fab-sub { width: 48px; height: 48px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 20px; color: white; cursor: pointer; opacity: 0; transform: translateY(20px) scale(0.5); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); pointer-events: none; border: 2px solid white; text-decoration: none; }
+        .fab-sub.fb { background: #1877F2; }
+        .fab-sub.line-ask { background: #00B900; }
+        .fab-sub.line-pay { background: #06C755; }
+        .fab-container.open .fab-sub { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+        .fab-container.open .fab-main { transform: rotate(45deg); background: #5a4a5e; }
+        .fab-label { position: absolute; right: 60px; background: white; color: #5a4a5e; padding: 4px 10px; border-radius: 8px; font-size: 12px; font-weight: bold; opacity: 0; pointer-events: none; transition: 0.3s; white-space: nowrap; border: 1px solid #ffccd5; }
+        .fab-container.open .fab-sub:hover .fab-label { opacity: 1; }
     </style>
 </head>
 <body class="shadow-none">
@@ -332,6 +357,26 @@
     <i class="fa-solid fa-heart floating-heart fh-3"></i>
     <i class="fa-solid fa-heart floating-heart fh-4"></i>
     <i class="fa-solid fa-heart floating-heart fh-5"></i>
+
+    <!-- 💬 เมนูลอยตัวติดต่อแอดมิน (Floating Menu) -->
+    <div id="fab-container" class="fab-container">
+        <div class="fab-main" onclick="toggleFab()">
+            <i class="fa-regular fa-comment-dots" id="fab-icon"></i>
+        </div>
+        <!-- ใส่ลิงก์จริงที่คุณให้มา -->
+        <a href="https://lin.ee/785brTy" target="_blank" class="fab-sub line-pay" title="ไลน์ส่งยอด">
+            <i class="fa-brands fa-line"></i>
+            <span class="fab-label">ไลน์ส่งยอด 💸</span>
+        </a>
+        <a href="https://lin.ee/6OQp7gB" target="_blank" class="fab-sub line-ask" title="ไลน์สอบถาม">
+            <i class="fa-brands fa-line"></i>
+            <span class="fab-label">ไลน์สอบถาม 💬</span>
+        </a>
+        <a href="https://www.facebook.com/share/1CQTbaoFbR/?mibextid=wwXIfr" target="_blank" class="fab-sub fb" title="เฟสบุ๊ค">
+            <i class="fa-brands fa-facebook-f"></i>
+            <span class="fab-label">เฟสบุ๊คร้าน 📘</span>
+        </a>
+    </div>
 
     <!-- 🐰 Modal เข้าสู่ระบบแอดมิน -->
     <div id="login-modal" class="modal-overlay hidden-page">
@@ -362,7 +407,35 @@
         </div>
     </div>
 
+    <!-- 📄 Modal ใบจดทะเบียนบริษัท -->
+    <div id="cert-modal" class="modal-overlay hidden-page">
+        <div class="modal-content text-center !max-w-md">
+            <div class="flex justify-between items-center mb-3">
+                <h2 class="text-base font-bold text-[#ff5277]">📄 ใบจดทะเบียนบริษัท</h2>
+                <button onclick="closeCertModal()" class="text-[#a86b81] text-xl"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="bg-[#fff9fa] p-2 rounded-xl border border-[#ffffff] mb-3">
+                <!-- 💡 นำลิงก์รูปใบจดทะเบียนจาก GitHub มาใส่แทนตรงนี้นะครับ -->
+                <img src="https://via.placeholder.com/400x550/ffe5ed/ff5277?text=Company+Certificate" alt="Certificate" class="w-full rounded-lg max-h-[70vh] object-contain mx-auto">
+            </div>
+            <button onclick="closeCertModal()" class="btn-main !py-2 !text-sm">ปิดหน้าต่าง</button>
+        </div>
+    </div>
+
     <div class="main-container">
+        
+        <!-- 📢 โซนป้ายประกาศ (สามารถซ่อน/แสดงได้ผ่านโค้ด) -->
+        <div id="announcement-banner" class="bg-amber-50 border border-amber-200 rounded-xl p-3 flex items-start gap-3 relative">
+            <i class="fa-solid fa-bullhorn text-amber-500 text-lg mt-0.5"></i>
+            <div>
+                <h3 class="text-[13px] font-bold text-amber-600">แจ้งประกาศสำคัญ!</h3>
+                <p class="text-[12px] text-amber-700 mt-1 leading-snug">ขณะนี้ระบบกำลังทยอยอัปเดตข้อมูลลูกค้า หากค้นหาไม่พบ กรุณาเว้นระยะและกลับมาเช็กใหม่ในวันพรุ่งนี้นะคะ 🌸</p>
+            </div>
+            <button onclick="closeAnnouncement()" class="absolute top-2 right-2 text-amber-400 hover:text-amber-600">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
         <div id="header-zones" class="hidden-page flex flex-col gap-4">
             <div class="brand-header-box">
                 <div>
@@ -384,7 +457,7 @@
                         <i class="fa-solid fa-triangle-exclamation"></i> แจ้งเพื่อทราบ / ป้องกันมิจฉาชีพ
                     </div>
                     <p class="text-sm font-medium text-[#5a4a5e]">
-                        ชื่อบัญชีโอนเงิน : <span class="glow-name text-base">กนกอร</span> เท่านั้น!
+                        ชื่อบัญชีโอนเงิน : <span class="glow-name text-base">บจก. ซันสตอรี่โฟร์</span> เท่านั้น!
                     </p>
                     <p class="text-[11px] text-[#a86b81] mt-1.5">นอกเหนือจากชื่อนี้ ห้ามโอนเด็ดขาดนะคะ ⚠️</p>
                 </div>
@@ -413,7 +486,7 @@
                         <i class="fa-solid fa-triangle-exclamation"></i> แจ้งเพื่อทราบ / ป้องกันมิจฉาชีพ
                     </div>
                     <p class="text-sm font-medium text-[#5a4a5e]">
-                        ชื่อบัญชีโอนเงิน : <span class="glow-name text-base">กนกอร</span> เท่านั้น!
+                        ชื่อบัญชีโอนเงิน : <span class="glow-name text-base">บจก. ซันสตอรี่โฟร์</span> เท่านั้น!
                     </p>
                     <p class="text-[11px] text-[#a86b81] mt-1.5">นอกเหนือจากชื่อนี้ ห้ามโอนเด็ดขาดนะคะ ⚠️</p>
                 </div>
@@ -449,6 +522,11 @@
             </button>
             <button onclick="openPage3()" class="btn-secondary">
                 <span>🔍 เช็กยอดผ่อนชำระ</span>
+            </button>
+            
+            <!-- 📄 ปุ่มใหม่: ดูใบจดทะเบียนบริษัท -->
+            <button onclick="openCertModal()" class="btn-secondary !bg-[#f9fafb] !text-[#4b5563] !border-[#e5e7eb] !py-3">
+                <i class="fa-solid fa-file-signature text-lg"></i> <span>ใบรับรองจดทะเบียนบริษัท</span>
             </button>
         </div>
 
@@ -587,6 +665,14 @@
     </div>
 
     <script>
+        // 🔒 ตัวแปรระบบป้องกันสแปม (Cooldown)
+        let failCount = 0;
+        let searchOnCooldown = false;
+        let cooldownTimer = null;
+        
+        // 📢 ตัวแปรซ่อนป้ายประกาศ 
+        const showAnnouncementBanner = true; // เปลี่ยนเป็น false ถ้าอยากซ่อนถาวร
+
         const scriptUrl = 'https://script.google.com/macros/s/AKfycbzEr4UTaMHcfO4tJnvyKXvwBlz_9HZ_o-rgJVBlz6yYPTEVwonD6xecPf1c3oPFZOZ_/exec';
         
         const discordWebhookSlip = 'https://discord.com/api/webhooks/1545650221948600381/JWgX53TC8Wq5id62H0b-5l8N7tTx7cOrpD8ju3-pq1v9Og23xvDvRfkbtkgpUvM8PLa-';
@@ -614,6 +700,11 @@
         let currentCustomerId = ''; 
 
         window.onload = function() {
+            // เช็กสถานะป้ายประกาศ
+            if(!showAnnouncementBanner) {
+                document.getElementById('announcement-banner').classList.add('hidden-page');
+            }
+
             db.ref('storeConfig').once('value').then((snapshot) => {
                 const data = snapshot.val() || {};
                 
@@ -659,6 +750,22 @@
             if (savedPhone) document.getElementById('customer-phone-input').value = savedPhone;
         };
 
+        function closeAnnouncement() {
+            document.getElementById('announcement-banner').classList.add('hidden-page');
+        }
+
+        // 💬 ฟังก์ชันเปิด-ปิด เมนูลอยตัวติดต่อแอดมิน
+        function toggleFab() {
+            const fab = document.getElementById('fab-container');
+            const icon = document.getElementById('fab-icon');
+            fab.classList.toggle('open');
+            if (fab.classList.contains('open')) {
+                icon.classList.replace('fa-comment-dots', 'fa-xmark');
+            } else {
+                icon.classList.replace('fa-xmark', 'fa-comment-dots');
+            }
+        }
+
         function copyText(text) {
             navigator.clipboard.writeText(text).then(() => alert('คัดลอก "' + text + '" เรียบร้อยแล้วค่ะ! 📋✨')).catch(err => console.error("Copy failed", err));
         }
@@ -688,6 +795,12 @@
         }
         function closeSlipModal() {
             document.getElementById('slip-modal').classList.add('hidden-page');
+        }
+        function openCertModal() {
+            document.getElementById('cert-modal').classList.remove('hidden-page');
+        }
+        function closeCertModal() {
+            document.getElementById('cert-modal').classList.add('hidden-page');
         }
         function openLoginModal() {
             document.getElementById('login-modal').classList.remove('hidden-page');
@@ -729,7 +842,33 @@
             document.getElementById('installment-error').classList.add('hidden-page');
         }
 
+        // ⏱️ ระบบ Cooldown 120 วินาที
+        function startCooldown(seconds) {
+            searchOnCooldown = true;
+            const btn = document.getElementById('btn-search');
+            btn.disabled = true;
+            btn.classList.add('!bg-gray-400', '!text-white', '!shadow-none', '!cursor-not-allowed');
+            
+            let timeLeft = seconds;
+            btn.innerHTML = `<i class="fa-solid fa-lock"></i> ระงับการค้นหา (${timeLeft}s)`;
+            
+            cooldownTimer = setInterval(() => {
+                timeLeft--;
+                btn.innerHTML = `<i class="fa-solid fa-lock"></i> ระงับการค้นหา (${timeLeft}s)`;
+                if (timeLeft <= 0) {
+                    clearInterval(cooldownTimer);
+                    searchOnCooldown = false;
+                    failCount = 0; // ล้างประวัติการกรอกผิด
+                    btn.disabled = false;
+                    btn.classList.remove('!bg-gray-400', '!text-white', '!shadow-none', '!cursor-not-allowed');
+                    btn.innerHTML = '<i class="fa-solid fa-magnifying-glass"></i> ค้นหาข้อมูล';
+                }
+            }, 1000);
+        }
+
         async function searchCustomer() {
+            if (searchOnCooldown) return alert('ระบบกำลังป้องกันสแปม กรุณารอสักครู่นะคะ 🐰');
+
             const btn = document.getElementById('btn-search');
             const inputId = document.getElementById('customer-id-input').value.trim().toUpperCase();
             const inputPhone = document.getElementById('customer-phone-input').value.trim();
@@ -752,6 +891,7 @@
                 const resData = await response.json();
 
                 if (resData && resData.success) {
+                    failCount = 0; // ค้นหาสำเร็จ ล้างค่าที่เคยผิด
                     currentCustomerId = inputId;
                     const data = resData.data;
                     const paidNum = parseFloat(String(data.paid).replace(/,/g, '')) || 0;
@@ -839,14 +979,23 @@
                             </div>`;
                     }
 
+                    // 🔽 ฟีเจอร์ย่อ/ขยายข้อมูล (Accordion)
                     let extraProductInfo = '';
-                    if (data.color && data.color !== "-") {
-                        extraProductInfo += `<p>🎨 <b>สี:</b> ${data.color}</p>`;
-                    }
-                    if (data.details && data.details !== "-") {
-                        extraProductInfo += `<p>📝 <b>รายละเอียดเครื่อง:</b> ${data.details}</p>`;
+                    if ((data.color && data.color !== "-") || (data.details && data.details !== "-")) {
+                        extraProductInfo = `
+                        <details class="mt-3 border border-[#ffccd5] rounded-xl overflow-hidden group bg-[#fff0f3]">
+                            <summary class="px-3 py-2 text-[13px] font-bold text-[#c75b80] flex justify-between items-center bg-[#ffe5ed] cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+                                <span><i class="fa-solid fa-circle-info"></i> รายละเอียดเครื่องเพิ่มเติม</span>
+                                <i class="fa-solid fa-chevron-down group-open:rotate-180 transition-transform duration-300"></i>
+                            </summary>
+                            <div class="px-3 py-2.5 text-[13px] text-[#5a4a5e] space-y-1.5 bg-white font-medium border-t border-[#ffccd5]">
+                                ${data.color && data.color !== "-" ? `<p>🎨 <b>สี:</b> ${data.color}</p>` : ''}
+                                ${data.details && data.details !== "-" ? `<p>📝 <b>รายละเอียด:</b> ${data.details}</p>` : ''}
+                            </div>
+                        </details>`;
                     }
 
+                    // 🚨 ระบบตัดยอดเอง (15 วัน) 🚨
                     let cooldownHtml = '';
                     if (data.dueDate && String(data.dueDate).trim() !== "" && data.dueDate !== "-") {
                         let rawDateStr = String(data.dueDate);
@@ -875,30 +1024,53 @@
                             const due = new Date(year, month, day);
                             const today = new Date();
                             today.setHours(0,0,0,0);
-                            const diffTime = due - today;
-                            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                            
+                            const diffDays = Math.ceil((due - today) / (1000 * 60 * 60 * 24));
 
                             let barColor = "from-[#4ade80] to-[#22c55e]";
                             let statusText = `เหลือเวลาอีก ${diffDays} วัน`;
                             let widthPct = "100%";
+                            let barClass = "";
 
-                            if (diffDays <= 3 && diffDays >= 0) {
-                                barColor = "from-[#f6d860] to-[#f59e0b]";
-                                statusText = `⚠️ ใกล้ถึงกำหนดชำระ! เหลือ ${diffDays} วัน`;
-                                widthPct = "60%";
-                            } else if (diffDays < 0) {
-                                barColor = "from-[#f87171] to-[#dc2626]";
-                                statusText = `🚨 เลยกำหนดชำระมาแล้ว ${Math.abs(diffDays)} วัน!`;
+                            // เงื่อนไข 4 สเตป (ตามที่คุณออกแบบ)
+                            if (diffDays > 7) {
+                                barColor = "from-[#4ade80] to-[#22c55e]";
+                                statusText = `เหลือเวลาอีก ${diffDays} วัน`;
                                 widthPct = "100%";
+                            } 
+                            else if (diffDays <= 7 && diffDays >= 0) {
+                                // สเตป 1: เขียวปนเหลือง (ก่อน 7 วัน)
+                                barColor = "from-[#bef264] to-[#eab308]";
+                                statusText = "แจ้งเตือน 🚨ลูกค้ากำลังจะถูกตัดยอดโปรดส่งยอดก่อนถึงวันที่ตัดยอดนะคะ";
+                                widthPct = "75%";
+                            } 
+                            else if (diffDays < 0 && diffDays >= -7) {
+                                // สเตป 2: เหลือง (เลยมา 1-7 วัน)
+                                barColor = "from-[#fde047] to-[#eab308]";
+                                statusText = "แจ้งเตือน 🚨 วันนี้ลูกค้ากำลังจะถูกตัดยอดโปรดส่งยอดภายในวันนี้เท่านั้น !";
+                                widthPct = "50%";
+                            } 
+                            else if (diffDays < -7 && diffDays >= -14) {
+                                // สเตป 3: ส้มปนแดง (เลยมา 8-14 วัน)
+                                barColor = "from-[#fb923c] to-[#ef4444]";
+                                statusText = "แจ้งเตือน🚨ท่านถูกตัดยอดแล้ว โปรดต่อบัญชีจำนวน 100 บาท ( ไม่นับเป็นค่าส่งยอด ) ภายใน 7 วันหลังจากนี้";
+                                widthPct = "25%";
+                            } 
+                            else if (diffDays < -14) {
+                                // สเตป 4: แดงเรืองแสง (เกิน 14 วัน)
+                                barColor = "from-[#ef4444] to-[#b91c1c]";
+                                statusText = "<span class='glow-red-text'>แจ้งเตือน🚨บัญชีท่านถูกตัดยอดโดยสมบูรณ์โปรดเปิดบิลบัญชีใหม่</span>";
+                                widthPct = "10%";
+                                barClass = "glow-red-bar"; // เปิดเอฟเฟกต์เรืองแสงที่หลอด
                             }
 
                             cooldownHtml = `
                                 <div class="mt-3 bg-[#fff9fa] border border-[#ffffff] rounded-xl p-3">
                                     <div class="text-[12px] font-bold text-[#ff5277] mb-1">📅 วันตัดยอด (กำหนดชำระ): ${day}/${month + 1}/${year}</div>
-                                    <div class="w-full h-3 bg-[#ffe5ed] rounded-full overflow-hidden my-1.5 border border-[#ffffff]">
-                                        <div class="h-full bg-gradient-to-r ${barColor} rounded-full transition-all duration-1000" style="width: ${widthPct};"></div>
+                                    <div class="w-full h-3 bg-[#ffe5ed] rounded-full my-1.5 border border-[#ffffff] overflow-visible relative">
+                                        <div class="h-full bg-gradient-to-r ${barColor} rounded-full transition-all duration-1000 ${barClass}" style="width: ${widthPct};"></div>
                                     </div>
-                                    <div class="text-[11px] font-bold text-[#c75b80] text-right">${statusText}</div>
+                                    <div class="text-[11px] font-bold text-[#c75b80] mt-1.5">${statusText}</div>
                                 </div>
                             `;
                         }
@@ -950,15 +1122,17 @@
                                 <i class="fa-solid fa-wallet"></i> ช่องทางชำระเงินของร้าน 🎀
                             </div>
                             
-                            <div class="relative bg-gradient-to-br from-[#e0f2fe] to-[#bae6fd] border border-[#7dd3fc] rounded-2xl p-4 mb-3 flex justify-between items-center">
+                            <!-- 💚 กสิกรไทย อัปเดตใหม่ -->
+                            <div class="relative bg-gradient-to-br from-[#dcfce7] to-[#bbf7d0] border border-[#86efac] rounded-2xl p-4 mb-3 flex justify-between items-center">
                                 <div>
-                                    <div class="text-[14px] font-bold text-[#0284c7] mb-1">กรุงไทย (KTB) 💙</div>
+                                    <div class="text-[14px] font-bold text-[#16a34a] mb-1">กสิกรไทย (KBank) 💚</div>
                                     <div class="text-xl font-bold text-[#0f172a]">${bankText}</div>
-                                    <div class="text-[12px] text-[#334155] font-medium mt-1">ชื่อบัญชี: กนกอร</div>
+                                    <div class="text-[12px] text-[#334155] font-medium mt-1">ชื่อบัญชี: บจก. ซันสตอรี่โฟร์</div>
                                 </div>
-                                <button onclick="copyText('${bankText}')" class="bg-white text-[#0284c7] px-3.5 py-1.5 rounded-xl text-[12px] font-bold active:scale-95 shrink-0"><i class="fa-regular fa-copy"></i> คัดลอก</button>
+                                <button onclick="copyText('${bankText}')" class="bg-white text-[#16a34a] px-3.5 py-1.5 rounded-xl text-[12px] font-bold active:scale-95 shrink-0"><i class="fa-regular fa-copy"></i> คัดลอก</button>
                             </div>
 
+                            <!-- 🩷 TrueMoney Wallet -->
                             <div class="relative bg-gradient-to-br from-[#fce7f3] to-[#fbcfe8] border border-[#f9a8d4] rounded-2xl p-4 mb-3 flex justify-between items-center">
                                 <div>
                                     <div class="text-[14px] font-bold text-[#be185d] mb-1">TrueMoney Wallet 🩷</div>
@@ -976,9 +1150,9 @@
                                         <i class="fa-solid fa-pen-nib"></i> บันทึกช่วยจำ / โน้ตสลิปโอนเงิน
                                     </div>
                                     <p class="text-sm font-bold text-[#5a4a5e] my-1">
-                                        พิมพ์ตรงบันทึกช่วยจำว่า : <span class="text-[#ff5277] underline">ซื้อขายกับซันบายโฟน</span>
+                                        พิมพ์ตรงบันทึกช่วยจำว่า : <span class="text-[#ff5277] underline">ซื้อขายกับร้านซันสตอรรี่โฟร์</span>
                                     </p>
-                                    <button onclick="copyText('ซื้อขายกับซันบายโฟน')" class="bg-white text-[#ff5277] border border-[#ffffff] px-3 py-1 rounded-xl text-xs font-bold mt-1 active:scale-95">
+                                    <button onclick="copyText('ซื้อขายกับร้านซันสตอรรี่โฟร์')" class="bg-white text-[#ff5277] border border-[#ffffff] px-3 py-1 rounded-xl text-xs font-bold mt-1 active:scale-95">
                                         <i class="fa-regular fa-copy"></i> คัดลอกข้อความโน้ต
                                     </button>
                                 </div>
@@ -1004,27 +1178,35 @@
                     resultBox.classList.remove('hidden-page');
                     errorBox.classList.add('hidden-page');
                 } else {
+                    // กรณีกรอกผิด / ไม่เจอ
                     resultBox.classList.add('hidden-page');
                     errorBox.classList.remove('hidden-page');
+                    
+                    failCount++; // นับจำนวนที่ผิด
+                    if (failCount >= 2) {
+                        startCooldown(120); // ล็อกปุ่ม 120 วิ
+                    }
 
                     const now = new Date();
                     const timeString = now.toLocaleDateString('th-TH') + ' ' + now.toLocaleTimeString('th-TH', {hour: '2-digit', minute:'2-digit', second:'2-digit'}) + ' น.';
                     
                     const securityPayload = {
-                        content: `⚠️ **[SECURITY] มีคนกรอกรหัสผิดพลาด/พยายามดูข้อมูล**\n👤 **รหัสลูกค้าที่เขาพยายามกดดู:** \`${inputId}\`\n📱 **เบอร์โทรที่เขาใช้กรอกเข้ามา:** \`${inputPhone}\`\n🕒 **เวลาที่เกิดเหตุ:** ${timeString}\n💡 *แอดมินสามารถนำข้อมูลนี้ไปตรวจสอบหรือตักเตือนได้ทันที*`
+                        content: `⚠️ **[SECURITY] มีคนกรอกรหัสผิดพลาด/พยายามดูข้อมูล (ผิดครั้งที่ ${failCount})**\n👤 **รหัสลูกค้า:** \`${inputId}\`\n📱 **เบอร์โทร:** \`${inputPhone}\`\n🕒 **เวลา:** ${timeString}`
                     };
                     fetch(discordWebhookAdmin, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(securityPayload)
-                    }).catch(err => console.error("Discord security alert error:", err));
+                    }).catch(err => console.error("Discord alert error:", err));
                 }
             } catch (e) { 
                 console.error("Search error:", e);
                 alert('เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่อีกครั้งค่ะ'); 
             } finally { 
-                btn.disabled = false; 
-                btn.innerHTML = '<i class="fa-solid fa-magnifying-glass"></i> ค้นหาข้อมูล'; 
+                if (!searchOnCooldown) { // คืนปุ่มกลับถ้าไม่ติด Cooldown
+                    btn.disabled = false; 
+                    btn.innerHTML = '<i class="fa-solid fa-magnifying-glass"></i> ค้นหาข้อมูล'; 
+                }
             }
         }
 

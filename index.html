@@ -284,7 +284,6 @@
             box-shadow: none !important;
         }
         
-        /* 👈 ลบเงาและปรับกรอบช่องกรอกข้อมูลให้เป็นสีขาว 100% สำหรับทุกหน้าจอ/เบราว์เซอร์ */
         .admin-input {
             width: 100%; padding: 12px; border: 1px solid #ffffff !important; border-radius: 0.75rem;
             font-family: 'Kanit', sans-serif; font-size: 1rem; margin-top: 6px;
@@ -323,15 +322,77 @@
             border-color: #ffffff !important;
             box-shadow: none !important;
         }
+
+        /* 🚨 CSS เอฟเฟกต์ 15 วันเรืองแสง */
+        .glow-red-text { color: #ef4444; text-shadow: 0 0 8px rgba(239, 68, 68, 0.8), 0 0 15px rgba(220, 38, 38, 0.6); animation: textPulse 1.5s infinite alternate; }
+        .glow-red-bar { box-shadow: 0 0 15px rgba(239, 68, 68, 0.8) !important; animation: barPulse 1s infinite alternate; }
+        @keyframes textPulse { from { opacity: 0.8; } to { opacity: 1; text-shadow: 0 0 15px #ef4444, 0 0 25px #dc2626; } }
+        @keyframes barPulse { from { box-shadow: 0 0 10px rgba(239,68,68,0.5) !important; } to { box-shadow: 0 0 20px rgba(239,68,68,1) !important; } }
+
+        /* 💬 ปุ่มติดต่อแอดมินลอยตัว */
+        .fab-main {
+            position: fixed; bottom: 20px; right: 20px; z-index: 99;
+            width: 56px; height: 56px; border-radius: 50%;
+            background: linear-gradient(135deg, #ff5277, #d87093); color: white;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 24px; cursor: pointer; transition: transform 0.3s;
+            border: 2px solid white; box-shadow: 0 4px 10px rgba(255, 82, 119, 0.3) !important;
+        }
+        .fab-main:active { transform: scale(0.9); }
+
+        /* 🔽 CSS สำหรับสไลด์ข้อมูลสมูท ไร้กรอบทึบ */
+        .smooth-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out;
+            opacity: 0;
+        }
+        .smooth-details.open {
+            max-height: 500px;
+            opacity: 1;
+        }
     </style>
 </head>
 <body class="shadow-none">
+
+    <!-- 📌 ลิงก์ติดต่อ เปลี่ยนตรงนี้ได้เลยครับ -->
+    <script>
+        const linkLinePay = "https://line.me/ti/p/~YOUR_LINE_PAY"; // ไลน์ส่งยอด
+        const linkLineAsk = "https://line.me/ti/p/~YOUR_LINE_ASK"; // ไลน์สอบถาม
+        const linkFacebook = "https://www.facebook.com/YOUR_PAGE"; // เฟสบุ๊คร้าน
+    </script>
 
     <i class="fa-solid fa-heart floating-heart fh-1"></i>
     <i class="fa-solid fa-heart floating-heart fh-2"></i>
     <i class="fa-solid fa-heart floating-heart fh-3"></i>
     <i class="fa-solid fa-heart floating-heart fh-4"></i>
     <i class="fa-solid fa-heart floating-heart fh-5"></i>
+
+    <!-- 💬 ปุ่มติดต่อแอดมิน มุมขวาล่าง -->
+    <div class="fab-main" onclick="openContactModal()">
+        <i class="fa-solid fa-headset"></i>
+    </div>
+
+    <!-- 💬 Modal เลือกช่องทางติดต่อ -->
+    <div id="contact-modal" class="modal-overlay hidden-page">
+        <div class="modal-content text-center !max-w-sm">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-bold text-[#ff5277]">🎧 ช่องทางติดต่อแอดมิน</h2>
+                <button onclick="closeContactModal()" class="text-[#a86b81] text-xl"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="flex flex-col gap-3">
+                <a href="#" onclick="this.href=linkLinePay" target="_blank" class="bg-[#06C755] text-white w-full py-4 rounded-xl text-base font-bold flex items-center justify-center gap-3">
+                    <i class="fa-brands fa-line text-2xl"></i> ไลน์สำหรับ "ส่งยอด" 💸
+                </a>
+                <a href="#" onclick="this.href=linkLineAsk" target="_blank" class="bg-[#00B900] text-white w-full py-4 rounded-xl text-base font-bold flex items-center justify-center gap-3">
+                    <i class="fa-brands fa-line text-2xl"></i> ไลน์สำหรับ "สอบถาม" 💬
+                </a>
+                <a href="#" onclick="this.href=linkFacebook" target="_blank" class="bg-[#1877F2] text-white w-full py-4 rounded-xl text-base font-bold flex items-center justify-center gap-3">
+                    <i class="fa-brands fa-facebook-f text-2xl"></i> ติดต่อทาง "เฟสบุ๊คร้าน" 📘
+                </a>
+            </div>
+        </div>
+    </div>
 
     <!-- 🐰 Modal เข้าสู่ระบบแอดมิน -->
     <div id="login-modal" class="modal-overlay hidden-page">
@@ -362,6 +423,20 @@
         </div>
     </div>
 
+    <!-- 📄 Modal ใบจดทะเบียนบริษัท -->
+    <div id="cert-modal" class="modal-overlay hidden-page">
+        <div class="modal-content text-center !max-w-md">
+            <div class="flex justify-between items-center mb-3">
+                <h2 class="text-base font-bold text-[#ff5277]">📄 ใบรับรองจดทะเบียนบริษัท</h2>
+                <button onclick="closeCertModal()" class="text-[#a86b81] text-xl"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="bg-[#fff9fa] p-2 rounded-xl border border-[#ffffff] mb-3">
+                <img src="https://via.placeholder.com/400x550/ffe5ed/ff5277?text=Company+Certificate" alt="Certificate" class="w-full rounded-lg max-h-[70vh] object-contain mx-auto">
+            </div>
+            <button onclick="closeCertModal()" class="btn-main !py-2 !text-sm">ปิดหน้าต่าง</button>
+        </div>
+    </div>
+
     <div class="main-container">
         <div id="header-zones" class="hidden-page flex flex-col gap-4">
             <div class="brand-header-box">
@@ -383,11 +458,18 @@
                     <div class="text-xs font-bold text-[#ff5277] mb-1.5 flex items-center justify-center gap-1">
                         <i class="fa-solid fa-triangle-exclamation"></i> แจ้งเพื่อทราบ / ป้องกันมิจฉาชีพ
                     </div>
-                    <p class="text-sm font-medium text-[#5a4a5e]">
-                        ชื่อบัญชีโอนเงิน : <span class="glow-name text-base">กนกอร</span> เท่านั้น!
+                    <p class="text-[13px] font-medium text-[#5a4a5e] leading-relaxed">
+                        ชื่อบัญชีโอนเงิน : <br>
+                        <span class="glow-name text-[15px]">บจก ซันสตอรี่โฟร์</span> เท่านั้น!
                     </p>
-                    <p class="text-[11px] text-[#a86b81] mt-1.5">นอกเหนือจากชื่อนี้ ห้ามโอนเด็ดขาดนะคะ ⚠️</p>
+                    <p class="text-[10px] text-[#a86b81] mt-1.5">นอกเหนือจากชื่อนี้ ห้ามโอนเด็ดขาดนะคะ ⚠️</p>
                 </div>
+            </div>
+
+            <!-- 📢 โซนป้ายประกาศ (อยู่ใต้แจ้งเพื่อทราบ / ไม่มีปุ่มกากบาท) -->
+            <div id="announcement-banner" class="hidden-page bg-[#fffbeb] border border-[#fde68a] rounded-xl p-3 text-center">
+                <div class="text-[11px] font-bold text-[#d97706] mb-0.5"><i class="fa-solid fa-bullhorn"></i> ประกาศจากทางร้าน</div>
+                <p id="announcement-text" class="text-[11px] text-[#b45309] font-medium whitespace-pre-line"></p>
             </div>
         </div>
 
@@ -412,11 +494,18 @@
                     <div class="text-xs font-bold text-[#ff5277] mb-1.5 flex items-center justify-center gap-1">
                         <i class="fa-solid fa-triangle-exclamation"></i> แจ้งเพื่อทราบ / ป้องกันมิจฉาชีพ
                     </div>
-                    <p class="text-sm font-medium text-[#5a4a5e]">
-                        ชื่อบัญชีโอนเงิน : <span class="glow-name text-base">กนกอร</span> เท่านั้น!
+                    <p class="text-[13px] font-medium text-[#5a4a5e] leading-relaxed">
+                        ชื่อบัญชีโอนเงิน : <br>
+                        <span class="glow-name text-[15px]">บจก ซันสตอรี่โฟร์</span> เท่านั้น!
                     </p>
-                    <p class="text-[11px] text-[#a86b81] mt-1.5">นอกเหนือจากชื่อนี้ ห้ามโอนเด็ดขาดนะคะ ⚠️</p>
+                    <p class="text-[10px] text-[#a86b81] mt-1.5">นอกเหนือจากชื่อนี้ ห้ามโอนเด็ดขาดนะคะ ⚠️</p>
                 </div>
+            </div>
+
+            <!-- 📢 โซนป้ายประกาศ หน้า 1 -->
+            <div id="announcement-banner-p1" class="hidden-page bg-[#fffbeb] border border-[#fde68a] rounded-xl p-3 text-center">
+                <div class="text-[11px] font-bold text-[#d97706] mb-0.5"><i class="fa-solid fa-bullhorn"></i> ประกาศจากทางร้าน</div>
+                <p id="announcement-text-p1" class="text-[11px] text-[#b45309] font-medium whitespace-pre-line"></p>
             </div>
 
             <div class="info-card">
@@ -450,6 +539,13 @@
             <button onclick="openPage3()" class="btn-secondary">
                 <span>🔍 เช็กยอดผ่อนชำระ</span>
             </button>
+
+            <!-- 📄 ปุ่มใบรับรองแบบคลีน เล็กๆ น่ารัก -->
+            <div class="text-center mt-1">
+                <button onclick="openCertModal()" class="bg-white border border-[#ffccd5] text-[#c75b80] px-4 py-1.5 rounded-full text-[11px] font-bold shadow-sm active:scale-95 transition-transform inline-flex items-center gap-1.5">
+                    <i class="fa-solid fa-file-signature text-[#ff5277]"></i> ใบรับรองจดทะเบียนบริษัท
+                </button>
+            </div>
         </div>
 
         <!-- หน้าโหลด (Loading) -->
@@ -539,6 +635,11 @@
                 <h3 class="text-sm font-bold text-[#ff5277] mb-3">🛠️ ตั้งค่าสถานะร้าน & ข้อมูลหน้าเว็บ</h3>
                 <div class="space-y-3">
                     <div>
+                        <label class="text-xs font-bold text-[#a86b81]">📢 ประกาศสำคัญหน้าเว็บ (เว้นว่างเพื่อซ่อน):</label>
+                        <textarea id="edit-announcement" class="admin-input text-sm" rows="3"></textarea>
+                    </div>
+                    <div class="border-t border-dashed border-[#ffccd5] my-2"></div>
+                    <div>
                         <label class="text-xs font-bold text-[#a86b81]">สถานะร้าน:</label>
                         <div class="flex items-center gap-2">
                             <input type="color" id="edit-color-time" value="#059669" class="color-picker">
@@ -549,6 +650,7 @@
                         <label class="text-xs font-bold text-[#a86b81]">รายละเอียดเวลาร้าน (รองรับขึ้นบรรทัดใหม่):</label>
                         <textarea id="edit-notice-time" class="admin-input text-sm" rows="3"></textarea>
                     </div>
+                    <div class="border-t border-dashed border-[#ffccd5] my-2"></div>
                     <div>
                         <label class="text-xs font-bold text-[#a86b81]">สถานะการจัดส่ง:</label>
                         <div class="flex items-center gap-2">
@@ -560,6 +662,7 @@
                         <label class="text-xs font-bold text-[#a86b81]">รายละเอียดการจัดส่ง (รองรับขึ้นบรรทัดใหม่):</label>
                         <textarea id="edit-notice-shipping" class="admin-input text-sm" rows="3"></textarea>
                     </div>
+                    <div class="border-t border-dashed border-[#ffccd5] my-2"></div>
                     <div>
                         <label class="text-xs font-bold text-[#a86b81]">งานเซลล์ปิดสด (ใส่ # เพื่อทำตัวหนา):</label>
                         <textarea id="edit-promo-1" class="admin-input text-sm" rows="3"></textarea>
@@ -568,6 +671,7 @@
                         <label class="text-xs font-bold text-[#a86b81]">โปรเปิดบิล (ใส่ # เพื่อทำตัวหนา):</label>
                         <textarea id="edit-promo-2" class="admin-input text-sm" rows="3"></textarea>
                     </div>
+                    <div class="border-t border-dashed border-[#ffccd5] my-2"></div>
                     <div>
                         <label class="text-xs font-bold text-[#a86b81]">เลขบัญชีธนาคารร้าน:</label>
                         <input type="text" id="edit-bank-info" class="admin-input !mt-0 text-sm">
@@ -587,6 +691,9 @@
     </div>
 
     <script>
+        let searchOnCooldown = false;
+        let cooldownTimer = null;
+
         const scriptUrl = 'https://script.google.com/macros/s/AKfycbzEr4UTaMHcfO4tJnvyKXvwBlz_9HZ_o-rgJVBlz6yYPTEVwonD6xecPf1c3oPFZOZ_/exec';
         
         const discordWebhookSlip = 'https://discord.com/api/webhooks/1545650221948600381/JWgX53TC8Wq5id62H0b-5l8N7tTx7cOrpD8ju3-pq1v9Og23xvDvRfkbtkgpUvM8PLa-';
@@ -617,6 +724,15 @@
             db.ref('storeConfig').once('value').then((snapshot) => {
                 const data = snapshot.val() || {};
                 
+                const annText = data.announcementText || "";
+                document.getElementById('edit-announcement').value = annText;
+                if(annText.trim() !== "") {
+                    document.getElementById('announcement-banner').classList.remove('hidden-page');
+                    document.getElementById('announcement-text').innerText = annText;
+                    document.getElementById('announcement-banner-p1').classList.remove('hidden-page');
+                    document.getElementById('announcement-text-p1').innerText = annText;
+                }
+                
                 const defaultTimeStatus = "🟢 สถานะ : เปิดให้บริการปกติ";
                 const defaultNoticeTime = "🐰 เปิดให้บริการเวลาพื้นฐาน 09.30 - 21.30 น. (เปิดทุกวัน)\nลูกค้ารอทางพี่แอดมินไล่ตอบแชทจากด้านล่างขึ้นบน งดดันแชทนะคะ หากไม่ตอบแชทนานเกินสามารถดันแชทมาได้เลยนะคะ 🌷";
                 
@@ -641,8 +757,8 @@
                 document.getElementById('edit-notice-shipping').value = nShip;
                 document.getElementById('display-notice-shipping').innerHTML = nShip.split('\n').map(l => `<p>${l}</p>`).join('');
 
-                document.getElementById('edit-bank-info').value = data.bankInfo || "111-2-33333-4";
-                document.getElementById('edit-wallet-info').value = data.walletInfo || "099-999-9999";
+                document.getElementById('edit-bank-info').value = data.bankInfo || "238-8-73540-9";
+                document.getElementById('edit-wallet-info').value = data.walletInfo || "093-146-0761";
 
                 let p1 = data.promo1 || '';
                 let p2 = data.promo2 || '';
@@ -658,6 +774,21 @@
             if (savedId) document.getElementById('customer-id-input').value = savedId;
             if (savedPhone) document.getElementById('customer-phone-input').value = savedPhone;
         };
+
+        // 🔽 ฟังก์ชันย่อ/ขยาย แบบสไลด์สมูท ไร้กรอบ
+        function toggleDetailsBox(id) {
+            const box = document.getElementById('more-details-box-' + id);
+            const icon = document.querySelector('.toggle-icon-' + id);
+            box.classList.toggle('open');
+            if(box.classList.contains('open')){
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        function openContactModal() { document.getElementById('contact-modal').classList.remove('hidden-page'); }
+        function closeContactModal() { document.getElementById('contact-modal').classList.add('hidden-page'); }
 
         function copyText(text) {
             navigator.clipboard.writeText(text).then(() => alert('คัดลอก "' + text + '" เรียบร้อยแล้วค่ะ! 📋✨')).catch(err => console.error("Copy failed", err));
@@ -686,9 +817,10 @@
             document.getElementById('slip-img-preview').src = imgSrc;
             document.getElementById('slip-modal').classList.remove('hidden-page');
         }
-        function closeSlipModal() {
-            document.getElementById('slip-modal').classList.add('hidden-page');
-        }
+        function closeSlipModal() { document.getElementById('slip-modal').classList.add('hidden-page'); }
+        function openCertModal() { document.getElementById('cert-modal').classList.remove('hidden-page'); }
+        function closeCertModal() { document.getElementById('cert-modal').classList.add('hidden-page'); }
+        
         function openLoginModal() {
             document.getElementById('login-modal').classList.remove('hidden-page');
             document.getElementById('admin-id-input').value = '';
@@ -729,7 +861,32 @@
             document.getElementById('installment-error').classList.add('hidden-page');
         }
 
+        // ⏱️ ระบบคูลดาวน์ 120 วินาที เมื่อค้นหาผิด 1 ครั้ง
+        function startCooldown(seconds) {
+            searchOnCooldown = true;
+            const btn = document.getElementById('btn-search');
+            btn.disabled = true;
+            btn.classList.add('!bg-gray-400', '!text-white', '!shadow-none', '!cursor-not-allowed');
+            
+            let timeLeft = seconds;
+            btn.innerHTML = `<i class="fa-solid fa-lock"></i> ระงับการค้นหา (${timeLeft}s)`;
+            
+            cooldownTimer = setInterval(() => {
+                timeLeft--;
+                btn.innerHTML = `<i class="fa-solid fa-lock"></i> ระงับการค้นหา (${timeLeft}s)`;
+                if (timeLeft <= 0) {
+                    clearInterval(cooldownTimer);
+                    searchOnCooldown = false;
+                    btn.disabled = false;
+                    btn.classList.remove('!bg-gray-400', '!text-white', '!shadow-none', '!cursor-not-allowed');
+                    btn.innerHTML = '<i class="fa-solid fa-magnifying-glass"></i> ค้นหาข้อมูล';
+                }
+            }, 1000);
+        }
+
         async function searchCustomer() {
+            if (searchOnCooldown) return alert('ระบบกำลังป้องกันการค้นหารัวๆ กรุณารอสักครู่นะคะ 🐰');
+
             const btn = document.getElementById('btn-search');
             const inputId = document.getElementById('customer-id-input').value.trim().toUpperCase();
             const inputPhone = document.getElementById('customer-phone-input').value.trim();
@@ -745,8 +902,9 @@
                 localStorage.setItem('sunstory_saved_phone', inputPhone);
 
                 const configData = (await db.ref('storeConfig').once('value')).val() || {};
-                const bankText = configData.bankInfo || "111-2-33333-4";
-                const walletText = configData.walletInfo || "099-999-9999";
+                
+                const bankText = configData.bankInfo || "238-8-73540-9";
+                const walletText = configData.walletInfo || "093-146-0761";
 
                 const response = await fetch(`${scriptUrl}?id=${inputId}&phone=${inputPhone}`);
                 const resData = await response.json();
@@ -759,6 +917,7 @@
                     const installmentAmt = parseFloat(String(data.installmentAmt).replace(/,/g, '')) || 0;
                     const balanceNum = parseFloat(String(data.balance).replace(/,/g, '')) || 0;
                     const totalNum = parseFloat(String(data.total).replace(/,/g, '')) || 0;
+                    const discountValue = data.discount ? parseFloat(String(data.discount).replace(/,/g, '')) : 0;
                     
                     let creditLeftNum = creditTargetNum - paidNum;
                     if (creditLeftNum < 0) creditLeftNum = 0;
@@ -769,8 +928,8 @@
                                 <i class="fa-solid fa-lock text-5xl text-rose-500 mb-3 animate-bounce"></i>
                                 <h3 class="text-base font-bold text-rose-600 mb-1">บัญชีนี้ถูกระงับ / ล็อกเครื่องชั่วคราว</h3>
                                 <p class="text-xs text-rose-500 mb-4">กรุณาติดต่อแอดมินเพื่อเคลียร์ยอดค้างชำระและปลดล็อกเครื่องค่ะ</p>
-                                <a href="https://line.me" target="_blank" class="btn-main !bg-rose-500 inline-block py-2.5 px-4 rounded-xl text-sm font-bold shadow-md">
-                                    <i class="fa-brands fa-line"></i> ติดต่อแอดมินด่วน
+                                <a href="${linkLinePay}" target="_blank" class="btn-main !bg-rose-500 inline-block py-2.5 px-4 rounded-xl text-sm font-bold shadow-md">
+                                    <i class="fa-brands fa-line"></i> ติดต่อไลน์ส่งยอด
                                 </a>
                             </div>
                         `;
@@ -793,7 +952,7 @@
                                 <div class="mt-4 bg-[#f0fdf4] border-2 border-[#ffffff] rounded-xl p-3 text-center">
                                     <div class="text-[14px] font-bold text-[#166534] mb-1">🎉 ยินดีด้วย! เครดิตผ่านแล้ว 🎉</div>
                                     <div class="text-[12px] font-medium text-[#15803d]">ทักหาแอดมินเพื่อรับเครื่องไปใช้ได้เลยค่า 💖</div>
-                                    <div class="w-full h-3 bg-[#dcfce7] rounded-full mt-2 overflow-hidden border border-[#ffffff]">
+                                    <div class="w-full h-2 bg-[#dcfce7] rounded-full mt-2 overflow-hidden border border-[#ffffff]">
                                         <div class="h-full bg-gradient-to-r from-[#4ade80] to-[#22c55e] w-full rounded-full"></div>
                                     </div>
                                 </div>`;
@@ -804,7 +963,7 @@
                                         <div class="text-[13px] font-bold text-[#ff5277]">🎯 ภารกิจดันยอดรับเครื่อง!</div>
                                         <div class="text-[11px] font-bold text-[#c75b80] bg-white px-2 rounded-md border border-[#ffffff]">${Math.floor(percent)}%</div>
                                     </div>
-                                    <div class="w-full h-3 bg-[#ffe5ed] rounded-full overflow-hidden my-2 border border-[#ffffff]">
+                                    <div class="w-full h-2 bg-[#ffe5ed] rounded-full overflow-hidden my-1.5 border border-[#ffffff]">
                                         <div class="h-full bg-gradient-to-r from-[#ff5277] to-[#d87093] rounded-full transition-all duration-1000" style="width: ${percent}%;"></div>
                                     </div>
                                     <div class="text-[12px] text-[#c75b80] text-center font-medium">
@@ -828,25 +987,17 @@
                                     <div class="text-[13px] font-bold text-[#db2777]">📊 สถานะงวดการผ่อนชำระ (วางดาวน์)</div>
                                     <div class="text-[11px] font-bold text-[#be185d] bg-white px-2.5 py-0.5 rounded-md border border-[#ffffff]">${Math.floor(periodPercent)}%</div>
                                 </div>
-                                <div class="w-full h-3 bg-[#fce7f3] rounded-full overflow-hidden my-2 border border-[#ffffff]">
+                                <div class="w-full h-2 bg-[#fce7f3] rounded-full overflow-hidden my-1.5 border border-[#ffffff]">
                                     <div class="h-full bg-gradient-to-r from-[#ec4899] to-[#be185d] rounded-full transition-all duration-1000" style="width: ${periodPercent}%;"></div>
                                 </div>
                                 <div class="text-[12px] text-[#831843] space-y-1 mt-2 font-medium bg-white p-2.5 rounded-lg border border-[#fbcfe8]">
                                     <div class="flex justify-between"><span>✅ ส่งไปแล้ว:</span> <b>${paidPeriods} งวด</b></div>
                                     <div class="flex justify-between"><span>⏳ ค้างอีก:</span> <b class="text-rose-600">${remainPeriods} งวด</b> (จากทั้งหมด ${totalPeriods} งวด)</div>
-                                    <div class="flex justify-between pt-1 border-t border-dashed border-pink-200"><span>💰 ยอดคงเหลือสุทธิ:</span> <b class="text-rose-600">${balanceNum.toLocaleString()} ฿</b></div>
                                 </div>
                             </div>`;
                     }
 
-                    let extraProductInfo = '';
-                    if (data.color && data.color !== "-") {
-                        extraProductInfo += `<p>🎨 <b>สี:</b> ${data.color}</p>`;
-                    }
-                    if (data.details && data.details !== "-") {
-                        extraProductInfo += `<p>📝 <b>รายละเอียดเครื่อง:</b> ${data.details}</p>`;
-                    }
-
+                    // 🚨 ระบบตัดยอด 15 วัน
                     let cooldownHtml = '';
                     if (data.dueDate && String(data.dueDate).trim() !== "" && data.dueDate !== "-") {
                         let rawDateStr = String(data.dueDate);
@@ -855,50 +1006,51 @@
                         let day = 0, month = 0, year = 0;
                         if (cleanDateStr.includes('-')) {
                             let parts = cleanDateStr.split('-');
-                            if (parts[0].length === 4) { 
-                                year = parseInt(parts[0]);
-                                month = parseInt(parts[1]) - 1;
-                                day = parseInt(parts[2]);
-                            } else { 
-                                day = parseInt(parts[0]);
-                                month = parseInt(parts[1]) - 1;
-                                year = parseInt(parts[2]);
-                            }
+                            if (parts[0].length === 4) { year = parseInt(parts[0]); month = parseInt(parts[1]) - 1; day = parseInt(parts[2]); } 
+                            else { day = parseInt(parts[0]); month = parseInt(parts[1]) - 1; year = parseInt(parts[2]); }
                         } else if (cleanDateStr.includes('/')) {
                             let parts = cleanDateStr.split('/');
-                            day = parseInt(parts[0]);
-                            month = parseInt(parts[1]) - 1;
-                            year = parseInt(parts[2]);
+                            day = parseInt(parts[0]); month = parseInt(parts[1]) - 1; year = parseInt(parts[2]);
                         }
 
                         if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
                             const due = new Date(year, month, day);
                             const today = new Date();
                             today.setHours(0,0,0,0);
-                            const diffTime = due - today;
-                            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                            
+                            const diffDays = Math.ceil((due - today) / (1000 * 60 * 60 * 24));
 
                             let barColor = "from-[#4ade80] to-[#22c55e]";
                             let statusText = `เหลือเวลาอีก ${diffDays} วัน`;
                             let widthPct = "100%";
+                            let barClass = "";
+                            let timeRemainText = "";
 
-                            if (diffDays <= 3 && diffDays >= 0) {
-                                barColor = "from-[#f6d860] to-[#f59e0b]";
-                                statusText = `⚠️ ใกล้ถึงกำหนดชำระ! เหลือ ${diffDays} วัน`;
-                                widthPct = "60%";
-                            } else if (diffDays < 0) {
-                                barColor = "from-[#f87171] to-[#dc2626]";
-                                statusText = `🚨 เลยกำหนดชำระมาแล้ว ${Math.abs(diffDays)} วัน!`;
-                                widthPct = "100%";
+                            if (diffDays > 0) timeRemainText = `(อีก ${diffDays} วัน)`;
+                            else if (diffDays === 0) timeRemainText = `(วันนี้!)`;
+                            else timeRemainText = `(เลยกำหนด ${Math.abs(diffDays)} วัน)`;
+
+                            if (diffDays > 7) { barColor = "from-[#4ade80] to-[#22c55e]"; statusText = `เหลือเวลาอีก ${diffDays} วัน`; widthPct = "100%"; } 
+                            else if (diffDays <= 7 && diffDays >= 0) { barColor = "from-[#bef264] to-[#eab308]"; statusText = "แจ้งเตือน 🚨ลูกค้ากำลังจะถูกตัดยอดโปรดส่งยอดก่อนถึงวันที่ตัดยอดนะคะ"; widthPct = "75%"; } 
+                            else if (diffDays < 0 && diffDays >= -7) { barColor = "from-[#fde047] to-[#eab308]"; statusText = "แจ้งเตือน 🚨 วันนี้ลูกค้ากำลังจะถูกตัดยอดโปรดส่งยอดภายในวันนี้เท่านั้น !"; widthPct = "50%"; } 
+                            else if (diffDays < -7 && diffDays >= -14) { barColor = "from-[#fb923c] to-[#ef4444]"; statusText = "แจ้งเตือน🚨ท่านถูกตัดยอดแล้ว โปรดต่อบัญชีจำนวน 100 บาท ( ไม่นับเป็นค่าส่งยอด ) ภายใน 7 วันหลังจากนี้"; widthPct = "25%"; } 
+                            else if (diffDays < -14) {
+                                barColor = "from-[#ef4444] to-[#b91c1c]";
+                                statusText = `<div class='glow-red-text mb-2'>แจ้งเตือน🚨บัญชีท่านถูกตัดยอดโดยสมบูรณ์โปรดเปิดบิลบัญชีใหม่</div><a href='${linkLinePay}' target='_blank' class='inline-block bg-rose-600 text-white px-4 py-2 rounded-xl text-[12px] mt-1 shadow-sm font-bold'><i class='fa-brands fa-line'></i> ติดต่อไลน์ส่งยอด</a>`;
+                                widthPct = "10%";
+                                barClass = "glow-red-bar"; 
                             }
 
                             cooldownHtml = `
                                 <div class="mt-3 bg-[#fff9fa] border border-[#ffffff] rounded-xl p-3">
-                                    <div class="text-[12px] font-bold text-[#ff5277] mb-1">📅 วันตัดยอด (กำหนดชำระ): ${day}/${month + 1}/${year}</div>
-                                    <div class="w-full h-3 bg-[#ffe5ed] rounded-full overflow-hidden my-1.5 border border-[#ffffff]">
-                                        <div class="h-full bg-gradient-to-r ${barColor} rounded-full transition-all duration-1000" style="width: ${widthPct};"></div>
+                                    <div class="text-[11px] font-bold text-[#ff5277] mb-1.5 flex justify-between items-center">
+                                        <span>📅 วันตัดยอด: ${day}/${month + 1}/${year}</span>
+                                        <span class="text-[10px] text-[#c75b80]">${timeRemainText}</span>
                                     </div>
-                                    <div class="text-[11px] font-bold text-[#c75b80] text-right">${statusText}</div>
+                                    <div class="w-full h-2 bg-[#ffe5ed] rounded-full overflow-visible my-1.5 border border-[#ffffff]">
+                                        <div class="h-full bg-gradient-to-r ${barColor} rounded-full transition-all duration-1000 ${barClass}" style="width: ${widthPct};"></div>
+                                    </div>
+                                    <div class="text-[10px] font-bold text-[#c75b80] mt-2 leading-snug">${statusText}</div>
                                 </div>
                             `;
                         }
@@ -915,10 +1067,6 @@
                         `;
                     }
 
-                    let discountValue = data.discount ? parseFloat(String(data.discount).replace(/,/g, '')) : 0;
-                    let totalValue = data.total ? parseFloat(String(data.total).replace(/,/g, '')) : 0;
-                    let balanceValue = data.balance ? parseFloat(String(data.balance).replace(/,/g, '')) : 0;
-
                     resultBox.innerHTML = `
                         <div class="info-card !bg-[#fffcf5] !border-[#ffffff]">
                             <i class="fa-solid fa-receipt watermark-icon"></i>
@@ -927,18 +1075,38 @@
                                     <span class="text-base">🎀 รหัสลูกค้า: ${inputId}</span>
                                     <span class="text-xs bg-white px-2.5 py-1 rounded-full text-[#5a4a5e] border border-[#ffccd5]">อายุ ${data.age || '-'} ปี</span>
                                 </div>
-                                <div class="text-sm text-[#5a4a5e] space-y-2 font-medium">
+                                
+                                <div class="text-[12px] text-[#5a4a5e] space-y-2 font-medium mb-2 text-center">
                                     <p>👤 <b>ชื่อลูกค้า:</b> ${data.name || '-'}</p>
                                     <p>🏷️ <b>ประเภท:</b> <span class="text-[#ff5277]">${data.type || '-'}</span></p>
                                     <p>📱 <b>รุ่นที่ผ่อน:</b> ${data.model || '-'}</p>
-                                    ${extraProductInfo}
-                                    <div class="mt-3 pt-3 border-t border-dashed border-[#ffccd5] space-y-1.5">
-                                        <p>💰 <b>ยอดเครื่องรวม:</b> ${totalValue.toLocaleString()} ฿</p>
-                                        <p class="text-emerald-600 font-bold">🎁 <b>ส่วนลด:</b> ${discountValue.toLocaleString()} ฿</p>
-                                        <p>💸 <b>ยอดที่ส่งแล้ว:</b> ${paidNum.toLocaleString()} ฿</p>
-                                        <p class="text-lg mt-2 font-bold text-[#ff5277]">🎯 ยอดคงเหลือ: ${balanceValue.toLocaleString()} ฿</p>
+                                </div>
+
+                                <!-- 🔽 สไลด์ลงมาสมูทๆ ไม่มีกรอบกล่อง -->
+                                <div class="flex justify-center mb-3">
+                                    <button onclick="toggleDetailsBox('${inputId}')" class="text-[12px] font-bold text-[#c75b80] underline flex items-center gap-1 active:scale-95 transition-transform">
+                                        <i class="fa-solid fa-chevron-down toggle-icon-${inputId} transition-transform duration-300"></i> ดูรายละเอียดเพิ่มเติม
+                                    </button>
+                                </div>
+                                
+                                <div id="more-details-box-${inputId}" class="smooth-details text-[12px] text-[#5a4a5e] space-y-1.5 text-center">
+                                    <div class="py-1">
+                                        <p>🎨 <b>สี:</b> ${data.color || '-'}</p>
+                                        <p>📝 <b>เพิ่มเติม:</b> ${data.details || '-'}</p>
+                                        <div class="w-3/4 mx-auto border-t border-dashed border-[#ffccd5] my-2 pt-2">
+                                            <p>💰 <b>ยอดเครื่องรวม:</b> ${totalNum.toLocaleString()} ฿</p>
+                                            <p class="text-emerald-600 font-bold">🎁 <b>ส่วนลด:</b> ${discountValue.toLocaleString()} ฿</p>
+                                            <p>💸 <b>ยอดที่ส่งแล้ว:</b> ${paidNum.toLocaleString()} ฿</p>
+                                        </div>
                                     </div>
                                 </div>
+                                
+                                <!-- 🎯 ยอดคงเหลือ เด็ดๆ ล่างสุด ไม่โดนซ่อน -->
+                                <div class="text-center bg-white border border-[#ffccd5] rounded-xl py-3 shadow-sm mb-3">
+                                    <span class="text-[13px] text-[#5a4a5e] font-medium">🎯 ยอดคงเหลือสุทธิ</span><br>
+                                    <span class="text-xl font-bold text-[#ff5277]">${balanceNum.toLocaleString()} ฿</span>
+                                </div>
+
                                 ${progressHtml}
                                 ${cooldownHtml}
                                 ${contractBtnHtml}
@@ -950,47 +1118,49 @@
                                 <i class="fa-solid fa-wallet"></i> ช่องทางชำระเงินของร้าน 🎀
                             </div>
                             
-                            <div class="relative bg-gradient-to-br from-[#e0f2fe] to-[#bae6fd] border border-[#7dd3fc] rounded-2xl p-4 mb-3 flex justify-between items-center">
+                            <!-- 💚 กสิกรไทย ย่อส่วนให้พองาม -->
+                            <div class="relative bg-gradient-to-br from-[#dcfce7] to-[#bbf7d0] border border-[#86efac] rounded-2xl p-3.5 mb-3 flex justify-between items-center">
                                 <div>
-                                    <div class="text-[14px] font-bold text-[#0284c7] mb-1">กรุงไทย (KTB) 💙</div>
-                                    <div class="text-xl font-bold text-[#0f172a]">${bankText}</div>
-                                    <div class="text-[12px] text-[#334155] font-medium mt-1">ชื่อบัญชี: กนกอร</div>
+                                    <div class="text-[12px] font-bold text-[#16a34a] mb-1">กสิกรไทย (KBank) 💚</div>
+                                    <div class="text-lg font-bold text-[#0f172a]">${bankText}</div>
+                                    <div class="text-[11px] text-[#334155] font-medium mt-0.5">ชื่อบัญชี: บจก ซันสตอรี่โฟร์</div>
                                 </div>
-                                <button onclick="copyText('${bankText}')" class="bg-white text-[#0284c7] px-3.5 py-1.5 rounded-xl text-[12px] font-bold active:scale-95 shrink-0"><i class="fa-regular fa-copy"></i> คัดลอก</button>
+                                <button onclick="copyText('${bankText}')" class="bg-white text-[#16a34a] px-3 py-1.5 rounded-xl text-[11px] font-bold active:scale-95 shrink-0"><i class="fa-regular fa-copy"></i> คัดลอก</button>
                             </div>
 
-                            <div class="relative bg-gradient-to-br from-[#fce7f3] to-[#fbcfe8] border border-[#f9a8d4] rounded-2xl p-4 mb-3 flex justify-between items-center">
+                            <!-- 🩷 TrueMoney Wallet ย่อส่วนให้พองาม -->
+                            <div class="relative bg-gradient-to-br from-[#fce7f3] to-[#fbcfe8] border border-[#f9a8d4] rounded-2xl p-3.5 mb-3 flex justify-between items-center">
                                 <div>
-                                    <div class="text-[14px] font-bold text-[#be185d] mb-1">TrueMoney Wallet 🩷</div>
-                                    <div class="text-xl font-bold text-[#0f172a]">${walletText}</div>
-                                    <div class="text-[12px] text-[#334155] font-medium mt-1">ชื่อบัญชี: กนกอร</div>
-                                    <div class="text-[11px] font-bold text-[#e11d48] mt-1">*วอเล็ตหักค่าธรรมเนียม 2.9%*</div>
+                                    <div class="text-[12px] font-bold text-[#be185d] mb-1">TrueMoney Wallet 🩷</div>
+                                    <div class="text-lg font-bold text-[#0f172a]">${walletText}</div>
+                                    <div class="text-[11px] text-[#334155] font-medium mt-0.5">ชื่อบัญชี: กนกอร</div>
+                                    <div class="text-[10px] font-bold text-[#e11d48] mt-0.5">*วอเล็ตหักค่าธรรมเนียม 2.9%*</div>
                                 </div>
-                                <button onclick="copyText('${walletText}')" class="bg-white text-[#be185d] px-3.5 py-1.5 rounded-xl text-[12px] font-bold active:scale-95 shrink-0"><i class="fa-regular fa-copy"></i> คัดลอก</button>
+                                <button onclick="copyText('${walletText}')" class="bg-white text-[#be185d] px-3 py-1.5 rounded-xl text-[11px] font-bold active:scale-95 shrink-0"><i class="fa-regular fa-copy"></i> คัดลอก</button>
                             </div>
 
-                            <div class="bg-[#fff0f3] border-2 border-dashed border-[#ffffff] rounded-2xl p-4 mb-3 text-center relative overflow-hidden">
+                            <div class="bg-[#fff0f3] border-2 border-dashed border-[#ffffff] rounded-2xl p-3.5 mb-3 text-center relative overflow-hidden">
                                 <i class="fa-solid fa-note-sticky watermark-icon"></i>
                                 <div class="card-content-inner">
                                     <div class="text-xs font-bold text-[#ff5277] mb-1 flex items-center justify-center gap-1">
                                         <i class="fa-solid fa-pen-nib"></i> บันทึกช่วยจำ / โน้ตสลิปโอนเงิน
                                     </div>
-                                    <p class="text-sm font-bold text-[#5a4a5e] my-1">
-                                        พิมพ์ตรงบันทึกช่วยจำว่า : <span class="text-[#ff5277] underline">ซื้อขายกับซันบายโฟน</span>
+                                    <p class="text-[13px] font-bold text-[#5a4a5e] my-1">
+                                        พิมพ์ตรงบันทึกช่วยจำว่า : <span class="text-[#ff5277] underline">ซื้อขายกับร้านซันสตอรี่โฟร์</span>
                                     </p>
-                                    <button onclick="copyText('ซื้อขายกับซันบายโฟน')" class="bg-white text-[#ff5277] border border-[#ffffff] px-3 py-1 rounded-xl text-xs font-bold mt-1 active:scale-95">
+                                    <button onclick="copyText('ซื้อขายกับร้านซันสตอรี่โฟร์')" class="bg-white text-[#ff5277] border border-[#ffffff] px-3 py-1 rounded-xl text-[11px] font-bold mt-1 active:scale-95">
                                         <i class="fa-regular fa-copy"></i> คัดลอกข้อความโน้ต
                                     </button>
                                 </div>
                             </div>
 
-                            <div id="upload-zone" class="info-card flex flex-col gap-2.5 !bg-white">
+                            <div id="upload-zone" class="info-card flex flex-col gap-2.5 !bg-white !p-4">
                                 <i class="fa-solid fa-file-arrow-up watermark-icon"></i>
                                 <div class="card-content-inner flex flex-col gap-2.5">
-                                    <p class="text-sm font-bold text-[#ff5277]">📤 แจ้งชำระเงิน / แนบสลิป:</p>
-                                    <input type="number" id="slip-amount" class="admin-input !mt-0 text-base">
+                                    <p class="text-[13px] font-bold text-[#ff5277]">📤 แจ้งชำระเงิน / แนบสลิป:</p>
+                                    <input type="number" id="slip-amount" class="admin-input !mt-0 text-sm" placeholder="จำนวนเงิน">
                                     <input type="file" id="slip-file" accept="image/*" class="admin-input !mt-0 text-xs py-2.5">
-                                    <button id="btn-submit-slip" onclick="submitSlip()" class="btn-main !py-3 !text-sm mt-1">
+                                    <button id="btn-submit-slip" onclick="submitSlip()" class="btn-main !py-2.5 !text-sm mt-1">
                                         <i class="fa-solid fa-paper-plane"></i> ส่งสลิปให้แอดมิน
                                     </button>
                                 </div>
@@ -1004,14 +1174,17 @@
                     resultBox.classList.remove('hidden-page');
                     errorBox.classList.add('hidden-page');
                 } else {
+                    // ❌ ค้นหาผิด 1 ครั้ง แบนเลย 120 วิ
                     resultBox.classList.add('hidden-page');
                     errorBox.classList.remove('hidden-page');
+                    
+                    startCooldown(120);
 
                     const now = new Date();
                     const timeString = now.toLocaleDateString('th-TH') + ' ' + now.toLocaleTimeString('th-TH', {hour: '2-digit', minute:'2-digit', second:'2-digit'}) + ' น.';
                     
                     const securityPayload = {
-                        content: `⚠️ **[SECURITY] มีคนกรอกรหัสผิดพลาด/พยายามดูข้อมูล**\n👤 **รหัสลูกค้าที่เขาพยายามกดดู:** \`${inputId}\`\n📱 **เบอร์โทรที่เขาใช้กรอกเข้ามา:** \`${inputPhone}\`\n🕒 **เวลาที่เกิดเหตุ:** ${timeString}\n💡 *แอดมินสามารถนำข้อมูลนี้ไปตรวจสอบหรือตักเตือนได้ทันที*`
+                        content: `⚠️ **[SECURITY] โดนแบน 120 วิ! มีคนกรอกรหัสผิดพลาด**\n👤 **รหัสลูกค้า:** \`${inputId}\`\n📱 **เบอร์โทร:** \`${inputPhone}\`\n🕒 **เวลาที่เกิดเหตุ:** ${timeString}`
                     };
                     fetch(discordWebhookAdmin, {
                         method: 'POST',
@@ -1023,8 +1196,10 @@
                 console.error("Search error:", e);
                 alert('เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่อีกครั้งค่ะ'); 
             } finally { 
-                btn.disabled = false; 
-                btn.innerHTML = '<i class="fa-solid fa-magnifying-glass"></i> ค้นหาข้อมูล'; 
+                if (!searchOnCooldown) { 
+                    btn.disabled = false; 
+                    btn.innerHTML = '<i class="fa-solid fa-magnifying-glass"></i> ค้นหาข้อมูล'; 
+                }
             }
         }
 
@@ -1225,6 +1400,7 @@
 
         function saveAdminData() {
             db.ref('storeConfig').set({
+                announcementText: document.getElementById('edit-announcement').value, 
                 statusTime: document.getElementById('edit-status-time').value,
                 colorTime: document.getElementById('edit-color-time').value,
                 noticeTime: document.getElementById('edit-notice-time').value,
@@ -1260,5 +1436,3 @@
     </script>
 </body>
 </html>
-
-

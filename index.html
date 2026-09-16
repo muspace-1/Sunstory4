@@ -122,8 +122,8 @@
 
         .brand-image-frame {
             width: 75px; height: 75px; border-radius: 1rem; overflow: hidden;
-            border: 2px solid #ffffff !important; flex-shrink: 0; background-color: #fff;
-            cursor: pointer; box-shadow: none !important;
+            border: 2px solid #ffffff !important; flex-shrink: 0; background-color: #fff; cursor: pointer;
+            box-shadow: none !important;
         }
         .brand-image-frame img { width: 100%; height: 100%; object-fit: cover; }
 
@@ -853,7 +853,7 @@
                                 <div class="mt-4 bg-[#f0fdf4] border-2 border-[#ffffff] rounded-xl p-3 text-center">
                                     <div class="text-[14px] font-bold text-[#166534] mb-1">🎉 ยินดีด้วย! เครดิตผ่านแล้ว 🎉</div>
                                     <div class="text-[12px] font-medium text-[#15803d]">ทักหาแอดมินเพื่อรับเครื่องไปใช้ได้เลยค่า 💖</div>
-                                    <div class="w-full h-2 bg-[#dcfce7] rounded-full mt-2 overflow-hidden border border-[#ffffff]">
+                                    <div class="w-full h-3 bg-[#dcfce7] rounded-full mt-2 overflow-hidden border border-[#ffffff]">
                                         <div class="h-full bg-gradient-to-r from-[#4ade80] to-[#22c55e] w-full rounded-full"></div>
                                     </div>
                                 </div>`;
@@ -864,7 +864,7 @@
                                         <div class="text-[13px] font-bold text-[#ff5277]">🎯 ภารกิจดันยอดรับเครื่อง!</div>
                                         <div class="text-[11px] font-bold text-[#c75b80] bg-white px-2 rounded-md border border-[#ffffff]">${Math.floor(percent)}%</div>
                                     </div>
-                                    <div class="w-full h-2 bg-[#ffe5ed] rounded-full overflow-hidden my-1.5 border border-[#ffffff]">
+                                    <div class="w-full h-3 bg-[#ffe5ed] rounded-full overflow-hidden my-2 border border-[#ffffff]">
                                         <div class="h-full bg-gradient-to-r from-[#ff5277] to-[#d87093] rounded-full transition-all duration-1000" style="width: ${percent}%;"></div>
                                     </div>
                                     <div class="text-[12px] text-[#c75b80] text-center font-medium">
@@ -888,7 +888,7 @@
                                     <div class="text-[13px] font-bold text-[#db2777]">📊 สถานะงวดการผ่อนชำระ (วางดาวน์)</div>
                                     <div class="text-[11px] font-bold text-[#be185d] bg-white px-2.5 py-0.5 rounded-md border border-[#ffffff]">${Math.floor(periodPercent)}%</div>
                                 </div>
-                                <div class="w-full h-2 bg-[#fce7f3] rounded-full overflow-hidden my-1.5 border border-[#ffffff]">
+                                <div class="w-full h-3 bg-[#fce7f3] rounded-full overflow-hidden my-2 border border-[#ffffff]">
                                     <div class="h-full bg-gradient-to-r from-[#ec4899] to-[#be185d] rounded-full transition-all duration-1000" style="width: ${periodPercent}%;"></div>
                                 </div>
                                 <div class="text-[12px] text-[#831843] space-y-1 mt-2 font-medium bg-white p-2.5 rounded-lg border border-[#fbcfe8]">
@@ -942,35 +942,35 @@
                                 barColor = "from-[#bef264] to-[#eab308]"; 
                                 statusText = "แจ้งเตือน 🚨ลูกค้ากำลังจะถูกตัดยอดโปรดส่งยอดก่อนถึงวันที่ตัดยอดนะคะ"; 
                                 widthPct = "75%"; 
-                                warningBottomHtml = `<div class="text-[10px] font-bold text-[#c75b80] mt-2 leading-snug">${statusText}</div>`;
+                                warningBottomHtml = `<div class="text-[11px] font-bold text-[#c75b80] mt-2 leading-snug">${statusText}</div>`;
                             } 
                             else if (diffDays < 0 && diffDays >= -7) { 
                                 barColor = "from-[#fde047] to-[#eab308]"; 
                                 statusText = "แจ้งเตือน 🚨 วันนี้ลูกค้ากำลังจะถูกตัดยอดโปรดส่งยอดภายในวันนี้เท่านั้น !"; 
                                 widthPct = "50%"; 
-                                warningBottomHtml = `<div class="text-[10px] font-bold text-[#c75b80] mt-2 leading-snug">${statusText}</div>`;
+                                warningBottomHtml = `<div class="text-[11px] font-bold text-[#c75b80] mt-2 leading-snug">${statusText}</div>`;
                             } 
                             else if (diffDays < -7 && diffDays >= -14) { 
                                 barColor = "from-[#fb923c] to-[#ef4444]"; 
                                 statusText = "แจ้งเตือน🚨ท่านถูกตัดยอดแล้ว โปรดต่อบัญชีจำนวน 100 บาท ( ไม่นับเป็นค่าส่งยอด ) ภายใน 7 วันหลังจากนี้"; 
                                 widthPct = "25%"; 
-                                warningBottomHtml = `<div class="text-[10px] font-bold text-[#c75b80] mt-2 leading-snug">${statusText}</div>`;
+                                warningBottomHtml = `<div class="text-[11px] font-bold text-[#c75b80] mt-2 leading-snug">${statusText}</div>`;
                             } 
                             else if (diffDays < -14) {
                                 barColor = "from-[#ef4444] to-[#b91c1c]";
                                 statusText = `<div class='glow-red-text mb-2'>แจ้งเตือน🚨บัญชีท่านถูกตัดยอดโดยสมบูรณ์โปรดเปิดบิลบัญชีใหม่</div><a href='${linkLinePay}' target='_blank' class='inline-block bg-rose-600 text-white px-4 py-2 rounded-xl text-[12px] mt-1 shadow-sm font-bold'><i class='fa-brands fa-line'></i> ติดต่อไลน์ส่งยอด</a>`;
                                 widthPct = "10%";
                                 barClass = "glow-red-bar"; 
-                                warningBottomHtml = `<div class="text-[10px] font-bold text-[#c75b80] mt-2 leading-snug">${statusText}</div>`;
+                                warningBottomHtml = `<div class="text-[11px] font-bold text-[#c75b80] mt-2 leading-snug">${statusText}</div>`;
                             }
 
                             cooldownHtml = `
                                 <div class="mt-3 bg-[#fff9fa] border border-[#ffffff] rounded-xl p-3">
-                                    <div class="text-[11px] font-bold text-[#ff5277] mb-1.5 flex justify-between items-center">
+                                    <div class="text-[12px] font-bold text-[#ff5277] mb-1.5 flex justify-between items-center">
                                         <span>📅 วันตัดยอด: ${day}/${month + 1}/${year}</span>
-                                        <span class="text-[10px] text-[#c75b80]">${timeRemainText}</span>
+                                        <span class="text-[11px] text-[#c75b80]">${timeRemainText}</span>
                                     </div>
-                                    <div class="w-full h-2 bg-[#ffe5ed] rounded-full overflow-visible my-1.5 border border-[#ffffff]">
+                                    <div class="w-full h-3 bg-[#ffe5ed] rounded-full overflow-visible my-1.5 border border-[#ffffff]">
                                         <div class="h-full bg-gradient-to-r ${barColor} rounded-full transition-all duration-1000 ${barClass}" style="width: ${widthPct};"></div>
                                     </div>
                                     ${warningBottomHtml}
@@ -999,21 +999,21 @@
                                     <span class="text-xs bg-white px-2.5 py-1 rounded-full text-[#5a4a5e] border border-[#ffccd5]">อายุ ${data.age || '-'} ปี</span>
                                 </div>
                                 
-                                <!-- 💡 อัปเดต: ตัวหนาที่เห็นชัดขึ้นสำหรับรายละเอียดลูกค้า -->
-                                <div class="text-[13px] text-[#334155] space-y-2 font-bold mb-3 text-center">
-                                    <p>👤 ชื่อลูกค้า: <span class="text-[#0f172a] text-[14px]">${data.name || '-'}</span></p>
-                                    <p>🏷️ ประเภท: <span class="text-[#ff5277] text-[14px]">${data.type || '-'}</span></p>
-                                    <p>📱 รุ่นที่ผ่อน: <span class="text-[#0f172a] text-[14px]">${data.model || '-'}</span></p>
+                                <!-- 💡 อัปเดต: ตัวหนาที่อ่านง่าย สีชัด สำหรับรายละเอียดลูกค้า -->
+                                <div class="text-[13px] text-[#5a4a5e] space-y-2 font-medium mb-3">
+                                    <p>👤 ชื่อลูกค้า: <span class="font-bold text-[#0f172a] text-[14px]">${data.name || '-'}</span></p>
+                                    <p>🏷️ ประเภท: <span class="font-bold text-[#ff5277] text-[14px]">${data.type || '-'}</span></p>
+                                    <p>📱 รุ่นที่ผ่อน: <span class="font-bold text-[#0f172a] text-[14px]">${data.model || '-'}</span></p>
                                 </div>
 
                                 <!-- 🔽 สไลด์ลงมาสมูทๆ ไม่มีกรอบกล่อง -->
                                 <div class="flex justify-center mb-3">
-                                    <button onclick="toggleDetailsBox('${inputId}')" class="text-[12px] font-bold text-[#c75b80] underline flex items-center gap-1 active:scale-95 transition-transform">
+                                    <button onclick="toggleDetailsBox('${inputId}')" class="text-[13px] font-bold text-[#c75b80] underline flex items-center gap-1 active:scale-95 transition-transform">
                                         <i class="fa-solid fa-chevron-down toggle-icon-${inputId} transition-transform duration-300"></i> ดูรายละเอียดเพิ่มเติม
                                     </button>
                                 </div>
                                 
-                                <div id="more-details-box-${inputId}" class="smooth-details text-[12px] text-[#5a4a5e] space-y-1.5 text-center font-medium">
+                                <div id="more-details-box-${inputId}" class="smooth-details text-[13px] text-[#5a4a5e] space-y-1.5 text-center font-medium">
                                     <div class="py-1">
                                         <p>🎨 สี: <span class="font-bold">${data.color || '-'}</span></p>
                                         <p>📝 เพิ่มเติม: <span class="font-bold">${data.details || '-'}</span></p>
@@ -1025,10 +1025,10 @@
                                     </div>
                                 </div>
                                 
-                                <!-- 🎯 ยอดคงเหลือ เด็ดๆ ล่างสุด ไม่โดนซ่อน -->
-                                <div class="text-center bg-white border border-[#ffccd5] rounded-xl py-3 shadow-sm mb-3">
-                                    <span class="text-[13px] text-[#5a4a5e] font-medium">🎯 ยอดคงเหลือสุทธิ</span><br>
-                                    <span class="text-xl font-bold text-[#ff5277]">${balanceNum.toLocaleString()} ฿</span>
+                                <!-- 🎯 ยอดคงเหลือสุทธิ (ย่อกรอบลงมา) -->
+                                <div class="text-center bg-white border border-[#ffccd5] rounded-xl py-2 px-4 mx-2 shadow-sm mb-3">
+                                    <span class="text-[12px] text-[#5a4a5e] font-semibold">🎯 ยอดคงเหลือสุทธิ</span><br>
+                                    <span class="text-lg font-bold text-[#ff5277]">${balanceNum.toLocaleString()} ฿</span>
                                 </div>
 
                                 ${progressHtml}
@@ -1038,67 +1038,67 @@
                         </div>
 
                         <div class="mt-4 payment-section relative">
-                            <div class="text-center font-bold text-[#ff5277] mb-3 text-sm flex items-center justify-center gap-1">
+                            <div class="text-center font-bold text-[#ff5277] mb-4 text-sm flex items-center justify-center gap-1">
                                 <i class="fa-solid fa-wallet"></i> ช่องทางชำระเงินของร้าน 🎀
                             </div>
                             
-                            <!-- 💡 อัปเดต: 💚 กสิกรไทย ย่อกรอบลงมาแบบพองาม -->
-                            <div class="relative bg-gradient-to-br from-[#dcfce7] to-[#bbf7d0] border border-[#86efac] rounded-xl p-2.5 mb-2.5 flex justify-between items-center shadow-sm">
+                            <!-- 💡 อัปเดต: 💚 กสิกรไทย คืนไซส์ใหญ่ปกติ และเปลี่ยน บจก. -->
+                            <div class="relative bg-gradient-to-br from-[#dcfce7] to-[#bbf7d0] border border-[#86efac] rounded-2xl p-4 mb-3 flex justify-between items-center shadow-sm">
                                 <div>
-                                    <div class="text-[10px] font-bold text-[#16a34a] mb-0.5">กสิกรไทย (KBank) 💚</div>
-                                    <div class="text-[14px] font-bold text-[#0f172a] tracking-wide">${bankText}</div>
-                                    <div class="text-[10px] text-[#334155] font-semibold mt-0.5">ชื่อบัญชี: บจก. ซันสตอรี่โฟร์</div>
+                                    <div class="text-[14px] font-bold text-[#16a34a] mb-1">กสิกรไทย (KBank) 💚</div>
+                                    <div class="text-xl font-bold text-[#0f172a]">${bankText}</div>
+                                    <div class="text-[12px] text-[#334155] font-semibold mt-1">ชื่อบัญชี: บจก. ซันสตอรี่โฟร์</div>
                                 </div>
-                                <button onclick="copyText('${bankText}')" class="bg-white text-[#16a34a] px-2.5 py-1 rounded-lg text-[10px] font-bold shadow-sm active:scale-95 shrink-0"><i class="fa-regular fa-copy"></i> คัดลอก</button>
+                                <button onclick="copyText('${bankText}')" class="bg-white text-[#16a34a] px-3.5 py-1.5 rounded-xl text-[12px] font-bold shadow-sm active:scale-95 shrink-0"><i class="fa-regular fa-copy"></i> คัดลอก</button>
                             </div>
 
-                            <!-- 💡 อัปเดต: 🩷 TrueMoney Wallet ย่อกรอบลงมาแบบพองาม -->
-                            <div class="relative bg-gradient-to-br from-[#fce7f3] to-[#fbcfe8] border border-[#f9a8d4] rounded-xl p-2.5 mb-2.5 flex justify-between items-center shadow-sm">
+                            <!-- 💡 อัปเดต: 🩷 TrueMoney Wallet คืนไซส์ใหญ่ปกติ -->
+                            <div class="relative bg-gradient-to-br from-[#fce7f3] to-[#fbcfe8] border border-[#f9a8d4] rounded-2xl p-4 mb-3 flex justify-between items-center shadow-sm">
                                 <div>
-                                    <div class="text-[10px] font-bold text-[#be185d] mb-0.5">TrueMoney Wallet 🩷</div>
-                                    <div class="text-[14px] font-bold text-[#0f172a] tracking-wide">${walletText}</div>
-                                    <div class="text-[10px] text-[#334155] font-semibold mt-0.5">ชื่อบัญชี: กนกอร</div>
-                                    <div class="text-[9px] font-bold text-[#e11d48] mt-0.5">*วอเล็ตหักค่าธรรมเนียม 2.9%*</div>
+                                    <div class="text-[14px] font-bold text-[#be185d] mb-1">TrueMoney Wallet 🩷</div>
+                                    <div class="text-xl font-bold text-[#0f172a]">${walletText}</div>
+                                    <div class="text-[12px] text-[#334155] font-semibold mt-1">ชื่อบัญชี: กนกอร</div>
+                                    <div class="text-[11px] font-bold text-[#e11d48] mt-1">*วอเล็ตหักค่าธรรมเนียม 2.9%*</div>
                                 </div>
-                                <button onclick="copyText('${walletText}')" class="bg-white text-[#be185d] px-2.5 py-1 rounded-lg text-[10px] font-bold shadow-sm active:scale-95 shrink-0"><i class="fa-regular fa-copy"></i> คัดลอก</button>
+                                <button onclick="copyText('${walletText}')" class="bg-white text-[#be185d] px-3.5 py-1.5 rounded-xl text-[12px] font-bold shadow-sm active:scale-95 shrink-0"><i class="fa-regular fa-copy"></i> คัดลอก</button>
                             </div>
 
-                            <div class="bg-[#fff0f3] border-2 border-dashed border-[#ffffff] rounded-xl p-3 mb-2.5 text-center relative overflow-hidden">
+                            <div class="bg-[#fff0f3] border-2 border-dashed border-[#ffffff] rounded-2xl p-4 mb-3 text-center relative overflow-hidden">
                                 <i class="fa-solid fa-note-sticky watermark-icon"></i>
                                 <div class="card-content-inner">
-                                    <div class="text-[11px] font-bold text-[#ff5277] mb-1 flex items-center justify-center gap-1">
+                                    <div class="text-xs font-bold text-[#ff5277] mb-1 flex items-center justify-center gap-1">
                                         <i class="fa-solid fa-pen-nib"></i> บันทึกช่วยจำ / โน้ตสลิปโอนเงิน
                                     </div>
-                                    <p class="text-[12px] font-bold text-[#5a4a5e] my-1">
+                                    <p class="text-[14px] font-bold text-[#5a4a5e] my-1.5">
                                         พิมพ์ตรงบันทึกช่วยจำว่า : <span class="text-[#ff5277] underline">ซื้อขายกับร้านซันสตอรี่โฟร์</span>
                                     </p>
-                                    <button onclick="copyText('ซื้อขายกับร้านซันสตอรี่โฟร์')" class="bg-white text-[#ff5277] border border-[#ffffff] px-2.5 py-1 rounded-xl text-[10px] font-bold mt-1 active:scale-95 shadow-sm">
+                                    <button onclick="copyText('ซื้อขายกับร้านซันสตอรี่โฟร์')" class="bg-white text-[#ff5277] border border-[#ffffff] px-3.5 py-1.5 rounded-xl text-[12px] font-bold mt-1 active:scale-95 shadow-sm">
                                         <i class="fa-regular fa-copy"></i> คัดลอกข้อความโน้ต
                                     </button>
                                 </div>
                             </div>
 
-                            <div id="upload-zone" class="info-card flex flex-col gap-2 !bg-white !p-3">
+                            <div id="upload-zone" class="info-card flex flex-col gap-3 !bg-white !p-4">
                                 <i class="fa-solid fa-file-arrow-up watermark-icon"></i>
-                                <div class="card-content-inner flex flex-col gap-2">
-                                    <p class="text-[12px] font-bold text-[#ff5277]">📤 แจ้งชำระเงิน / แนบสลิป:</p>
-                                    <input type="number" id="slip-amount" class="admin-input !mt-0 text-[13px]" placeholder="ระบุจำนวนเงิน">
-                                    <input type="file" id="slip-file" accept="image/*" class="admin-input !mt-0 text-[11px] py-2">
-                                    <button id="btn-submit-slip" onclick="submitSlip()" class="btn-main !py-2.5 !text-[13px] mt-0.5 shadow-sm">
+                                <div class="card-content-inner flex flex-col gap-3">
+                                    <p class="text-[13px] font-bold text-[#ff5277]">📤 แจ้งชำระเงิน / แนบสลิป:</p>
+                                    <input type="number" id="slip-amount" class="admin-input !mt-0 text-[14px]" placeholder="ระบุจำนวนเงิน">
+                                    <input type="file" id="slip-file" accept="image/*" class="admin-input !mt-0 text-[12px] py-2.5">
+                                    <button id="btn-submit-slip" onclick="submitSlip()" class="btn-main !py-3 !text-[14px] mt-1 shadow-sm">
                                         <i class="fa-solid fa-paper-plane"></i> ส่งสลิปให้แอดมิน
                                     </button>
                                 </div>
                             </div>
-                            <div id="slip-status" class="hidden-page mt-1 bg-[#fff0f3] border border-[#ffffff] rounded-xl p-2.5 text-center">
-                                <div class="text-[12px] font-bold text-[#ff5277]"><i class="fa-solid fa-hourglass-half rotate-animation inline-block mr-1"></i> สถานะ: รอตรวจสอบสลิป</div>
-                                <div class="text-[11px] text-[#a86b81] mt-1 font-medium">แอดมินได้รับสลิปแล้วค่ะ 🌸</div>
+                            <div id="slip-status" class="hidden-page mt-1 bg-[#fff0f3] border border-[#ffffff] rounded-xl p-3 text-center">
+                                <div class="text-[14px] font-bold text-[#ff5277]"><i class="fa-solid fa-hourglass-half rotate-animation inline-block mr-1"></i> สถานะ: รอตรวจสอบสลิป</div>
+                                <div class="text-[12px] text-[#a86b81] mt-1 font-medium">แอดมินได้รับสลิปแล้วค่ะ 🌸</div>
                             </div>
                         </div>
                     `;
                     resultBox.classList.remove('hidden-page');
                     errorBox.classList.add('hidden-page');
                 } else {
-                    // ❌ ค้นหาผิด 1 ครั้ง แบนเลย 120 วิ
+                    // ❌ 💡 อัปเดต: แจ้งเตือนรวมร่างสำหรับ Discord และแบน 120 วิ
                     resultBox.classList.add('hidden-page');
                     errorBox.classList.remove('hidden-page');
                     
@@ -1108,7 +1108,7 @@
                     const timeString = now.toLocaleDateString('th-TH') + ' ' + now.toLocaleTimeString('th-TH', {hour: '2-digit', minute:'2-digit', second:'2-digit'}) + ' น.';
                     
                     const securityPayload = {
-                        content: `⚠️ **[SECURITY] โดนแบน 120 วิ! มีคนกรอกรหัสผิดพลาด**\n👤 **รหัสลูกค้า:** \`${inputId}\`\n📱 **เบอร์โทร:** \`${inputPhone}\`\n🕒 **เวลาที่เกิดเหตุ:** ${timeString}`
+                        content: `🚨 **[SECURITY] มีการค้นหาข้อมูลผิดพลาด & ระบบล็อก 120 วินาที!**\n👤 **รหัสลูกค้าที่พยายามค้นหา:** \`${inputId}\`\n📱 **เบอร์โทรศัพท์ที่กรอกเข้ามา:** \`${inputPhone}\`\n🕒 **เวลาที่เกิดเหตุ:** ${timeString}\n⚠️ **ระบบได้ทำการระงับการค้นหาชั่วคราว แอดมินกรุณาตรวจสอบและตักเตือน**`
                     };
                     fetch(discordWebhookAdmin, {
                         method: 'POST',
@@ -1127,13 +1127,12 @@
             }
         }
 
-        // 💡 อัปเดต: ระบบบีบอัดภาพ (Image Compression) ป้องกันบั๊กส่งไม่เข้า Firebase
+        // 💡 อัปเดต: ระบบบีบอัดภาพ (Image Compression) ป้องกันบั๊กส่งไม่เข้า Firebase แต่ Discord เด้ง
         async function submitSlip() {
             const amount = document.getElementById('slip-amount').value;
             const fileInput = document.getElementById('slip-file');
             const btn = document.getElementById('btn-submit-slip');
 
-            // ล็อกความปลอดภัย: ถ้าไม่มี currentCustomerId ห้ามส่ง
             if (!currentCustomerId) {
                 return alert('กรุณากดปุ่ม "ค้นหาข้อมูล" ให้เจอรหัสลูกค้าก่อนแนบสลิปนะคะ 🥺');
             }
@@ -1152,9 +1151,8 @@
             reader.onload = function(event) {
                 const img = new Image();
                 img.onload = async function() {
-                    // สร้าง Canvas เพื่อบีบอัดรูป
                     const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 800; // ลิมิตความกว้างเพื่อลดขนาดไฟล์
+                    const MAX_WIDTH = 800;
                     const MAX_HEIGHT = 1000;
                     let width = img.width;
                     let height = img.height;
@@ -1170,14 +1168,12 @@
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, width, height);
                     
-                    // แปลงเป็น Base64 คุณภาพ 60% (ลดไซส์จาก 5MB เหลือประมาณ 100-300KB)
                     const base64Image = canvas.toDataURL('image/jpeg', 0.6);
                     
                     const now = new Date();
                     const timeString = now.toLocaleDateString('th-TH') + ' ' + now.toLocaleTimeString('th-TH', {hour: '2-digit', minute:'2-digit'}) + ' น.';
 
                     try {
-                        // ส่งเข้า Firebase
                         await db.ref('pendingSlips').push({
                             id: currentCustomerId,
                             amount: amount,
@@ -1186,7 +1182,6 @@
                             timestamp: firebase.database.ServerValue.TIMESTAMP
                         });
 
-                        // ส่งแจ้งเตือน Discord
                         const payload = {
                             content: `🚨 **มีลูกค้าส่งสลิปใหม่!**\n🎀 **รหัสลูกค้า:** ${currentCustomerId}\n💰 **ยอดโอนที่แจ้ง:** ${amount} บาท\n🕒 **เวลาส่ง:** ${timeString}\n👉 *เข้าเว็บแอดมินเพื่อตรวจสอบรูปสลิปและกดอนุมัติยอดครับ*`
                         };

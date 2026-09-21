@@ -690,6 +690,18 @@
             }
         }
 
+        // 💡 ฟังก์ชันเปิด/ปิดช่องกรอกชื่อคนโอน
+        function toggleSlipNameInput() {
+            const check = document.getElementById('slip-name-check');
+            const input = document.getElementById('slip-name-input');
+            if (check.checked) {
+                input.classList.remove('hidden-page');
+            } else {
+                input.classList.add('hidden-page');
+                input.value = ''; // เคลียร์ค่าออกเวลาเอาติ๊กออก
+            }
+        }
+
         function openContactModal() { document.getElementById('contact-modal').classList.remove('hidden-page'); }
         function closeContactModal() { document.getElementById('contact-modal').classList.add('hidden-page'); }
 
@@ -932,7 +944,6 @@
                             else if (diffDays === 0) timeRemainText = `(วันนี้!)`;
                             else timeRemainText = `(เลยกำหนด ${Math.abs(diffDays)} วัน)`;
 
-                            // 💡 อัปเดต: ถ้าเกิน 7 วันให้โชว์แค่หลอด ตัดตัวอักษรบรรทัดล่างทิ้ง
                             let warningBottomHtml = '';
 
                             if (diffDays > 7) { 
@@ -1000,14 +1011,12 @@
                                     <span class="text-xs bg-white px-2.5 py-1 rounded-full text-[#5a4a5e] border border-[#ffccd5]">อายุ ${data.age || '-'} ปี</span>
                                 </div>
                                 
-                                <!-- 💡 อัปเดต: ตัวหนาที่อ่านง่าย สีชัด สำหรับรายละเอียดลูกค้า -->
                                 <div class="text-[13px] text-[#5a4a5e] space-y-2 font-medium mb-3">
                                     <p>👤 ชื่อลูกค้า: <span class="font-bold text-[#0f172a] text-[14px]">${data.name || '-'}</span></p>
                                     <p>🏷️ ประเภท: <span class="font-bold text-[#ff5277] text-[14px]">${data.type || '-'}</span></p>
                                     <p>📱 รุ่นที่ผ่อน: <span class="font-bold text-[#0f172a] text-[14px]">${data.model || '-'}</span></p>
                                 </div>
 
-                                <!-- 🔽 สไลด์ลงมาสมูทๆ ไม่มีกรอบกล่อง -->
                                 <div class="flex justify-center mb-3">
                                     <button onclick="toggleDetailsBox('${inputId}')" class="text-[13px] font-bold text-[#c75b80] underline flex items-center gap-1 active:scale-95 transition-transform">
                                         <i class="fa-solid fa-chevron-down toggle-icon-${inputId} transition-transform duration-300"></i> ดูรายละเอียดเพิ่มเติม
@@ -1026,7 +1035,6 @@
                                     </div>
                                 </div>
                                 
-                                <!-- 🎯 ยอดคงเหลือสุทธิ (ย่อกรอบลงมา) -->
                                 <div class="text-center bg-white border border-[#ffccd5] rounded-xl py-2 px-4 mx-2 shadow-sm mb-3">
                                     <span class="text-[12px] text-[#5a4a5e] font-semibold">🎯 ยอดคงเหลือสุทธิ</span><br>
                                     <span class="text-lg font-bold text-[#ff5277]">${balanceNum.toLocaleString()} ฿</span>
@@ -1043,7 +1051,6 @@
                                 <i class="fa-solid fa-wallet"></i> ช่องทางชำระเงินของร้าน 🎀
                             </div>
                             
-                            <!-- 💡 อัปเดต: 💚 กสิกรไทย คืนไซส์ใหญ่ปกติ และเปลี่ยน บจก. -->
                             <div class="relative bg-gradient-to-br from-[#dcfce7] to-[#bbf7d0] border border-[#86efac] rounded-2xl p-4 mb-3 flex justify-between items-center shadow-sm">
                                 <div>
                                     <div class="text-[14px] font-bold text-[#16a34a] mb-1">กสิกรไทย (KBank) 💚</div>
@@ -1053,7 +1060,6 @@
                                 <button onclick="copyText('${bankText}')" class="bg-white text-[#16a34a] px-3.5 py-1.5 rounded-xl text-[12px] font-bold shadow-sm active:scale-95 shrink-0"><i class="fa-regular fa-copy"></i> คัดลอก</button>
                             </div>
 
-                            <!-- 💡 อัปเดต: 🩷 TrueMoney Wallet คืนไซส์ใหญ่ปกติ -->
                             <div class="relative bg-gradient-to-br from-[#fce7f3] to-[#fbcfe8] border border-[#f9a8d4] rounded-2xl p-4 mb-3 flex justify-between items-center shadow-sm">
                                 <div>
                                     <div class="text-[14px] font-bold text-[#be185d] mb-1">TrueMoney Wallet 🩷</div>
@@ -1083,6 +1089,16 @@
                                 <i class="fa-solid fa-file-arrow-up watermark-icon"></i>
                                 <div class="card-content-inner flex flex-col gap-3">
                                     <p class="text-[13px] font-bold text-[#ff5277]">📤 แจ้งชำระเงิน / แนบสลิป:</p>
+                                    
+                                    <!-- 💡 กล่องติ๊ก สำหรับคนโอนชื่อไม่ตรง -->
+                                    <label class="flex items-center gap-2 cursor-pointer text-[12px] font-bold text-[#a86b81]">
+                                        <input type="checkbox" id="slip-name-check" onchange="toggleSlipNameInput()" class="w-4 h-4 accent-[#ff5277]">
+                                        ชื่อคนโอนไม่ตรงกับชื่อผู้ผ่อน (บัญชีคนอื่นโอน)
+                                    </label>
+                                    
+                                    <!-- 💡 ช่องกรอกชื่อ จะซ่อนอยู่ และโชว์เมื่อติ๊กถูก -->
+                                    <input type="text" id="slip-name-input" class="admin-input hidden-page !mt-0 text-[13px]" placeholder="ระบุ ชื่อ-นามสกุล คนโอน (ตามสลิป)">
+                                    
                                     <input type="number" id="slip-amount" class="admin-input !mt-0 text-[14px]" placeholder="ระบุจำนวนเงิน">
                                     <input type="file" id="slip-file" accept="image/*" class="admin-input !mt-0 text-[12px] py-2.5">
                                     <button id="btn-submit-slip" onclick="submitSlip()" class="btn-main !py-3 !text-[14px] mt-1 shadow-sm">
@@ -1099,7 +1115,6 @@
                     resultBox.classList.remove('hidden-page');
                     errorBox.classList.add('hidden-page');
                 } else {
-                    // ❌ 💡 อัปเดต: แจ้งเตือนรวมร่างสำหรับ Discord และแบน 120 วิ
                     resultBox.classList.add('hidden-page');
                     errorBox.classList.remove('hidden-page');
                     
@@ -1128,22 +1143,23 @@
             }
         }
 
-        // 💡 อัปเดต: ระบบบีบอัดภาพ (Image Compression) ป้องกันบั๊กส่งไม่เข้า Firebase แต่ Discord เด้ง
         async function submitSlip() {
             const amount = document.getElementById('slip-amount').value;
             const fileInput = document.getElementById('slip-file');
             const btn = document.getElementById('btn-submit-slip');
+
+            // 💡 ดึงค่าการติ๊ก และ ชื่อที่กรอก
+            const isDifferentName = document.getElementById('slip-name-check').checked;
+            const slipName = document.getElementById('slip-name-input').value.trim();
 
             if (!currentCustomerId) {
                 return alert('กรุณากดปุ่ม "ค้นหาข้อมูล" ให้เจอรหัสลูกค้าก่อนแนบสลิปนะคะ 🥺');
             }
 
             if(!amount || !fileInput.files[0]) return alert('กรุณาระบุจำนวนเงินและแนบรูปสลิปให้ครบนะคะ 🥺');
-            
-            const file = fileInput.files[0];
-            if (!file.type.match('image.*')) {
-                return alert('กรุณาแนบไฟล์รูปภาพเท่านั้นค่ะ 🥺');
-            }
+
+            // 💡 บังคับให้กรอกชื่อ ถ้าติ๊กกล่องเอาไว้
+            if(isDifferentName && !slipName) return alert('กรุณาระบุ ชื่อ-นามสกุล คนโอนตามสลิปด้วยนะคะ 🥺');
 
             btn.disabled = true;
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> กำลังส่งข้อมูล...';
@@ -1178,14 +1194,21 @@
                         await db.ref('pendingSlips').push({
                             id: currentCustomerId,
                             amount: amount,
+                            slipName: isDifferentName ? slipName : "", // 💡 บันทึกชื่อถ้ามีการกรอก
                             imageUrl: base64Image,
                             time: timeString,
                             timestamp: firebase.database.ServerValue.TIMESTAMP
                         });
 
-                        const payload = {
-                            content: `🚨 **มีลูกค้าส่งสลิปใหม่!**\n🎀 **รหัสลูกค้า:** ${currentCustomerId}\n💰 **ยอดโอนที่แจ้ง:** ${amount} บาท\n🕒 **เวลาส่ง:** ${timeString}\n👉 *เข้าเว็บแอดมินเพื่อตรวจสอบรูปสลิปและกดอนุมัติยอดครับ*`
-                        };
+                        // 💡 จัดข้อความ Discord แบบแทรก "ในนาม" หากมีการกรอก
+                        let discordMsg = `🚨 **มีลูกค้าส่งสลิปใหม่!**\n🎀 **รหัสลูกค้า:** ${currentCustomerId}\n💰 **ยอดโอนที่แจ้ง:** ${amount} บาท\n`;
+                        if (isDifferentName && slipName !== "") {
+                            discordMsg += `👤 **ในนาม:** ${slipName}\n`;
+                        }
+                        discordMsg += `🕒 **เวลาส่ง:** ${timeString}\n👉 *เข้าเว็บแอดมินเพื่อตรวจสอบรูปสลิปและกดอนุมัติยอดครับ*`;
+
+                        const payload = { content: discordMsg };
+                        
                         fetch(discordWebhookSlip, {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
@@ -1220,6 +1243,13 @@
 
                 Object.keys(slips).forEach(key => {
                     const s = slips[key];
+                    
+                    // 💡 เช็กว่ามีชื่อผู้โอนแนบมาไหม ถ้ามีให้แสดงบรรทัดนี้
+                    let slipNameHtml = '';
+                    if (s.slipName && s.slipName.trim() !== "") {
+                        slipNameHtml = `<p class="text-[13px] text-[#d97706]">👤 <b>ในนาม:</b> ${s.slipName}</p>`;
+                    }
+
                     const slipHtml = `
                         <div class="bg-white p-3.5 rounded-xl border border-[#ffffff] space-y-2 text-sm font-medium" id="slip-${key}">
                             <div class="flex justify-between items-center text-base font-bold text-[#c75b80] border-b border-dashed border-[#ffb6c1] pb-1.5">
@@ -1227,6 +1257,7 @@
                                 <span class="text-[11px] bg-[#fff0f3] px-2 py-1 rounded-full border border-[#ff9bb3]">รอตรวจสอบ</span>
                             </div>
                             <p class="text-[13px] text-[#4682b4]">⏱️ <b>เวลาส่ง:</b> ${s.time}</p>
+                            ${slipNameHtml}
                             <p class="text-[13px] text-[#059669]">💰 <b>ยอดโอนที่ลูกค้าแจ้ง:</b> <span id="display-amt-${key}">${s.amount}</span> ฿</p>
                             
                             <div class="bg-pink-50 p-2.5 rounded-lg border border-pink-200 my-2">

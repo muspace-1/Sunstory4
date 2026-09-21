@@ -358,7 +358,6 @@
                     <div class="text-xs font-bold text-[#ff5277] mb-1.5 flex items-center justify-center gap-1">
                         <i class="fa-solid fa-triangle-exclamation"></i> แจ้งเพื่อทราบ / ป้องกันมิจฉาชีพ
                     </div>
-                    <!-- 💡 อัปเดต: เพิ่มจุด บจก. ซันสตอรี่โฟร์ -->
                     <p class="text-[13px] font-medium text-[#5a4a5e] leading-relaxed">
                         ชื่อบัญชีโอนเงิน : <br>
                         <span class="glow-name text-[15px]">บจก. ซันสตอรี่โฟร์</span> เท่านั้น!
@@ -367,7 +366,7 @@
                 </div>
             </div>
 
-            <!-- 📢 โซนป้ายประกาศ (อยู่ใต้แจ้งเพื่อทราบ / ไม่มีปุ่มกากบาท) -->
+            <!-- 📢 โซนป้ายประกาศ -->
             <div id="announcement-banner" class="hidden-page bg-[#fffbeb] border border-[#fde68a] rounded-xl p-3 text-center">
                 <div class="text-[11px] font-bold text-[#d97706] mb-0.5"><i class="fa-solid fa-bullhorn"></i> ประกาศจากทางร้าน</div>
                 <p id="announcement-text" class="text-[11px] text-[#b45309] font-medium whitespace-pre-line"></p>
@@ -395,7 +394,6 @@
                     <div class="text-xs font-bold text-[#ff5277] mb-1.5 flex items-center justify-center gap-1">
                         <i class="fa-solid fa-triangle-exclamation"></i> แจ้งเพื่อทราบ / ป้องกันมิจฉาชีพ
                     </div>
-                    <!-- 💡 อัปเดต: เพิ่มจุด บจก. ซันสตอรี่โฟร์ -->
                     <p class="text-[13px] font-medium text-[#5a4a5e] leading-relaxed">
                         ชื่อบัญชีโอนเงิน : <br>
                         <span class="glow-name text-[15px]">บจก. ซันสตอรี่โฟร์</span> เท่านั้น!
@@ -442,7 +440,7 @@
                 <span>🔍 เช็กยอดผ่อนชำระ</span>
             </button>
 
-            <!-- 📄 ปุ่มใบรับรองแบบคลีน เล็กๆ น่ารัก -->
+            <!-- 📄 ปุ่มใบรับรอง -->
             <div class="text-center mt-1">
                 <button onclick="openCertModal()" class="bg-white border border-[#ffccd5] text-[#c75b80] px-4 py-1.5 rounded-full text-[11px] font-bold shadow-sm active:scale-95 transition-transform inline-flex items-center gap-1.5">
                     <i class="fa-solid fa-file-signature text-[#ff5277]"></i> ใบรับรองจดทะเบียนบริษัท
@@ -596,18 +594,10 @@
         let searchOnCooldown = false;
         let cooldownTimer = null;
 
-        // 🌟 แก้ไขลิงก์ scriptUrl ให้เป็นตัวล่าสุดแล้ว 100% 🌟
         const scriptUrl = 'https://script.google.com/macros/s/AKfycbzyzjlIFCWHPFGBG7UlgqBOD_3ZuHxcFjOA2ptN44aifwyun-FTRamj_yittoN54sPe/exec';
         
         const discordWebhookSlip = 'https://discord.com/api/webhooks/1545650221948600381/JWgX53TC8Wq5id62H0b-5l8N7tTx7cOrpD8ju3-pq1v9Og23xvDvRfkbtkgpUvM8PLa-';
         const discordWebhookAdmin = 'https://discord.com/api/webhooks/1545676162485715016/r-hqXE-gQfDIOCAw7Rm55Mze5HqiHdHPQCq7IKPSqp74kLW4hEoyyrUnvdcLjzQM8Gm_';
-
-        const adminMap = {
-            "SUN01": { name: "คุณซัน", mention: "<@&1545675459520364645>" },
-            "MIN02": { name: "คุณมิน", mention: "<@&1545675524993720340>" },
-            "GUS03": { name: "คุณกัส", mention: "<@&1545675560997494794>" },
-            "FADPI04": { name: "แฝดพี่", mention: "<@&1545675609613541426>" }
-        };
 
         const firebaseConfig = {
             apiKey: "AIzaSyC2SoaNI5hCs6RCczGQv8b7-ofIQHmzX0c",
@@ -678,7 +668,6 @@
             if (savedPhone) document.getElementById('customer-phone-input').value = savedPhone;
         };
 
-        // 🔽 ฟังก์ชันย่อ/ขยาย แบบสไลด์สมูท ไร้กรอบทึบ
         function toggleDetailsBox(id) {
             const box = document.getElementById('more-details-box-' + id);
             const icon = document.querySelector('.toggle-icon-' + id);
@@ -698,7 +687,7 @@
                 input.classList.remove('hidden-page');
             } else {
                 input.classList.add('hidden-page');
-                input.value = ''; // เคลียร์ค่าออกเวลาเอาติ๊กออก
+                input.value = ''; 
             }
         }
 
@@ -1002,6 +991,34 @@
                         `;
                     }
 
+                    // 💡 [NEW] ฟังก์ชันตรวจสอบว่ามีสลิปที่เพิ่งส่งรอตรวจอยู่หรือไม่
+                    const pendingSnapshot = await db.ref('pendingSlips').orderByChild('id').equalTo(inputId).once('value');
+                    const pendingData = pendingSnapshot.val();
+                    let pendingAlertHtml = '';
+
+                    if (pendingData) {
+                        let pendingCount = 0;
+                        let pendingTotalAmt = 0;
+                        Object.keys(pendingData).forEach(key => {
+                            pendingCount++;
+                            pendingTotalAmt += parseFloat(pendingData[key].amount) || 0;
+                        });
+
+                        if (pendingCount > 0) {
+                            pendingAlertHtml = `
+                                <div class="mt-1 mb-3 bg-[#fffbeb] border border-[#fde68a] rounded-xl p-3 text-center shadow-sm animate-pulse">
+                                    <div class="text-[13px] font-bold text-[#d97706] mb-1">
+                                        <i class="fa-solid fa-hourglass-half"></i> กำลังรอแอดมินตรวจสอบสลิป ⏳
+                                    </div>
+                                    <div class="text-[12px] text-[#b45309] font-medium">
+                                        คุณมีสลิปที่เพิ่งส่ง <b>${pendingCount}</b> รายการ (ยอดรวม <b>${pendingTotalAmt.toLocaleString()}</b> บาท)<br>
+                                        ระบบได้รับสลิปแล้ว แอดมินกำลังเร่งตรวจสอบให้นะคะ 🌸
+                                    </div>
+                                </div>
+                            `;
+                        }
+                    }
+
                     resultBox.innerHTML = `
                         <div class="info-card !bg-[#fffcf5] !border-[#ffffff]">
                             <i class="fa-solid fa-receipt watermark-icon"></i>
@@ -1040,6 +1057,7 @@
                                     <span class="text-lg font-bold text-[#ff5277]">${balanceNum.toLocaleString()} ฿</span>
                                 </div>
 
+                                ${pendingAlertHtml}
                                 ${progressHtml}
                                 ${cooldownHtml}
                                 ${contractBtnHtml}
@@ -1090,13 +1108,11 @@
                                 <div class="card-content-inner flex flex-col gap-3">
                                     <p class="text-[13px] font-bold text-[#ff5277]">📤 แจ้งชำระเงิน / แนบสลิป:</p>
                                     
-                                    <!-- 💡 กล่องติ๊ก สำหรับคนโอนชื่อไม่ตรง -->
                                     <label class="flex items-center gap-2 cursor-pointer text-[12px] font-bold text-[#a86b81]">
                                         <input type="checkbox" id="slip-name-check" onchange="toggleSlipNameInput()" class="w-4 h-4 accent-[#ff5277]">
                                         ชื่อคนโอนไม่ตรงกับชื่อผู้ผ่อน (บัญชีคนอื่นโอน)
                                     </label>
                                     
-                                    <!-- 💡 ช่องกรอกชื่อ จะซ่อนอยู่ และโชว์เมื่อติ๊กถูก -->
                                     <input type="text" id="slip-name-input" class="admin-input hidden-page !mt-0 text-[13px]" placeholder="ระบุ ชื่อ-นามสกุล คนโอน (ตามสลิป)">
                                     
                                     <input type="number" id="slip-amount" class="admin-input !mt-0 text-[14px]" placeholder="ระบุจำนวนเงิน">
@@ -1148,7 +1164,6 @@
             const fileInput = document.getElementById('slip-file');
             const btn = document.getElementById('btn-submit-slip');
 
-            // 💡 ดึงค่าการติ๊ก และ ชื่อที่กรอก
             const isDifferentName = document.getElementById('slip-name-check').checked;
             const slipName = document.getElementById('slip-name-input').value.trim();
 
@@ -1158,7 +1173,6 @@
 
             if(!amount || !fileInput.files[0]) return alert('กรุณาระบุจำนวนเงินและแนบรูปสลิปให้ครบนะคะ 🥺');
 
-            // 💡 บังคับให้กรอกชื่อ ถ้าติ๊กกล่องเอาไว้
             if(isDifferentName && !slipName) return alert('กรุณาระบุ ชื่อ-นามสกุล คนโอนตามสลิปด้วยนะคะ 🥺');
 
             btn.disabled = true;
@@ -1194,13 +1208,12 @@
                         await db.ref('pendingSlips').push({
                             id: currentCustomerId,
                             amount: amount,
-                            slipName: isDifferentName ? slipName : "", // 💡 บันทึกชื่อถ้ามีการกรอก
+                            slipName: isDifferentName ? slipName : "",
                             imageUrl: base64Image,
                             time: timeString,
                             timestamp: firebase.database.ServerValue.TIMESTAMP
                         });
 
-                        // 💡 จัดข้อความ Discord แบบแทรก "ในนาม" หากมีการกรอก
                         let discordMsg = `🚨 **มีลูกค้าส่งสลิปใหม่!**\n🎀 **รหัสลูกค้า:** ${currentCustomerId}\n💰 **ยอดโอนที่แจ้ง:** ${amount} บาท\n`;
                         if (isDifferentName && slipName !== "") {
                             discordMsg += `👤 **ในนาม:** ${slipName}\n`;
@@ -1244,7 +1257,6 @@
                 Object.keys(slips).forEach(key => {
                     const s = slips[key];
                     
-                    // 💡 เช็กว่ามีชื่อผู้โอนแนบมาไหม ถ้ามีให้แสดงบรรทัดนี้
                     let slipNameHtml = '';
                     if (s.slipName && s.slipName.trim() !== "") {
                         slipNameHtml = `<p class="text-[13px] text-[#d97706]">👤 <b>ในนาม:</b> ${s.slipName}</p>`;
@@ -1310,10 +1322,12 @@
             const chk = document.getElementById(`admin-fee-chk-${dbKey}`);
             const finalAmount = chk && chk.checked ? parseFloat((baseAmount - (baseAmount * 0.029)).toFixed(2)) : baseAmount;
 
-            const adminId = sessionStorage.getItem('sunstoryAdminId') || 'SUN01';
-            const adminInfo = adminMap[adminId] || { name: "แอดมิน", mention: adminId };
+            // 💡 อัปเดต: ดึงข้อมูลแอดมินจาก Session แทนรหัสแบบฝังในโค้ด
+            const adminId = sessionStorage.getItem('sunstoryAdminId') || 'Unknown';
+            const adminName = sessionStorage.getItem('sunstoryAdminName') || 'แอดมิน';
+            const adminMention = sessionStorage.getItem('sunstoryAdminMention') || adminId;
 
-            if(!confirm(`[แอดมิน: ${adminInfo.name} (${adminId})] ยืนยันการอนุมัติยอด ${finalAmount} บาท ให้กับรหัส ${custId} ใช่ไหม?\nระบบจะอัปเดต Google Sheets ทันที`)) return;
+            if(!confirm(`[แอดมิน: ${adminName} (${adminId})] ยืนยันการอนุมัติยอด ${finalAmount} บาท ให้กับรหัส ${custId} ใช่ไหม?\nระบบจะอัปเดต Google Sheets ทันที`)) return;
             
             try {
                 const response = await fetch(scriptUrl, {
@@ -1331,7 +1345,7 @@
                     const timeString = now.toLocaleDateString('th-TH') + ' ' + now.toLocaleTimeString('th-TH', {hour: '2-digit', minute:'2-digit'}) + ' น.';
                     
                     const adminPayload = {
-                        content: `✅ **อนุมัติยอดสำเร็จ!**\n🎀 **รหัสลูกค้า:** ${custId}\n💰 **ยอดเงิน:** ${finalAmount} ฿\n👤 **ผู้ออนุมัติ:** ${adminInfo.mention} (แอดมิน **${adminId} - ${adminInfo.name}**)\n🕒 **เวลา:** ${timeString}`
+                        content: `✅ **อนุมัติยอดสำเร็จ!**\n🎀 **รหัสลูกค้า:** ${custId}\n💰 **ยอดเงิน:** ${finalAmount} ฿\n👤 **ผู้ออนุมัติ:** ${adminMention} (แอดมิน **${adminId} - ${adminName}**)\n🕒 **เวลา:** ${timeString}`
                     };
                     fetch(discordWebhookAdmin, {
                         method: 'POST',
@@ -1348,34 +1362,61 @@
             }
         }
 
-        function rejectSlip(dbKey) {
-            if(confirm('คุณต้องการลบสลิปนี้ทิ้ง (ไม่อนุมัติ) ใช่ไหม?')) {
-                db.ref('pendingSlips/' + dbKey).remove().catch(err => console.error("Reject error:", err));
-            }
-        }
-
-        function checkPassword() {
+        // 💡 [NEW] ฟังก์ชันล็อกอินแอดมินฉบับปลอดภัย ดึงจาก Firebase (และตั้งค่าให้ในครั้งแรก)
+        async function checkPassword() {
             const adminIdInput = document.getElementById('admin-id-input').value.trim().toUpperCase();
+            if (!adminIdInput) return alert('กรุณากรอกรหัสแอดมินค่ะ 🐰');
 
-            if (!adminIdInput || !adminMap[adminIdInput]) {
-                return alert('รหัสแอดมินไม่ถูกต้องค่ะ กรุณาลองใหม่ (เช่น SUN01, MIN02, GUS03, FADPI04) 🐰');
+            const btn = document.getElementById('btn-login');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ตรวจสอบ...';
+
+            try {
+                const snapshot = await db.ref('adminUsers/' + adminIdInput).once('value');
+                let adminInfo = snapshot.val();
+
+                // 💡 Fallback เพื่อ Auto-setup ให้แอดมินในครั้งแรก (เดี๋ยวข้อมูลจะถูกส่งไปเก็บใน Firebase เอง)
+                if (!adminInfo) {
+                    const tempAdminMap = {
+                        "SUN01": { name: "คุณซัน", mention: "<@&1545675459520364645>" },
+                        "MIN02": { name: "คุณมิน", mention: "<@&1545675524993720340>" },
+                        "GUS03": { name: "คุณกัส", mention: "<@&1545675560997494794>" },
+                        "FADPI04": { name: "แฝดพี่", mention: "<@&1545675609613541426>" }
+                    };
+                    if (tempAdminMap[adminIdInput]) {
+                        adminInfo = tempAdminMap[adminIdInput];
+                        await db.ref('adminUsers/' + adminIdInput).set(adminInfo); // แอบส่งขึ้น Firebase ให้อัตโนมัติ
+                    } else {
+                        btn.disabled = false;
+                        btn.innerHTML = 'เข้าสู่ระบบ';
+                        return alert('รหัสแอดมินไม่ถูกต้องค่ะ กรุณาลองใหม่ 🐰');
+                    }
+                }
+
+                sessionStorage.setItem('sunstoryAdminId', adminIdInput);
+                sessionStorage.setItem('sunstoryAdminName', adminInfo.name);
+                sessionStorage.setItem('sunstoryAdminMention', adminInfo.mention);
+                
+                document.getElementById('admin-logged-in-label').innerText = `ผู้ใช้งานระบบ: แอดมิน ${adminIdInput} (${adminInfo.name})`;
+                
+                closeModals();
+                
+                document.getElementById('header-zones').classList.add('hidden-page');
+                document.getElementById('page-1').classList.add('hidden-page');
+                document.getElementById('page-2').classList.add('hidden-page');
+                document.getElementById('page-3').classList.add('hidden-page');
+                document.getElementById('admin-full-page').classList.remove('hidden-page');
+                
+                switchAdminTab(1);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            } catch (err) {
+                console.error("Login error:", err);
+                alert('ระบบขัดข้อง กรุณาลองใหม่ค่ะ');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'เข้าสู่ระบบ';
             }
-            
-            sessionStorage.setItem('sunstoryAdminId', adminIdInput);
-            
-            const adminInfo = adminMap[adminIdInput];
-            document.getElementById('admin-logged-in-label').innerText = `ผู้ใช้งานระบบ: แอดมิน ${adminIdInput} (${adminInfo.name})`;
-            
-            closeModals();
-            
-            document.getElementById('header-zones').classList.add('hidden-page');
-            document.getElementById('page-1').classList.add('hidden-page');
-            document.getElementById('page-2').classList.add('hidden-page');
-            document.getElementById('page-3').classList.add('hidden-page');
-            document.getElementById('admin-full-page').classList.remove('hidden-page');
-            
-            switchAdminTab(1);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function backToMainFromAdmin() {

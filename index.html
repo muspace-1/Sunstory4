@@ -1239,7 +1239,9 @@
                 };
                 img.src = event.target.result;
             };
-            reader.readAsDataURL(file);
+            
+            // 👇 ตรงนี้คือจุดที่แก้ไขครับ จาก file เป็น fileInput.files[0] 👇
+            reader.readAsDataURL(fileInput.files[0]);
         }
 
         function listenToPendingSlips() {

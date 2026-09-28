@@ -1364,6 +1364,43 @@
             }
         }
 
+        async function rejectSlip(dbKey) {
+            // ดึงข้อมูลแอดมินที่กำลังใช้งานระบบอยู่
+            const adminId = sessionStorage.getItem('sunstoryAdminId') || 'Unknown';
+            const adminName = sessionStorage.getItem('sunstoryAdminName') || 'แอดมิน';
+            const adminMention = sessionStorage.getItem('sunstoryAdminMention') || adminId;
+
+            // เด้งถามยืนยันก่อนลบ เพื่อป้องกันการกดผิด
+            if(!confirm(`[แอดมิน: ${adminName} (${adminId})] ยืนยันที่จะ "ไม่อนุมัติและลบทิ้ง" สลิปรายการนี้ใช่ไหม?\n(ข้อมูลสลิปจะถูกลบออกไปถาวร)`)) {
+                return; 
+            }
+            
+            try {
+                // ลบสลิปออกจาก Firebase
+                await db.ref('pendingSlips/' + dbKey).remove();
+                
+                alert('❌ ลบรายการสลิปที่ไม่ถูกต้องเรียบร้อยแล้ว');
+
+                // แจ้งเตือนลง Discord ฝั่งแอดมินว่ามีการปัดตกสลิป
+                const now = new Date();
+                const timeString = now.toLocaleDateString('th-TH') + ' ' + now.toLocaleTimeString('th-TH', {hour: '2-digit', minute:'2-digit'}) + ' น.';
+                
+                const adminPayload = {
+                    content: `❌ **ไม่อนุมัติ/ปัดตกสลิป!**\n👤 **ผู้ดำเนินการ:** ${adminMention} (แอดมิน **${adminId} - ${adminName}**)\n🕒 **เวลา:** ${timeString}\n👉 *รายการสลิปที่ไม่ถูกต้องถูกลบออกจากระบบเรียบร้อยแล้ว*`
+                };
+                
+                fetch(discordWebhookAdmin, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(adminPayload)
+                }).catch(err => console.error("Discord error:", err));
+
+            } catch(e) { 
+                console.error("Reject error:", e);
+                alert('ระบบขัดข้อง ลบข้อมูลไม่สำเร็จ กรุณาลองใหม่อีกครั้ง'); 
+            }
+        }
+
         // 💡 [NEW] ฟังก์ชันล็อกอินแอดมินฉบับปลอดภัย ดึงจาก Firebase (และตั้งค่าให้ในครั้งแรก)
         async function checkPassword() {
             const adminIdInput = document.getElementById('admin-id-input').value.trim().toUpperCase();

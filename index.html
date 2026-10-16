@@ -517,6 +517,15 @@
                 </button>
             </div>
 
+            <!-- ⏳ แถบแสดงสถานะคิวการบันทึกข้อมูล -->
+            <div id="queue-status-bar" class="hidden-page bg-[#fffbeb] border border-[#fde68a] p-3 rounded-xl flex items-center justify-between">
+                <div class="flex items-center gap-2 text-xs font-bold text-[#d97706]">
+                    <i class="fa-solid fa-spinner fa-spin text-base"></i>
+                    <span id="queue-status-text">กำลังทยอยบันทึกข้อมูลลงชีตทีละรายการ...</span>
+                </div>
+                <span id="queue-count-badge" class="bg-[#d97706] text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full">รอ 0 คิว</span>
+            </div>
+
             <div class="flex gap-2 bg-[#fff5f8] p-1.5 rounded-xl border border-[#ffffff]">
                 <button id="tab-btn-1" onclick="switchAdminTab(1)" class="admin-tab-btn active">
                     <i class="fa-solid fa-list-check"></i> สลิปรอตรวจสอบ
@@ -527,7 +536,10 @@
             </div>
 
             <div id="admin-tab-content-1" class="info-card !bg-[#fff0f3] !border-[#ffffff]">
-                <h3 class="text-sm font-bold text-[#ff5277] mb-3">📥 รายการสลิปรอตรวจสอบ</h3>
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="text-sm font-bold text-[#ff5277]">📥 รายการสลิปรอตรวจสอบ</h3>
+                    <span class="text-[10px] text-[#a86b81] font-medium">✨ กดอนุมัติรัวๆ ได้เลย ระบบจะเข้าคิวให้เอง</span>
+                </div>
                 <div id="admin-slips-container" class="space-y-4"></div>
             </div>
 
@@ -613,6 +625,13 @@
 
         let currentCustomerId = ''; 
 
+        // ==========================================
+        // 🚦 ตัวแปรสำหรับระบบจัดการคิว (Queue System) ป้องกันการกดรัวแล้วข้อมูลชนกัน
+        // ==========================================
+        let slipActionQueue = [];
+        let isProcessingQueue = false;
+        let queuedSlipKeys = new Set(); // จำว่าสลิปใบไหนอยู่ในคิวแล้วบ้าง เวลา Firebase รีเฟรชหน้าจอปุ่มจะได้ไม่เด้งกลับ
+
         window.onload = function() {
             db.ref('storeConfig').once('value').then((snapshot) => {
                 const data = snapshot.val() || {};
@@ -679,7 +698,6 @@
             }
         }
 
-        // 💡 ฟังก์ชันเปิด/ปิดช่องกรอกชื่อคนโอน
         function toggleSlipNameInput() {
             const check = document.getElementById('slip-name-check');
             const input = document.getElementById('slip-name-input');
@@ -815,12 +833,12 @@
                 if (resData && resData.success) {
                     currentCustomerId = inputId;
                     const data = resData.data;
-                    const paidNum = parseFloat(String(data.paid).replace(/,/g, '')) || 0;
-                    const creditTargetNum = parseFloat(String(data.creditTarget).replace(/,/g, '')) || 0;
-                    const installmentAmt = parseFloat(String(data.installmentAmt).replace(/,/g, '')) || 0;
-                    const balanceNum = parseFloat(String(data.balance).replace(/,/g, '')) || 0;
-                    const totalNum = parseFloat(String(data.total).replace(/,/g, '')) || 0;
-                    const discountValue = data.discount ? parseFloat(String(data.discount).replace(/,/g, '')) : 0;
+                    const paidNum = parseFloat(String(data.paid).replace(/[^0-9.-]+/g, '')) || 0;
+                    const creditTargetNum = parseFloat(String(data.creditTarget).replace(/[^0-9.-]+/g, '')) || 0;
+                    const installmentAmt = parseFloat(String(data.installmentAmt).replace(/[^0-9.-]+/g, '')) || 0;
+                    const balanceNum = parseFloat(String(data.balance).replace(/[^0-9.-]+/g, '')) || 0;
+                    const totalNum = parseFloat(String(data.total).replace(/[^0-9.-]+/g, '')) || 0;
+                    const discountValue = data.discount ? parseFloat(String(data.discount).replace(/[^0-9.-]+/g, '')) : 0;
                     
                     let creditLeftNum = creditTargetNum - paidNum;
                     if (creditLeftNum < 0) creditLeftNum = 0;
@@ -900,7 +918,6 @@
                             </div>`;
                     }
 
-                    // 🚨 ระบบตัดยอด 15 วัน
                     let cooldownHtml = '';
                     if (data.dueDate && String(data.dueDate).trim() !== "" && data.dueDate !== "-") {
                         let rawDateStr = String(data.dueDate);
@@ -991,7 +1008,6 @@
                         `;
                     }
 
-                    // 💡 [NEW] ฟังก์ชันตรวจสอบว่ามีสลิปที่เพิ่งส่งรอตรวจอยู่หรือไม่
                     const pendingSnapshot = await db.ref('pendingSlips').orderByChild('id').equalTo(inputId).once('value');
                     const pendingData = pendingSnapshot.val();
                     let pendingAlertHtml = '';
@@ -1240,7 +1256,6 @@
                 img.src = event.target.result;
             };
             
-            // 👇 ตรงนี้คือจุดที่แก้ไขครับ จาก file เป็น fileInput.files[0] 👇
             reader.readAsDataURL(fileInput.files[0]);
         }
 
@@ -1258,17 +1273,37 @@
 
                 Object.keys(slips).forEach(key => {
                     const s = slips[key];
+                    const isAlreadyQueued = queuedSlipKeys.has(key);
                     
                     let slipNameHtml = '';
                     if (s.slipName && s.slipName.trim() !== "") {
                         slipNameHtml = `<p class="text-[13px] text-[#d97706]">👤 <b>ในนาม:</b> ${s.slipName}</p>`;
                     }
 
+                    const badgeHtml = isAlreadyQueued 
+                        ? `<span id="status-badge-${key}" class="text-[11px] bg-amber-100 text-amber-700 px-2 py-1 rounded-full border border-amber-300 font-bold"><i class="fa-solid fa-hourglass-half fa-spin"></i> อยู่ในคิวบันทึก...</span>`
+                        : `<span id="status-badge-${key}" class="text-[11px] bg-[#fff0f3] px-2 py-1 rounded-full border border-[#ff9bb3]">รอตรวจสอบ</span>`;
+
+                    const actionButtonsHtml = isAlreadyQueued
+                        ? `<div class="flex gap-2">
+                               <button disabled class="bg-gray-300 text-gray-600 px-3 py-2.5 rounded-xl text-[12px] font-bold flex-1 cursor-not-allowed">
+                                   ⏳ เข้าคิวรอ...
+                               </button>
+                           </div>`
+                        : `<div class="flex gap-2">
+                               <button id="btn-approve-${key}" onclick="approveSlipWithFee('${key}', '${s.id}', ${s.amount})" class="bg-emerald-500 text-white px-3 py-2.5 rounded-xl text-[12px] font-bold active:scale-95 flex-1">
+                                   ✅ อนุมัติยอด
+                               </button>
+                               <button id="btn-reject-${key}" onclick="rejectSlip('${key}', '${s.id}')" class="bg-rose-400 text-white px-3 py-2.5 rounded-xl text-[12px] font-bold active:scale-95 flex-1">
+                                   ❌ ไม่อนุมัติ/ลบทิ้ง
+                               </button>
+                           </div>`;
+
                     const slipHtml = `
-                        <div class="bg-white p-3.5 rounded-xl border border-[#ffffff] space-y-2 text-sm font-medium" id="slip-${key}">
+                        <div class="bg-white p-3.5 rounded-xl border border-[#ffffff] space-y-2 text-sm font-medium transition-opacity duration-300 ${isAlreadyQueued ? 'opacity-60' : ''}" id="slip-${key}">
                             <div class="flex justify-between items-center text-base font-bold text-[#c75b80] border-b border-dashed border-[#ffb6c1] pb-1.5">
                                 <span>รหัส: ${s.id}</span>
-                                <span class="text-[11px] bg-[#fff0f3] px-2 py-1 rounded-full border border-[#ff9bb3]">รอตรวจสอบ</span>
+                                ${badgeHtml}
                             </div>
                             <p class="text-[13px] text-[#4682b4]">⏱️ <b>เวลาส่ง:</b> ${s.time}</p>
                             ${slipNameHtml}
@@ -1276,7 +1311,7 @@
                             
                             <div class="bg-pink-50 p-2.5 rounded-lg border border-pink-200 my-2">
                                 <label class="flex items-center gap-2 cursor-pointer text-xs font-bold text-[#be185d]">
-                                    <input type="checkbox" id="admin-fee-chk-${key}" onchange="calculateAdminFee('${key}', ${s.amount})" class="w-4 h-4 accent-[#ff5277]">
+                                    <input type="checkbox" id="admin-fee-chk-${key}" ${isAlreadyQueued ? 'disabled' : ''} onchange="calculateAdminFee('${key}', ${s.amount})" class="w-4 h-4 accent-[#ff5277]">
                                     ลูกค้าโอนผ่าน Wallet (หักค่าธรรมเนียม 2.9%)
                                 </label>
                                 <div id="admin-calc-box-${key}" class="hidden-page text-[11px] text-rose-700 font-bold mt-1"></div>
@@ -1286,14 +1321,7 @@
                                 <button onclick="openSlipModal('${s.imageUrl}')" class="bg-[#ffe5ed] text-[#5a4a5e] px-3 py-2 rounded-xl text-[12px] font-bold hover:bg-[#ffb6c1] active:scale-95 transition-transform w-full">
                                     <i class="fa-solid fa-magnifying-glass"></i> ดูรูปสลิป
                                 </button>
-                                <div class="flex gap-2">
-                                    <button onclick="approveSlipWithFee('${key}', '${s.id}', ${s.amount})" class="bg-emerald-500 text-white px-3 py-2.5 rounded-xl text-[12px] font-bold active:scale-95 flex-1">
-                                        ✅ อนุมัติยอด
-                                    </button>
-                                    <button onclick="rejectSlip('${key}')" class="bg-rose-400 text-white px-3 py-2.5 rounded-xl text-[12px] font-bold active:scale-95 flex-1">
-                                        ❌ ไม่อนุมัติ/ลบทิ้ง
-                                    </button>
-                                </div>
+                                ${actionButtonsHtml}
                             </div>
                         </div>
                     `;
@@ -1320,88 +1348,216 @@
             }
         }
 
-        async function approveSlipWithFee(dbKey, custId, baseAmount) {
-            const chk = document.getElementById(`admin-fee-chk-${dbKey}`);
-            const finalAmount = chk && chk.checked ? parseFloat((baseAmount - (baseAmount * 0.029)).toFixed(2)) : baseAmount;
+        // ==========================================
+        // 🚀 ระบบเข้าคิว (Queue Engine): กดรัวได้ทันที ระบบทยอยทำทีละ 1 รายการ
+        // ==========================================
+        function updateQueueUI() {
+            const bar = document.getElementById('queue-status-bar');
+            const badge = document.getElementById('queue-count-badge');
+            if (!bar || !badge) return;
 
-            // 💡 อัปเดต: ดึงข้อมูลแอดมินจาก Session แทนรหัสแบบฝังในโค้ด
+            if (isProcessingQueue || slipActionQueue.length > 0) {
+                bar.classList.remove('hidden-page');
+                badge.innerText = `เหลือ ${slipActionQueue.length + (isProcessingQueue ? 1 : 0)} รายการ`;
+            } else {
+                bar.classList.add('hidden-page');
+            }
+        }
+
+        function lockSlipCardUI(dbKey, statusLabel) {
+            queuedSlipKeys.add(dbKey);
+            const card = document.getElementById(`slip-${dbKey}`);
+            const btnApprove = document.getElementById(`btn-approve-${dbKey}`);
+            const btnReject = document.getElementById(`btn-reject-${dbKey}`);
+            const chkFee = document.getElementById(`admin-fee-chk-${dbKey}`);
+            const badge = document.getElementById(`status-badge-${dbKey}`);
+
+            if (card) card.classList.add('opacity-60');
+            if (chkFee) chkFee.disabled = true;
+            if (badge) {
+                badge.className = "text-[11px] bg-amber-100 text-amber-700 px-2 py-1 rounded-full border border-amber-300 font-bold";
+                badge.innerHTML = `<i class="fa-solid fa-hourglass-half fa-spin"></i> ${statusLabel}`;
+            }
+            if (btnApprove) {
+                btnApprove.disabled = true;
+                btnApprove.className = "bg-gray-300 text-gray-600 px-3 py-2.5 rounded-xl text-[12px] font-bold flex-1 cursor-not-allowed";
+                btnApprove.innerHTML = `⏳ ${statusLabel}`;
+            }
+            if (btnReject) {
+                btnReject.style.display = 'none';
+            }
+        }
+
+        function unlockSlipCardUI(dbKey) {
+            queuedSlipKeys.delete(dbKey);
+            const card = document.getElementById(`slip-${dbKey}`);
+            const btnApprove = document.getElementById(`btn-approve-${dbKey}`);
+            const btnReject = document.getElementById(`btn-reject-${dbKey}`);
+            const chkFee = document.getElementById(`admin-fee-chk-${dbKey}`);
+            const badge = document.getElementById(`status-badge-${dbKey}`);
+
+            if (card) card.classList.remove('opacity-60');
+            if (chkFee) chkFee.disabled = false;
+            if (badge) {
+                badge.className = "text-[11px] bg-[#fff0f3] px-2 py-1 rounded-full border border-[#ff9bb3]";
+                badge.innerHTML = `รอตรวจสอบ`;
+            }
+            if (btnApprove) {
+                btnApprove.disabled = false;
+                btnApprove.className = "bg-emerald-500 text-white px-3 py-2.5 rounded-xl text-[12px] font-bold active:scale-95 flex-1";
+                btnApprove.innerHTML = `✅ อนุมัติยอด`;
+            }
+            if (btnReject) {
+                btnReject.style.display = 'inline-block';
+            }
+        }
+
+        function approveSlipWithFee(dbKey, custId, baseAmount) {
+            // ป้องกันการกดซ้ำที่ใบเดิม
+            if (queuedSlipKeys.has(dbKey)) return;
+
+            const chk = document.getElementById(`admin-fee-chk-${dbKey}`);
+            const cleanBase = parseFloat(String(baseAmount).replace(/[^0-9.-]+/g, '')) || 0;
+            const finalAmount = chk && chk.checked ? parseFloat((cleanBase - (cleanBase * 0.029)).toFixed(2)) : cleanBase;
+
             const adminId = sessionStorage.getItem('sunstoryAdminId') || 'Unknown';
             const adminName = sessionStorage.getItem('sunstoryAdminName') || 'แอดมิน';
             const adminMention = sessionStorage.getItem('sunstoryAdminMention') || adminId;
 
-            if(!confirm(`[แอดมิน: ${adminName} (${adminId})] ยืนยันการอนุมัติยอด ${finalAmount} บาท ให้กับรหัส ${custId} ใช่ไหม?\nระบบจะอัปเดต Google Sheets ทันที`)) return;
-            
+            // ล็อกปุ่มทันทีที่กด และนำเข้าคิวโดยไม่ต้องเด้ง confirm กวนใจตอนกดรัวๆ
+            lockSlipCardUI(dbKey, "อยู่ในคิวอนุมัติ...");
+
+            slipActionQueue.push({
+                type: 'approve',
+                dbKey: dbKey,
+                custId: custId,
+                finalAmount: finalAmount,
+                adminId: adminId,
+                adminName: adminName,
+                adminMention: adminMention
+            });
+
+            updateQueueUI();
+            processNextInQueue();
+        }
+
+        function rejectSlip(dbKey, custId = '') {
+            if (queuedSlipKeys.has(dbKey)) return;
+
+            const adminId = sessionStorage.getItem('sunstoryAdminId') || 'Unknown';
+            const adminName = sessionStorage.getItem('sunstoryAdminName') || 'แอดมิน';
+            const adminMention = sessionStorage.getItem('sunstoryAdminMention') || adminId;
+
+            if(!confirm(`[แอดมิน: ${adminName} (${adminId})] ยืนยันที่จะ "ไม่อนุมัติและลบทิ้ง" สลิปของรหัส ${custId} ใช่ไหม?`)) {
+                return; 
+            }
+
+            lockSlipCardUI(dbKey, "อยู่ในคิวลบ...");
+
+            slipActionQueue.push({
+                type: 'reject',
+                dbKey: dbKey,
+                custId: custId,
+                adminId: adminId,
+                adminName: adminName,
+                adminMention: adminMention
+            });
+
+            updateQueueUI();
+            processNextInQueue();
+        }
+
+        async function processNextInQueue() {
+            if (isProcessingQueue || slipActionQueue.length === 0) {
+                updateQueueUI();
+                return;
+            }
+
+            isProcessingQueue = true;
+            const task = slipActionQueue.shift();
+            updateQueueUI();
+
+            const statusTextEl = document.getElementById('queue-status-text');
+
             try {
-                const response = await fetch(scriptUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify({ action: 'approveSlip', id: custId, amount: finalAmount, adminId: adminId })
-                });
-                const res = await response.json();
-                
-                if(res && res.success) {
-                    alert('✅ อนุมัติสำเร็จ ยอดใน Google Sheets ถูกอัปเดตแล้ว!');
-                    db.ref('pendingSlips/' + dbKey).remove();
+                if (task.type === 'approve') {
+                    if (statusTextEl) statusTextEl.innerText = `กำลังบันทึกยอดรหัส ${task.custId} (${task.finalAmount} ฿) ลงชีต...`;
+                    
+                    const btnApprove = document.getElementById(`btn-approve-${task.dbKey}`);
+                    if (btnApprove) btnApprove.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> กำลังบันทึกลงชีต...`;
+
+                    const response = await fetch(scriptUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify({ 
+                            action: 'approveSlip', 
+                            id: task.custId, 
+                            amount: task.finalAmount, 
+                            adminId: task.adminId 
+                        })
+                    });
+                    const res = await response.json();
+
+                    if (res && res.success) {
+                        // ลบสลิปออกจาก Firebase เมื่อ Google Sheet บันทึกสำเร็จแล้วเท่านั้น
+                        await db.ref('pendingSlips/' + task.dbKey).remove();
+                        queuedSlipKeys.delete(task.dbKey);
+
+                        const now = new Date();
+                        const timeString = now.toLocaleDateString('th-TH') + ' ' + now.toLocaleTimeString('th-TH', {hour: '2-digit', minute:'2-digit'}) + ' น.';
+                        
+                        let paidSummaryText = "";
+                        if (res.previousPaid !== undefined && res.newPaid !== undefined) {
+                            paidSummaryText = `\n📊 **อัปเดตยอดส่งสะสม:** ${res.previousPaid.toLocaleString()} ฿ ➔ **${res.newPaid.toLocaleString()} ฿**`;
+                        }
+
+                        const adminPayload = {
+                            content: `✅ **อนุมัติยอดสำเร็จ!**\n🎀 **รหัสลูกค้า:** ${task.custId}\n💰 **ยอดที่อนุมัติ:** +${task.finalAmount.toLocaleString()} ฿${paidSummaryText}\n👤 **ผู้ออนุมัติ:** ${task.adminMention} (แอดมิน **${task.adminId} - ${task.adminName}**)\n🕒 **เวลา:** ${timeString}`
+                        };
+                        fetch(discordWebhookAdmin, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(adminPayload)
+                        }).catch(err => console.error("Discord error:", err));
+
+                    } else {
+                        alert(`❌ ไม่สามารถอนุมัติสลิปรหัส ${task.custId} ได้: ` + (res ? res.error : 'ไม่ทราบสาเหตุ'));
+                        unlockSlipCardUI(task.dbKey);
+                    }
+
+                } else if (task.type === 'reject') {
+                    if (statusTextEl) statusTextEl.innerText = `กำลังลบสลิปรหัส ${task.custId}...`;
+
+                    await db.ref('pendingSlips/' + task.dbKey).remove();
+                    queuedSlipKeys.delete(task.dbKey);
 
                     const now = new Date();
                     const timeString = now.toLocaleDateString('th-TH') + ' ' + now.toLocaleTimeString('th-TH', {hour: '2-digit', minute:'2-digit'}) + ' น.';
                     
                     const adminPayload = {
-                        content: `✅ **อนุมัติยอดสำเร็จ!**\n🎀 **รหัสลูกค้า:** ${custId}\n💰 **ยอดเงิน:** ${finalAmount} ฿\n👤 **ผู้ออนุมัติ:** ${adminMention} (แอดมิน **${adminId} - ${adminName}**)\n🕒 **เวลา:** ${timeString}`
+                        content: `❌ **ไม่อนุมัติ/ปัดตกสลิป!** (รหัส: ${task.custId || '-'})\n👤 **ผู้ดำเนินการ:** ${task.adminMention} (แอดมิน **${task.adminId} - ${task.adminName}**)\n🕒 **เวลา:** ${timeString}\n👉 *รายการสลิปที่ไม่ถูกต้องถูกลบออกจากระบบเรียบร้อยแล้ว*`
                     };
+                    
                     fetch(discordWebhookAdmin, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(adminPayload)
                     }).catch(err => console.error("Discord error:", err));
-
-                } else {
-                    alert('เกิดข้อผิดพลาด: ' + (res ? res.error : 'ไม่ทราบสาเหตุ'));
                 }
-            } catch(e) { 
-                console.error("Approve error:", e);
-                alert('ระบบขัดข้อง กรุณาลองใหม่'); 
+
+            } catch (err) {
+                console.error("Queue processing error:", err);
+                alert(`🚨 เกิดข้อผิดพลาดในการเชื่อมต่อขณะทำรายการของรหัส ${task.custId} กรุณากดใหม่อีกครั้งครับ`);
+                unlockSlipCardUI(task.dbKey);
+            } finally {
+                // หน่วงเวลา 600 มิลลิวินาทีก่อนเริ่มคิวต่อไป เพื่อให้ Google Sheet ทำงานได้เสถียร 100%
+                await new Promise(resolve => setTimeout(resolve, 600));
+                isProcessingQueue = false;
+                updateQueueUI();
+                processNextInQueue();
             }
         }
 
-        async function rejectSlip(dbKey) {
-            // ดึงข้อมูลแอดมินที่กำลังใช้งานระบบอยู่
-            const adminId = sessionStorage.getItem('sunstoryAdminId') || 'Unknown';
-            const adminName = sessionStorage.getItem('sunstoryAdminName') || 'แอดมิน';
-            const adminMention = sessionStorage.getItem('sunstoryAdminMention') || adminId;
-
-            // เด้งถามยืนยันก่อนลบ เพื่อป้องกันการกดผิด
-            if(!confirm(`[แอดมิน: ${adminName} (${adminId})] ยืนยันที่จะ "ไม่อนุมัติและลบทิ้ง" สลิปรายการนี้ใช่ไหม?\n(ข้อมูลสลิปจะถูกลบออกไปถาวร)`)) {
-                return; 
-            }
-            
-            try {
-                // ลบสลิปออกจาก Firebase
-                await db.ref('pendingSlips/' + dbKey).remove();
-                
-                alert('❌ ลบรายการสลิปที่ไม่ถูกต้องเรียบร้อยแล้ว');
-
-                // แจ้งเตือนลง Discord ฝั่งแอดมินว่ามีการปัดตกสลิป
-                const now = new Date();
-                const timeString = now.toLocaleDateString('th-TH') + ' ' + now.toLocaleTimeString('th-TH', {hour: '2-digit', minute:'2-digit'}) + ' น.';
-                
-                const adminPayload = {
-                    content: `❌ **ไม่อนุมัติ/ปัดตกสลิป!**\n👤 **ผู้ดำเนินการ:** ${adminMention} (แอดมิน **${adminId} - ${adminName}**)\n🕒 **เวลา:** ${timeString}\n👉 *รายการสลิปที่ไม่ถูกต้องถูกลบออกจากระบบเรียบร้อยแล้ว*`
-                };
-                
-                fetch(discordWebhookAdmin, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(adminPayload)
-                }).catch(err => console.error("Discord error:", err));
-
-            } catch(e) { 
-                console.error("Reject error:", e);
-                alert('ระบบขัดข้อง ลบข้อมูลไม่สำเร็จ กรุณาลองใหม่อีกครั้ง'); 
-            }
-        }
-
-        // 💡 [NEW] ฟังก์ชันล็อกอินแอดมินฉบับปลอดภัย ดึงจาก Firebase (และตั้งค่าให้ในครั้งแรก)
         async function checkPassword() {
             const adminIdInput = document.getElementById('admin-id-input').value.trim().toUpperCase();
             if (!adminIdInput) return alert('กรุณากรอกรหัสแอดมินค่ะ 🐰');
@@ -1414,7 +1570,6 @@
                 const snapshot = await db.ref('adminUsers/' + adminIdInput).once('value');
                 let adminInfo = snapshot.val();
 
-                // 💡 Fallback เพื่อ Auto-setup ให้แอดมินในครั้งแรก (เดี๋ยวข้อมูลจะถูกส่งไปเก็บใน Firebase เอง)
                 if (!adminInfo) {
                     const tempAdminMap = {
                         "SUN01": { name: "คุณซัน", mention: "<@&1545675459520364645>" },
@@ -1424,7 +1579,7 @@
                     };
                     if (tempAdminMap[adminIdInput]) {
                         adminInfo = tempAdminMap[adminIdInput];
-                        await db.ref('adminUsers/' + adminIdInput).set(adminInfo); // แอบส่งขึ้น Firebase ให้อัตโนมัติ
+                        await db.ref('adminUsers/' + adminIdInput).set(adminInfo);
                     } else {
                         btn.disabled = false;
                         btn.innerHTML = 'เข้าสู่ระบบ';
@@ -1459,6 +1614,9 @@
         }
 
         function backToMainFromAdmin() {
+            if (isProcessingQueue || slipActionQueue.length > 0) {
+                return alert('⏳ ระบบกำลังทยอยบันทึกยอดลงชีตอยู่ กรุณารอให้คิวบันทึกเสร็จทั้งหมดก่อนออกจากระบบนะคะ');
+            }
             document.getElementById('admin-full-page').classList.add('hidden-page');
             document.getElementById('header-zones').classList.add('hidden-page'); 
             document.getElementById('page-1').classList.remove('hidden-page');

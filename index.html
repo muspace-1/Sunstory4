@@ -1507,8 +1507,8 @@
                         const timeString = now.toLocaleDateString('th-TH') + ' ' + now.toLocaleTimeString('th-TH', {hour: '2-digit', minute:'2-digit'}) + ' น.';
                         
                         let paidSummaryText = "";
-                        if (res.previousPaid !== undefined && res.newPaid !== undefined) {
-                            paidSummaryText = `\n📊 **อัปเดตยอดส่งสะสม:** ${res.previousPaid.toLocaleString()} ฿ ➔ **${res.newPaid.toLocaleString()} ฿**`;
+                        if (res.newBalance !== undefined) {
+                            paidSummaryText = `\n📊 **ยอดคงเหลือปัจจุบัน:** **${res.newBalance.toLocaleString()} ฿**`;
                         }
 
                         const adminPayload = {

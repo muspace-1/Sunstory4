@@ -11,6 +11,9 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     
     <style>
         /* 🌟 บล็อกและล้างเงาแบบเด็ดขาด 100% ทุกส่วนของหน้าเว็บและ Tailwind */
@@ -232,7 +235,7 @@
         }
 
         /* 🚨 CSS เอฟเฟกต์ 15 วันเรืองแสง */
-        .glow-red-text { color: #ef4444; text-shadow: 0 0 8px rgba(239, 68, 68, 0.8), 0 0 15px rgba(220, 38, 38, 0.6); animation: textPulse 1.5s infinite alternate; }
+        .glow-red-text { color: #ef4444; font-weight: bold; text-shadow: 0 0 8px rgba(239, 68, 68, 0.8), 0 0 15px rgba(220, 38, 38, 0.6); animation: textPulse 1.5s infinite alternate; }
         .glow-red-bar { box-shadow: 0 0 15px rgba(239, 68, 68, 0.8) !important; animation: barPulse 1s infinite alternate; }
         @keyframes textPulse { from { opacity: 0.8; } to { opacity: 1; text-shadow: 0 0 15px #ef4444, 0 0 25px #dc2626; } }
         @keyframes barPulse { from { box-shadow: 0 0 10px rgba(239,68,68,0.5) !important; } to { box-shadow: 0 0 20px rgba(239,68,68,1) !important; } }
@@ -251,6 +254,16 @@
         /* 🔽 CSS สำหรับสไลด์ข้อมูลสมูท ไร้กรอบทึบ */
         .smooth-details { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out; opacity: 0; }
         .smooth-details.open { max-height: 500px; opacity: 1; }
+
+        /* 💮 CSS เอฟเฟกต์ตราประทับตอนส่งสลิป */
+        .stamp-effect { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(3); opacity: 0; font-size: 5rem; color: #ff5277; z-index: 50; pointer-events: none; }
+        .stamp-animate { animation: stampIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        @keyframes stampIn { 
+            0% { transform: translate(-50%, -50%) scale(3); opacity: 0; } 
+            40% { transform: translate(-50%, -50%) scale(0.8); opacity: 1; } 
+            60% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; } 
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 0; } 
+        }
     </style>
 </head>
 <body class="shadow-none">
@@ -432,6 +445,27 @@
                     </div>
                 </div>
             </div>
+
+            <!-- 📍 กรอบแสดงแผนที่ร้าน (ใต้สถานะส่งตามปกติ) -->
+            <div class="info-card !p-3 flex flex-col gap-2">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-location-dot text-[#ff5277]"></i>
+                    <h3 class="text-[13px] font-bold text-[#ff5277]">พิกัดหน้าร้าน / จุดรับสินค้า</h3>
+                </div>
+                <div class="w-full h-48 rounded-lg overflow-hidden border border-[#ffe5ed]">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!4v1792830940728!6m8!1m7!1sHAgmG9_aJ9phtp0HMb1xgQ!2m2!1d13.64385679469919!2d100.4212836818508!3f335.43219170973964!4f-4.276899774824727!5f0.7820865974627469" 
+                        width="100%" 
+                        height="100%" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="strict-origin-when-cross-origin">
+                    </iframe>
+                </div>
+                <p class="text-[11px] text-[#a86b81] mt-1">มารับเครื่องเองได้ที่หน้าร้าน เปิด 09:00 - 21:30 น. ปิดทุกวันจันทร์</p>
+            </div>
+
             <button id="btn-enter" onclick="enterStore()" class="btn-main mt-2">
                 <span>เข้าสู่ร้าน Sunstory4</span>
                 <i class="fa-solid fa-mobile-screen"></i>
@@ -626,11 +660,63 @@
         let currentCustomerId = ''; 
 
         // ==========================================
+        // 🎆 ฟังก์ชันยิงพลุฉลองตอนผ่อนครบ & แท็กป้ายลูกค้า & แปลงวันที่
+        // ==========================================
+        function triggerCelebrationFireworks() {
+            var duration = 3.5 * 1000;
+            var end = Date.now() + duration;
+            (function frame() {
+                confetti({
+                    particleCount: 5,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: ['#ff5277', '#ffb3c1', '#ffd166', '#06d6a0', '#118ab2']
+                });
+                confetti({
+                    particleCount: 5,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: ['#ff5277', '#ffb3c1', '#ffd166', '#06d6a0', '#118ab2']
+                });
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+        }
+
+        function getCustomerBadge(percent, isCompleted) {
+            if (isCompleted) return "👑 VIP ผ่อนครบแล้ว!";
+            if (percent <= 30) return "🐣 เบบี๋เพิ่งเริ่ม";
+            if (percent <= 70) return "🌸 วัยรุ่นนักสู้";
+            if (percent < 100) return "🔥 ใกล้ปิดยอดแล้ว";
+            return "👑 VIP รับเครื่อง!";
+        }
+
+        function parseDateSafely(dateStr) {
+            if (!dateStr || String(dateStr).trim() === "" || dateStr === "-") return null;
+            let clean = String(dateStr).split(' ')[0].split('T')[0];
+            let d = 0, m = 0, y = 0;
+            if (clean.includes('-')) {
+                let parts = clean.split('-');
+                if (parts[0].length === 4) { y = parseInt(parts[0]); m = parseInt(parts[1]) - 1; d = parseInt(parts[2]); }
+                else { d = parseInt(parts[0]); m = parseInt(parts[1]) - 1; y = parseInt(parts[2]); }
+            } else if (clean.includes('/')) {
+                let parts = clean.split('/');
+                if (parts[2].length === 4) { d = parseInt(parts[0]); m = parseInt(parts[1]) - 1; y = parseInt(parts[2]); }
+                else { y = parseInt(parts[0]); m = parseInt(parts[1]) - 1; d = parseInt(parts[2]); }
+            }
+            if (isNaN(d) || isNaN(m) || isNaN(y)) return null;
+            return new Date(y, m, d);
+        }
+
+        // ==========================================
         // 🚦 ตัวแปรสำหรับระบบจัดการคิว (Queue System) ป้องกันการกดรัวแล้วข้อมูลชนกัน
         // ==========================================
         let slipActionQueue = [];
         let isProcessingQueue = false;
-        let queuedSlipKeys = new Set(); // จำว่าสลิปใบไหนอยู่ในคิวแล้วบ้าง เวลา Firebase รีเฟรชหน้าจอปุ่มจะได้ไม่เด้งกลับ
+        let queuedSlipKeys = new Set();
 
         window.onload = function() {
             db.ref('storeConfig').once('value').then((snapshot) => {
@@ -839,11 +925,17 @@
                     const balanceNum = parseFloat(String(data.balance).replace(/[^0-9.-]+/g, '')) || 0;
                     const totalNum = parseFloat(String(data.total).replace(/[^0-9.-]+/g, '')) || 0;
                     const discountValue = data.discount ? parseFloat(String(data.discount).replace(/[^0-9.-]+/g, '')) : 0;
+                    const customerType = data.type ? data.type.trim() : "";
+                    const contractStatus = data.contractStatus ? data.contractStatus.trim() : "";
+                    const freq = (data.freq || "").trim();
                     
                     let creditLeftNum = creditTargetNum - paidNum;
                     if (creditLeftNum < 0) creditLeftNum = 0;
+
+                    const isCompleted = balanceNum <= 0 || contractStatus.includes("ผ่อนครบ") || contractStatus.includes("สิ้นสุด");
+                    const isLocked = contractStatus.includes("ล็อกเครื่อง");
                     
-                    if (data.contractStatus === "ล็อกเครื่อง") {
+                    if (isLocked) {
                         resultBox.innerHTML = `
                             <div class="info-card !bg-rose-50 !border-[#ffffff] text-center py-6">
                                 <i class="fa-solid fa-lock text-5xl text-rose-500 mb-3 animate-bounce"></i>
@@ -861,23 +953,30 @@
                         return;
                     }
                     
+                    let badgePercent = 0;
                     let progressHtml = '';
-                    const customerType = data.type ? data.type.trim() : "";
 
-                    if (customerType.includes("ผ่อนไปใช้ไป")) {
-                        let percent = creditTargetNum > 0 ? (paidNum / creditTargetNum) * 100 : 0;
-                        if (percent > 100) percent = 100;
+                    // ==========================================
+                    // 1. หลอดสถานะผ่อน (ด้านบน)
+                    // ==========================================
+                    if (isCompleted) {
+                        badgePercent = 100;
+                        progressHtml = `
+                            <div class="mt-4 bg-[#f0fdf4] border-2 border-[#bbf7d0] rounded-xl p-3.5">
+                                <div class="flex justify-between items-end mb-1">
+                                    <div class="text-[13px] font-bold text-[#16a34a]">🎉 สัญญาผ่อนชำระ: สิ้นสุด (ชำระครบแล้ว)</div>
+                                    <div class="text-[11px] font-bold text-[#15803d] bg-white px-2.5 py-0.5 rounded-md border border-[#bbf7d0]">100%</div>
+                                </div>
+                                <div class="w-full h-3 bg-[#dcfce7] rounded-full overflow-hidden my-2 border border-[#bbf7d0]">
+                                    <div class="h-full bg-gradient-to-r from-[#4ade80] to-[#16a34a] rounded-full transition-all duration-1000" style="width: 100%;"></div>
+                                </div>
+                            </div>`;
+                    } else if (customerType.includes("ผ่อนไปใช้ไป")) {
+                        if (paidNum < creditTargetNum && !contractStatus.includes("รอรับของ")) {
+                            let percent = creditTargetNum > 0 ? (paidNum / creditTargetNum) * 100 : 0;
+                            if (percent > 100) percent = 100;
+                            badgePercent = percent;
 
-                        if (creditTargetNum > 0 && creditLeftNum <= 0 && paidNum >= creditTargetNum) {
-                            progressHtml = `
-                                <div class="mt-4 bg-[#f0fdf4] border-2 border-[#ffffff] rounded-xl p-3 text-center">
-                                    <div class="text-[14px] font-bold text-[#166534] mb-1">🎉 ยินดีด้วย! เครดิตผ่านแล้ว 🎉</div>
-                                    <div class="text-[12px] font-medium text-[#15803d]">ทักหาแอดมินเพื่อรับเครื่องไปใช้ได้เลยค่า 💖</div>
-                                    <div class="w-full h-3 bg-[#dcfce7] rounded-full mt-2 overflow-hidden border border-[#ffffff]">
-                                        <div class="h-full bg-gradient-to-r from-[#4ade80] to-[#22c55e] w-full rounded-full"></div>
-                                    </div>
-                                </div>`;
-                        } else {
                             progressHtml = `
                                 <div class="mt-4 bg-[#fff5f8] border-2 border-[#ffffff] rounded-xl p-3">
                                     <div class="flex justify-between items-end mb-1">
@@ -891,6 +990,23 @@
                                         🔥 ฮึบๆ อีกแค่ <b class="text-[14px]">${creditLeftNum.toLocaleString()}</b> บาท เท่านั้น!
                                     </div>
                                 </div>`;
+                        } else {
+                            let netTotal = totalNum - discountValue;
+                            let percent = netTotal > 0 ? (paidNum / netTotal) * 100 : 0;
+                            if (percent > 100) percent = 100;
+                            badgePercent = 100;
+
+                            progressHtml = `
+                                <div class="mt-4 bg-[#fffbeb] border-2 border-[#fef3c7] rounded-xl p-3.5">
+                                    <div class="flex justify-between items-end mb-1">
+                                        <div class="text-[13px] font-bold text-[#d97706]">👑 เครดิตผ่านแล้ว: ภารกิจผ่อนปิดยอดเครื่อง!</div>
+                                        <div class="text-[11px] font-bold text-[#b45309] bg-white px-2.5 py-0.5 rounded-md border border-[#fde68a]">${Math.floor(percent)}%</div>
+                                    </div>
+                                    <div class="w-full h-3 bg-[#fef3c7] rounded-full overflow-hidden my-2 border border-[#fde68a]">
+                                        <div class="h-full bg-gradient-to-r from-[#f59e0b] to-[#d97706] rounded-full transition-all duration-1000" style="width: ${percent}%;"></div>
+                                    </div>
+                                    <div class="text-[12px] font-medium text-[#b45309] text-center mt-1">🎉 ยินดีด้วย! เครดิตผ่านแล้ว ทักหาแอดมินเพื่อรับเครื่องไปใช้ได้เลยค่า 💖</div>
+                                </div>`;
                         }
                     } else if (customerType.includes("วางดาวน์")) {
                         let totalPeriods = installmentAmt > 0 ? Math.ceil(totalNum / installmentAmt) : 0;
@@ -899,101 +1015,151 @@
                         let remainPeriods = totalPeriods - paidPeriods;
                         if (remainPeriods < 0) remainPeriods = 0;
 
-                        let periodPercent = totalPeriods > 0 ? (paidPeriods / totalPeriods) * 100 : 0;
+                        let netTotal = totalNum - discountValue;
+                        let amtPercent = netTotal > 0 ? (paidNum / netTotal) * 100 : 0;
+                        let periodPercent = totalPeriods > 0 ? (paidPeriods / totalPeriods) * 100 : amtPercent;
                         if (periodPercent > 100) periodPercent = 100;
+                        badgePercent = periodPercent;
 
                         progressHtml = `
                             <div class="mt-4 bg-[#fdf2f8] border-2 border-[#ffffff] rounded-xl p-3.5">
                                 <div class="flex justify-between items-end mb-1">
-                                    <div class="text-[13px] font-bold text-[#db2777]">📊 สถานะงวดการผ่อนชำระ (วางดาวน์)</div>
+                                    <div class="text-[13px] font-bold text-[#db2777]">📊 สถานะงวดการผ่อนชำระ (${customerType})</div>
                                     <div class="text-[11px] font-bold text-[#be185d] bg-white px-2.5 py-0.5 rounded-md border border-[#ffffff]">${Math.floor(periodPercent)}%</div>
                                 </div>
                                 <div class="w-full h-3 bg-[#fce7f3] rounded-full overflow-hidden my-2 border border-[#ffffff]">
                                     <div class="h-full bg-gradient-to-r from-[#ec4899] to-[#be185d] rounded-full transition-all duration-1000" style="width: ${periodPercent}%;"></div>
                                 </div>
+                                ${totalPeriods > 0 ? `
                                 <div class="text-[12px] text-[#831843] space-y-1 mt-2 font-medium bg-white p-2.5 rounded-lg border border-[#fbcfe8]">
                                     <div class="flex justify-between"><span>✅ ส่งไปแล้ว:</span> <b>${paidPeriods} งวด</b></div>
                                     <div class="flex justify-between"><span>⏳ ค้างอีก:</span> <b class="text-rose-600">${remainPeriods} งวด</b> (จากทั้งหมด ${totalPeriods} งวด)</div>
+                                </div>` : ''}
+                            </div>`;
+                    } else if (customerType.includes("ผ่อนครบรับของ") || customerType !== "") {
+                        let netTotal = totalNum - discountValue;
+                        let percent = netTotal > 0 ? (paidNum / netTotal) * 100 : 0;
+                        if (percent > 100) percent = 100;
+                        badgePercent = percent;
+
+                        progressHtml = `
+                            <div class="mt-4 bg-[#fdf2f8] border-2 border-[#ffffff] rounded-xl p-3.5">
+                                <div class="flex justify-between items-end mb-1">
+                                    <div class="text-[13px] font-bold text-[#db2777]">📊 สถานะงวดการผ่อนชำระ (${customerType})</div>
+                                    <div class="text-[11px] font-bold text-[#be185d] bg-white px-2.5 py-0.5 rounded-md border border-[#ffffff]">${Math.floor(percent)}%</div>
+                                </div>
+                                <div class="w-full h-3 bg-[#fce7f3] rounded-full overflow-hidden my-2 border border-[#ffffff]">
+                                    <div class="h-full bg-gradient-to-r from-[#ec4899] to-[#be185d] rounded-full transition-all duration-1000" style="width: ${percent}%;"></div>
                                 </div>
                             </div>`;
                     }
 
-                    let cooldownHtml = '';
-                    if (data.dueDate && String(data.dueDate).trim() !== "" && data.dueDate !== "-") {
-                        let rawDateStr = String(data.dueDate);
-                        let cleanDateStr = rawDateStr.split('T')[0]; 
-                        
-                        let day = 0, month = 0, year = 0;
-                        if (cleanDateStr.includes('-')) {
-                            let parts = cleanDateStr.split('-');
-                            if (parts[0].length === 4) { year = parseInt(parts[0]); month = parseInt(parts[1]) - 1; day = parseInt(parts[2]); } 
-                            else { day = parseInt(parts[0]); month = parseInt(parts[1]) - 1; year = parseInt(parts[2]); }
-                        } else if (cleanDateStr.includes('/')) {
-                            let parts = cleanDateStr.split('/');
-                            day = parseInt(parts[0]); month = parseInt(parts[1]) - 1; year = parseInt(parts[2]);
+                    // ==========================================
+                    // 2. ข้อความเตือนรอบส่งยอด (แซนด์วิชตรงกลาง)
+                    // ==========================================
+                    let alertHtml = '';
+                    const today = new Date();
+                    today.setHours(0,0,0,0);
+
+                    if (!isCompleted && !isLocked) {
+                        let shouldAlert = false;
+                        let isOverdue = false;
+
+                        if (freq.includes("รายวัน")) {
+                            shouldAlert = false;
+                        } else if (freq.includes("รายอาทิตย์") || freq.includes("รายสัปดาห์")) {
+                            const lastTransferDate = parseDateSafely(data.lastUpdate);
+                            if (lastTransferDate) {
+                                const diffDaysFromLast = Math.floor((today - lastTransferDate) / (1000 * 60 * 60 * 24));
+                                if (diffDaysFromLast >= 4) {
+                                    shouldAlert = true;
+                                    if (diffDaysFromLast > 7) isOverdue = true;
+                                }
+                            }
+                        } else if (freq.includes("รายเดือน")) {
+                            const payDueDate = parseDateSafely(data.monthlyDueDate) || parseDateSafely(data.dueDate);
+                            if (payDueDate) {
+                                const diffDaysToPay = Math.ceil((payDueDate - today) / (1000 * 60 * 60 * 24));
+                                if (diffDaysToPay <= 7) {
+                                    shouldAlert = true;
+                                    if (diffDaysToPay < 0) isOverdue = true;
+                                }
+                            }
                         }
 
-                        if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
-                            const due = new Date(year, month, day);
-                            const today = new Date();
-                            today.setHours(0,0,0,0);
-                            
-                            const diffDays = Math.ceil((due - today) / (1000 * 60 * 60 * 24));
+                        if (shouldAlert) {
+                            if (isOverdue) {
+                                alertHtml = `
+                                    <div class="mt-3 bg-gradient-to-r from-[#fef2f2] to-[#fee2e2] border-2 border-[#fca5a5] text-[#b91c1c] rounded-xl p-3 flex items-center gap-2.5 font-bold text-xs">
+                                        <span class="text-base animate-bounce">🚨</span>
+                                        <div class="flex-1">เกินกำหนดส่งยอดแล้ว! รบกวนชำระหรือติดต่อแอดมินด่วนครับ</div>
+                                    </div>`;
+                            } else {
+                                alertHtml = `
+                                    <div class="mt-3 bg-gradient-to-r from-[#fffbeb] to-[#fef3c7] border-2 border-[#fde68a] text-[#b45309] rounded-xl p-3 flex items-center gap-2.5 font-bold text-xs">
+                                        <span class="text-base">⏰</span>
+                                        <div class="flex-1">เตือนรอบส่งยอด: อย่าลืมส่งยอดตามกำหนดนะค้าบ</div>
+                                    </div>`;
+                            }
+                        }
+                    }
 
+                    // ==========================================
+                    // 3. หลอดวันตัดยอด (ด้านล่าง)
+                    // ==========================================
+                    let cooldownHtml = '';
+                    if (isCompleted) {
+                        cooldownHtml = `
+                            <div class="mt-3 bg-[#f0fdf4] border border-[#bbf7d0] rounded-xl p-3">
+                                <div class="text-[12px] font-bold text-[#16a34a] mb-1.5 flex justify-between items-center">
+                                    <span>📅 สถานะตัดยอด: สิ้นสุดสัญญา</span>
+                                    <span class="text-[11px] text-[#15803d] font-bold">(ปิดยอดสมบูรณ์)</span>
+                                </div>
+                                <div class="w-full h-3 bg-[#dcfce7] rounded-full overflow-hidden my-1.5 border border-[#bbf7d0]">
+                                    <div class="h-full bg-gradient-to-r from-[#4ade80] to-[#16a34a] rounded-full" style="width: 100%;"></div>
+                                </div>
+                            </div>`;
+                    } else if (data.dueDate && String(data.dueDate).trim() !== "" && data.dueDate !== "-") {
+                        const due = parseDateSafely(data.dueDate);
+                        if (due) {
+                            const diffDays = Math.ceil((due - today) / (1000 * 60 * 60 * 24));
                             let barColor = "from-[#4ade80] to-[#22c55e]";
-                            let statusText = `เหลือเวลาอีก ${diffDays} วัน`;
                             let widthPct = "100%";
                             let barClass = "";
-                            let timeRemainText = "";
+                            let timeRemainText = diffDays > 0 ? `(อีก ${diffDays} วัน)` : diffDays === 0 ? `(วันนี้!)` : `(เลยกำหนด ${Math.abs(diffDays)} วัน)`;
+                            let warningHtml = '';
 
-                            if (diffDays > 0) timeRemainText = `(อีก ${diffDays} วัน)`;
-                            else if (diffDays === 0) timeRemainText = `(วันนี้!)`;
-                            else timeRemainText = `(เลยกำหนด ${Math.abs(diffDays)} วัน)`;
-
-                            let warningBottomHtml = '';
-
-                            if (diffDays > 7) { 
-                                barColor = "from-[#4ade80] to-[#22c55e]"; 
-                                widthPct = "100%"; 
-                            } 
-                            else if (diffDays <= 7 && diffDays >= 0) { 
-                                barColor = "from-[#bef264] to-[#eab308]"; 
-                                statusText = "แจ้งเตือน 🚨ลูกค้ากำลังจะถูกตัดยอดโปรดส่งยอดก่อนถึงวันที่ตัดยอดนะคะ"; 
-                                widthPct = "75%"; 
-                                warningBottomHtml = `<div class="text-[11px] font-bold text-[#c75b80] mt-2 leading-snug">${statusText}</div>`;
-                            } 
-                            else if (diffDays < 0 && diffDays >= -7) { 
-                                barColor = "from-[#fde047] to-[#eab308]"; 
-                                statusText = "แจ้งเตือน 🚨 วันนี้ลูกค้ากำลังจะถูกตัดยอดโปรดส่งยอดภายในวันนี้เท่านั้น !"; 
-                                widthPct = "50%"; 
-                                warningBottomHtml = `<div class="text-[11px] font-bold text-[#c75b80] mt-2 leading-snug">${statusText}</div>`;
-                            } 
-                            else if (diffDays < -7 && diffDays >= -14) { 
-                                barColor = "from-[#fb923c] to-[#ef4444]"; 
-                                statusText = "แจ้งเตือน🚨ท่านถูกตัดยอดแล้ว โปรดต่อบัญชีจำนวน 100 บาท ( ไม่นับเป็นค่าส่งยอด ) ภายใน 7 วันหลังจากนี้"; 
-                                widthPct = "25%"; 
-                                warningBottomHtml = `<div class="text-[11px] font-bold text-[#c75b80] mt-2 leading-snug">${statusText}</div>`;
-                            } 
-                            else if (diffDays < -14) {
-                                barColor = "from-[#ef4444] to-[#b91c1c]";
-                                statusText = `<div class='glow-red-text mb-2'>แจ้งเตือน🚨บัญชีท่านถูกตัดยอดโดยสมบูรณ์โปรดเปิดบิลบัญชีใหม่</div><a href='${linkLinePay}' target='_blank' class='inline-block bg-rose-600 text-white px-4 py-2 rounded-xl text-[12px] mt-1 shadow-sm font-bold'><i class='fa-brands fa-line'></i> ติดต่อไลน์ส่งยอด</a>`;
+                            if (diffDays <= 7 && diffDays >= 0) {
+                                barColor = "from-[#bef264] to-[#eab308]";
+                                widthPct = "75%";
+                                warningHtml = `<div class="text-[11px] font-bold text-[#b45309] mt-2 bg-[#fffbeb] p-2 rounded-lg border border-[#fde68a] leading-snug">⚠️ แจ้งเตือนยอดอีก 7 วันที่จะถึงลูกค้ากำลังจะถูกตัดยอดโปรดส่งยอดก่อนถึงวันที่ตัดยอดนะคะ</div>`;
+                            } else if (diffDays < 0 && diffDays >= -7) {
+                                barColor = "from-[#fde047] to-[#f97316]";
+                                widthPct = "50%";
+                                warningHtml = `<div class="text-[11px] font-bold text-[#c2410c] mt-2 bg-[#fff7ed] p-2 rounded-lg border border-[#fed7aa] leading-snug">🚨 แจ้งเตือน วันนี้ลูกค้ากำลังจะถูกตัดยอดโปรดส่งยอดภายในวันนี้เท่านั้น !</div>`;
+                            } else if (diffDays < -7 && diffDays >= -14) {
+                                barColor = "from-[#fb7185] to-[#e11d48]";
+                                widthPct = "25%";
+                                warningHtml = `<div class="text-[11px] font-bold text-[#be123c] mt-2 bg-[#fff1f2] p-2 rounded-lg border border-[#fecdd3] leading-snug">⚠️ แจ้งเตือนท่านถูกตัดยอดแล้ว โปรดต่อบัญชีจำนวน 100 บาท ( ไม่นับเป็นค่าส่งยอด ) ภายใน 7 วันหลังจากนี้</div>`;
+                            } else if (diffDays < -14 || isLocked) {
+                                barColor = "from-[#ef4444] to-[#991b1b]";
                                 widthPct = "10%";
-                                barClass = "glow-red-bar"; 
-                                warningBottomHtml = `<div class="text-[11px] font-bold text-[#c75b80] mt-2 leading-snug">${statusText}</div>`;
+                                barClass = "glow-red-bar";
+                                warningHtml = `<div class="text-[11px] font-bold text-[#991b1b] mt-2 bg-[#fef2f2] p-2 rounded-lg border border-[#fecaca] leading-snug"><div class="glow-red-text mb-2">🚫 แจ้งเตือนบัญชีท่านถูกตัดยอดโดยสมบูรณ์โปรดเปิดบิลบัญชีใหม่</div><a href="${linkLinePay}" target="_blank" class="inline-block bg-rose-600 text-white px-4 py-2 rounded-xl text-[12px] mt-1 shadow-sm font-bold"><i class="fa-brands fa-line"></i> ติดต่อไลน์ส่งยอด</a></div>`;
                             }
 
+                            let day = due.getDate(), month = due.getMonth() + 1, year = due.getFullYear();
                             cooldownHtml = `
                                 <div class="mt-3 bg-[#fff9fa] border border-[#ffffff] rounded-xl p-3">
                                     <div class="text-[12px] font-bold text-[#ff5277] mb-1.5 flex justify-between items-center">
-                                        <span>📅 วันตัดยอด: ${day}/${month + 1}/${year}</span>
+                                        <span>📅 วันตัดยอด: ${day}/${month}/${year}</span>
                                         <span class="text-[11px] text-[#c75b80]">${timeRemainText}</span>
                                     </div>
                                     <div class="w-full h-3 bg-[#ffe5ed] rounded-full overflow-visible my-1.5 border border-[#ffffff]">
                                         <div class="h-full bg-gradient-to-r ${barColor} rounded-full transition-all duration-1000 ${barClass}" style="width: ${widthPct};"></div>
                                     </div>
-                                    ${warningBottomHtml}
-                                </div>
-                            `;
+                                    ${warningHtml}
+                                </div>`;
                         }
                     }
 
@@ -1035,6 +1201,9 @@
                         }
                     }
 
+                    let badgeText = getCustomerBadge(badgePercent, isCompleted);
+                    let freqDisplay = freq ? `<span class="text-xs text-[#a86b81] font-normal">(${freq})</span>` : '';
+
                     resultBox.innerHTML = `
                         <div class="info-card !bg-[#fffcf5] !border-[#ffffff]">
                             <i class="fa-solid fa-receipt watermark-icon"></i>
@@ -1045,8 +1214,8 @@
                                 </div>
                                 
                                 <div class="text-[13px] text-[#5a4a5e] space-y-2 font-medium mb-3">
-                                    <p>👤 ชื่อลูกค้า: <span class="font-bold text-[#0f172a] text-[14px]">${data.name || '-'}</span></p>
-                                    <p>🏷️ ประเภท: <span class="font-bold text-[#ff5277] text-[14px]">${data.type || '-'}</span></p>
+                                    <p>👤 ชื่อลูกค้า: <span class="font-bold text-[#0f172a] text-[14px]">${data.name || '-'}</span> <span class="text-[11px] bg-[#fff0f3] text-[#ff5277] font-bold px-2 py-0.5 rounded-full ml-1 border border-[#ffccd5] inline-block">${badgeText}</span></p>
+                                    <p>🏷️ ประเภท: <span class="font-bold text-[#ff5277] text-[14px]">${data.type || '-'}</span> ${freqDisplay}</p>
                                     <p>📱 รุ่นที่ผ่อน: <span class="font-bold text-[#0f172a] text-[14px]">${data.model || '-'}</span></p>
                                 </div>
 
@@ -1075,10 +1244,17 @@
 
                                 ${pendingAlertHtml}
                                 ${progressHtml}
+                                ${alertHtml}
                                 ${cooldownHtml}
                                 ${contractBtnHtml}
                             </div>
                         </div>
+
+                        ${isCompleted ? `
+                        <div class="bg-[#f0fdf4] border-2 border-[#bbf7d0] rounded-xl p-4 text-center mt-2">
+                            <div class="text-base font-bold text-[#16a34a] mb-1">🎊 ยินดีด้วยค่ะ คุณผ่อนครบตามสัญญาแล้ว!</div>
+                            <p class="text-xs text-[#15803d]">รอรับสินค้าหรือติดต่อแอดมินเพื่อเช็กเลขพัสดุได้เลยน้า 💖</p>
+                        </div>` : ''}
 
                         <div class="mt-4 payment-section relative">
                             <div class="text-center font-bold text-[#ff5277] mb-4 text-sm flex items-center justify-center gap-1">
@@ -1119,7 +1295,8 @@
                                 </div>
                             </div>
 
-                            <div id="upload-zone" class="info-card flex flex-col gap-3 !bg-white !p-4">
+                            ${!isCompleted ? `
+                            <div id="upload-zone" class="info-card flex flex-col gap-3 !bg-white !p-4 relative">
                                 <i class="fa-solid fa-file-arrow-up watermark-icon"></i>
                                 <div class="card-content-inner flex flex-col gap-3">
                                     <p class="text-[13px] font-bold text-[#ff5277]">📤 แจ้งชำระเงิน / แนบสลิป:</p>
@@ -1141,11 +1318,15 @@
                             <div id="slip-status" class="hidden-page mt-1 bg-[#fff0f3] border border-[#ffffff] rounded-xl p-3 text-center">
                                 <div class="text-[14px] font-bold text-[#ff5277]"><i class="fa-solid fa-hourglass-half rotate-animation inline-block mr-1"></i> สถานะ: รอตรวจสอบสลิป</div>
                                 <div class="text-[12px] text-[#a86b81] mt-1 font-medium">แอดมินได้รับสลิปแล้วค่ะ 🌸</div>
-                            </div>
+                            </div>` : ''}
                         </div>
                     `;
                     resultBox.classList.remove('hidden-page');
                     errorBox.classList.add('hidden-page');
+
+                    if (isCompleted) {
+                        triggerCelebrationFireworks();
+                    }
                 } else {
                     resultBox.classList.add('hidden-page');
                     errorBox.classList.remove('hidden-page');
@@ -1244,8 +1425,16 @@
                             body: JSON.stringify(payload)
                         }).catch(err => console.error("Discord error:", err));
 
-                        document.getElementById('upload-zone').classList.add('hidden-page');
-                        document.getElementById('slip-status').classList.remove('hidden-page');
+                        const uploadZone = document.getElementById('upload-zone');
+                        const stamp = document.createElement('i');
+                        stamp.className = 'fa-solid fa-stamp stamp-effect stamp-animate';
+                        uploadZone.appendChild(stamp);
+
+                        setTimeout(() => {
+                            uploadZone.classList.add('hidden-page');
+                            document.getElementById('slip-status').classList.remove('hidden-page');
+                            stamp.remove();
+                        }, 800);
                     } catch (error) {
                         console.error("Upload error:", error);
                         alert('ส่งสลิปไม่สำเร็จ กรุณาลองใหม่อีกครั้งค่ะ');
@@ -1340,7 +1529,7 @@
             if (chk.checked) {
                 const finalWithDeduct = (baseAmount - (baseAmount * 0.029)).toFixed(2);
                 displayAmt.innerHTML = `<span class="text-rose-600 line-through">${baseAmount}</span> ➔ <b>${finalWithDeduct}</b> (หัก 2.9%)`;
-                calcBox.innerText = `ยอดที่จะใช้ออนุมัติเข้าระบบคือ: ${finalWithDeduct} บาท`;
+                calcBox.innerText = `ยอดที่จะใช้อนุมัติเข้าระบบคือ: ${finalWithDeduct} บาท`;
                 calcBox.classList.remove('hidden-page');
             } else {
                 displayAmt.innerHTML = baseAmount;
@@ -1413,7 +1602,6 @@
         }
 
         function approveSlipWithFee(dbKey, custId, baseAmount) {
-            // ป้องกันการกดซ้ำที่ใบเดิม
             if (queuedSlipKeys.has(dbKey)) return;
 
             const chk = document.getElementById(`admin-fee-chk-${dbKey}`);
@@ -1424,7 +1612,6 @@
             const adminName = sessionStorage.getItem('sunstoryAdminName') || 'แอดมิน';
             const adminMention = sessionStorage.getItem('sunstoryAdminMention') || adminId;
 
-            // ล็อกปุ่มทันทีที่กด และนำเข้าคิวโดยไม่ต้องเด้ง confirm กวนใจตอนกดรัวๆ
             lockSlipCardUI(dbKey, "อยู่ในคิวอนุมัติ...");
 
             slipActionQueue.push({
@@ -1499,7 +1686,6 @@
                     const res = await response.json();
 
                     if (res && res.success) {
-                        // ลบสลิปออกจาก Firebase เมื่อ Google Sheet บันทึกสำเร็จแล้วเท่านั้น
                         await db.ref('pendingSlips/' + task.dbKey).remove();
                         queuedSlipKeys.delete(task.dbKey);
 
@@ -1512,7 +1698,7 @@
                         }
 
                         const adminPayload = {
-                            content: `✅ **อนุมัติยอดสำเร็จ!**\n🎀 **รหัสลูกค้า:** ${task.custId}\n💰 **ยอดที่อนุมัติ:** +${task.finalAmount.toLocaleString()} ฿${paidSummaryText}\n👤 **ผู้ออนุมัติ:** ${task.adminMention} (แอดมิน **${task.adminId} - ${task.adminName}**)\n🕒 **เวลา:** ${timeString}`
+                            content: `✅ **อนุมัติยอดสำเร็จ!**\n🎀 **รหัสลูกค้า:** ${task.custId}\n💰 **ยอดที่อนุมัติ:** +${task.finalAmount.toLocaleString()} ฿${paidSummaryText}\n👤 **ผู้อนุมัติ:** ${task.adminMention} (แอดมิน **${task.adminId} - ${task.adminName}**)\n🕒 **เวลา:** ${timeString}`
                         };
                         fetch(discordWebhookAdmin, {
                             method: 'POST',
@@ -1550,7 +1736,6 @@
                 alert(`🚨 เกิดข้อผิดพลาดในการเชื่อมต่อขณะทำรายการของรหัส ${task.custId} กรุณากดใหม่อีกครั้งครับ`);
                 unlockSlipCardUI(task.dbKey);
             } finally {
-                // หน่วงเวลา 600 มิลลิวินาทีก่อนเริ่มคิวต่อไป เพื่อให้ Google Sheet ทำงานได้เสถียร 100%
                 await new Promise(resolve => setTimeout(resolve, 600));
                 isProcessingQueue = false;
                 updateQueueUI();
